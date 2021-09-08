@@ -1,0 +1,16 @@
+Bad - 3, 5
+Okay - 2, 4
+Good - 1, 6
+Best - 7, 8
+
+
+
+
+
+
+
+
+
+
+
+(1,good)|	GOOD	|(2,okay)|	OKAY	|(3,bad)|	BAD	|(4,okay)|	OKAY	|(5,bad)|	BAD	|(6,good)|	GOOD	|(7,best)|	BEST	|(8,best)
