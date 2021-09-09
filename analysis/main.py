@@ -13,9 +13,9 @@ from util.input.user_input import prompt_for_input, prompt_for_file
 # C:\Users\brian\Desktop\Stonks\Documents\Unusual Whales\Options Recap\Options Recap (Detailed).xlsx
 
 # Computer
-# D:\Files\Documents\Stonks\Unusual Whales\Historical Alerts\2021\2021-06.xlsx
-# D:\Files\Documents\Stonks\Unusual Whales\Historical Alerts\2021\2021 Historical Alerts.xlsx
-# D:\Files\Documents\Stonks\Unusual Whales\Options Recap\Options Recap (Detailed).xlsx
+# D:\Projects\Programming\Cue\docs\historical-data\2021\2021-06.xlsx
+# D:\Projects\Programming\Cue\docs\historical-data\2021\2021 Historical Alerts.xlsx
+# D:\Projects\Programming\Cue\docs\options-recap\Options Recap (Detailed).xlsx
 
 #########################################################################################################
 
