@@ -9,8 +9,6 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-# TODO: Create more logs
-# TODO: Rename user_input.py to input_util.py as this is just util, not a class
 def prompt_for_input(prompt: str, valid_choices: list) -> str:
 	'''
 	prompt_for_input

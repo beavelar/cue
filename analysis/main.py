@@ -24,20 +24,9 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-# TODO: Create more logs
-# TODO: Investigate usage of vaex instead of Pandas
-# TODO: Think about storing Unusual Whales data in a database.  Ingest would be dropping the
-#		report in a directory, we will then move the data into a database
-# TODO: Think about creating user interface (ex. website) which allows user to request data
-#		with desired timeframe
 def main():	
 	output_historical_df = None
-	# TODO: Remove graph option, graph and parse should be done at once
-	# TODO: Remove after we've implemented ability to parse multiple excel files in a directory
-	# TODO: Prompt will probably be removed by creating directories to handle what we want based on
-	#		what file was dropped in it or dropping a file in a directory will all the required info
 	valid_choices = ['p', 'parse', 'g', 'graph', 'a', 'analyze', 'r', 'rate']
-	# TODO: Remove row_valid_choices
 	row_valid_choices = ['0', '1', '2', '3', 'etc.']
 	choice_prompt = 'Parse, graph, analyze or rate historical data? (P/G/A/R): '
 	row_choice_prompt = 'Which row to start on?: '
@@ -45,7 +34,6 @@ def main():
 	input_file_prompt = 'Please provide the output Unusual Whales Historical Alerts file or directory: '
 	alert_file_prompt = 'Please provide the Unusual Whales alerts file: '
 
-	# TODO: Eventually remove prompt, turn into a listener that listens for files instead
 	graph_parse_prompt = prompt_for_input(choice_prompt, valid_choices)
 	output_file = prompt_for_file(output_file_prompt)
 	output_historical_xlsx = pd.ExcelFile(output_file)
@@ -73,8 +61,6 @@ def main():
 		create_excel_chart(output_file, 'Time Passed', 'P/L', 23, 22, 'X152', num_of_elems)
 	# Analyzing historical report and creating call and put report containing the results
 	elif graph_parse_prompt.lower() == valid_choices[4] or graph_parse_prompt.lower() == valid_choices[5]:
-		# TODO: This elif block should be used to store the results of the analysis
-		# TODO: Figure out effective way to store report without being too inefficient
 		# output_dir = os.path.dirname(os.path.normpath(output_file))
 		# ouput_call_report = f'{output_dir}\\Call Report.xlsx'
 		# ouput_put_report = f'{output_dir}\\Put Report.xlsx'
@@ -86,7 +72,6 @@ def main():
 	# Rates Unusual Whales alerts and color codes the cells indicating if BAD, OKAY, GOOD, or BEST
 	elif graph_parse_prompt.lower() == valid_choices[6] or graph_parse_prompt.lower() == valid_choices[7]:
 		#########################################################################################################
-		# TODO: Remove this section once we're storing the analysis data somewhere and grab the analysis data
 		call_df = output_historical_df.loc[output_historical_df['Option Type'] == 'call']
 		put_df = output_historical_df.loc[output_historical_df['Option Type'] == 'put']
 
@@ -94,7 +79,6 @@ def main():
 		put_report = report(put_df)
 		#########################################################################################################
 		alerts_file = prompt_for_file(alert_file_prompt)
-		# TODO: Remove passing row_valid_choices
 		row_prompt = int(prompt_for_input(row_choice_prompt, row_valid_choices))
 		rate_excel(alerts_file, call_report, put_report, row_prompt)
 

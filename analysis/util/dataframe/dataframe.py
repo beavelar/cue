@@ -13,8 +13,6 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-# TODO: Create more logs
-# TODO: Rename dataframe.py to dataframe_util.py as this is just util, not a class
 def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 	'''
 	append_dataframe

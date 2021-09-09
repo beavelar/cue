@@ -1,15 +1,3 @@
-import logging
-
-#########################################################################################################
-# Logger definition
-
-logging.basicConfig(format='%(levelname)s: %(asctime)s - %(name)s.%(funcName)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-#########################################################################################################
-
-# TODO: Create more logs
-# TODO: Relocate to data directory instead of util.data as this is a class
 class point:
 	'''
 	point

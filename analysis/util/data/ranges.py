@@ -12,8 +12,6 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-# TODO: Create more logs
-# TODO: Relocate to data directory instead of util.data as this is a class
 class ranges:
 	'''
 	ranges

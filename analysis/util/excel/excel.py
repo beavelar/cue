@@ -14,8 +14,6 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-# TODO: Create more logs
-# TODO: Rename excel.py to excel_util.py as this is just util, not a class
 def generate_excel_body(worksheet: Worksheet, data: DataFrame) -> None:
 	'''
 	generate_excel_body
