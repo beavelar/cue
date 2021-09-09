@@ -1,8 +1,8 @@
 import logging
 import collections
 import numpy as np
+from data.point import point
 from datetime import datetime
-from util.data.point import point
 
 #########################################################################################################
 # Logger definition

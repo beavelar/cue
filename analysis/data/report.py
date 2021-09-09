@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from pandas import DataFrame
-from util.data.ranges import ranges
+from data.ranges import ranges
 
 #########################################################################################################
 # Logger definition
