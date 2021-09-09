@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from math import isnan
 from util.data.report import report
-from util.excel.excel import color_cell
+from util.excel.excel_util import color_cell
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
