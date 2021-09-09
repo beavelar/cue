@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-def prompt_for_input(prompt: str, valid_choices: list) -> str:
+def prompt_for_input(prompt: str, valid_choices: list=[]) -> str:
 	'''
 	prompt_for_input
 	----------
@@ -21,7 +21,7 @@ def prompt_for_input(prompt: str, valid_choices: list) -> str:
 	valid_input = False
 	while not valid_input:
 		input_prompt = input(prompt)
-		if not input_prompt.lower() in valid_choices:
+		if len(valid_choices) != 0 and not input_prompt.lower() in valid_choices:
 			logger.warning(f'Invalid input provided: {input_prompt}')
 			logger.warning('Please provide a valid input')
 		else:

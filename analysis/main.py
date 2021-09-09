@@ -4,8 +4,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from data.report import report
 from util.rate.rate_util import rate_excel
+from util.input.input_util import prompt_for_input
 from util.dataframe.dataframe_util import append_dataframe
-from util.input.input_util import prompt_for_input, prompt_for_file
 from util.excel.excel_util import save_df_to_excel, create_excel_chart
 
 #########################################################################################################
@@ -28,7 +28,6 @@ except Exception as ex:
 def main():	
 	output_historical_df = None
 	valid_choices = ['p', 'parse', 'g', 'graph', 'a', 'analyze', 'r', 'rate']
-	row_valid_choices = ['0', '1', '2', '3', 'etc.']
 	choice_prompt = 'Parse, graph, analyze or rate historical data? (P/G/A/R): '
 	row_choice_prompt = 'Which row to start on?: '
 
@@ -74,7 +73,7 @@ def main():
 		call_report = report(call_df)
 		put_report = report(put_df)
 		#########################################################################################################
-		row_prompt = int(prompt_for_input(row_choice_prompt, row_valid_choices))
+		row_prompt = int(prompt_for_input(row_choice_prompt))
 		rate_excel(OPTIONS_RECAP_FILE, call_report, put_report, row_prompt)
 
 if __name__ == "__main__":
