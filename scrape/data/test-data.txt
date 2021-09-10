@@ -1,0 +1,137 @@
+$FXI 2021-10-08 P $39.50
+BlackRock Institutional Trust Company N.A. - BTC iShares China Large-C
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-08
+Underlying
+$42.41
+Bid
+$0.37
+Ask
+$0.43
+Alerted At
+9/7/2021, 08:27
+Daily $ Volume
+$240,040.00
+Open Interest
+1
+Volume
+6001
+Implied Volatility
+29.26%
+Delta
+-0.1916
+Highest Since Alert
+$0.63
+Highest % Change
+46.51%
+Vega
+0.0339
+Gamma
+0.0751
+Theta
+-0.0158
+Rho
+-0.7304
+
+$TSLA 2021-09-10 C $800.00
+Tesla Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-10
+Underlying
+$754.54
+Bid
+$0.88
+Ask
+$0.90
+Alerted At
+9/7/2021, 08:30
+Daily $ Volume
+$2,101,735.00
+Open Interest
+6461
+Volume
+23615
+Implied Volatility
+41.23%
+Delta
+0.0694
+Highest Since Alert
+$1.08
+Highest % Change
+20.00%
+Vega
+0.0952
+Gamma
+0.0045
+Theta
+-0.6007
+Rho
+0.4604
+
+$FUSE 2021-10-15 C $12.50
+Fusion Acquisition Corp - Class A
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$9.99
+Bid
+$0.40
+Ask
+$0.50
+Alerted At
+9/7/2021, 08:32
+Daily $ Volume
+$100,530.00
+Open Interest
+3
+Volume
+2234
+Implied Volatility
+131.90%
+Delta
+0.1904
+Highest Since Alert
+$0.55
+Highest % Change
+10.00%
+Vega
+0.0081
+Gamma
+0.0591
+Theta
+-0.0049
+Rho
+0.1585
