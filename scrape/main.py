@@ -1,5 +1,7 @@
 import os
 import logging
+from date.day import day
+from datetime import datetime
 from dotenv import load_dotenv
 
 #########################################################################################################
@@ -19,41 +21,84 @@ except Exception as ex:
 #########################################################################################################
 
 def main():
-    with open(INPUT_FILE, 'r') as input_file:
-        with open(OUTPUT_FILE, 'a') as output_file:
-            contents = input_file.readlines()
-            index = 0
-            while index<len(contents):
-                data = contents[index:(index+45)]
-                header = data[index].split(' ')
-                option_type = 'Call' if header == 'C' else 'Put'
-                alert_split = data[index+22].split(' ')
-                alert = f'{alert_split[0]} {alert_split[1]}'
-                entry = f'{data[index], option_type, alert}, DAY OF WEEK, '
-                output_file.write(entry)
-                index = index+46
-            # data = {
-            #     'ticker': None,
-            #     'option_type': None,
-            #     'alert_date': None,
-            #     'day_of_week': None,
-            #     'time_of_day': None,
-            #     'expiry': None,
-            #     'days_to_exp': None,
-            #     'strike': None,
-            #     'underlying': None,
-            #     'diff': None,
-            #     'volume': None,
-            #     'open_interest': None,
-            #     'vol_oi': None,
-            #     'imp_vol': None,
-            #     'delta': None,
-            #     'gamma': None,
-            #     'vega': None,
-            #     'theta': None,
-            #     'rho': None,
-            #     'ask': None
-            # }
+	with open(INPUT_FILE, 'r') as input_file:
+		with open(OUTPUT_FILE, 'w') as output_file:
+			contents = input_file.readlines()
+			entry = ''
+			index = 0
+			while index<len(contents):
+				data = contents[index:(index+45)]
+				header = data[0].replace('\n', '').split(' ')
+
+				# Ticker
+				ticker = header[0].replace('$', '')
+
+				# Option type
+				option_type = 'Call' if header[2] == 'C' else 'Put'
+
+				# Alert date
+				alert_date = data[22].replace('\n', '').replace(',', '')
+				alert_split = alert_date.split(' ')
+				alert_date_time = datetime.strptime(alert_date, '%m/%d/%Y %H:%M')
+
+				# Day of week
+				day_of_week = day(alert_date_time.weekday())
+
+				# Expiry
+				expiry_date = datetime.fromisoformat(header[1])
+
+				# Days to expiration
+				days_to_exp_delta = expiry_date - alert_date_time
+				days_to_exp = days_to_exp_delta.days
+
+				# Underlying
+				underlying = float(data[16].replace('\n', '').replace('$', ''))
+
+				# Diff %
+				diff = 'DIFF'
+				strike = float(header[3].replace('$', ''))
+				if underlying > strike:
+					diff = '%.2f'%(((strike/underlying)-1)*100)
+					diff = f'{diff}%'
+				else:
+					diff = '%.2f'%(((strike-underlying)/underlying)*100)
+					diff = f'{diff}%'
+
+				# Volume
+				volume = data[28].replace('\n', '')
+
+				# Open interest
+				open_interest = data[26].replace('\n', '')
+
+				# Volume/Open Interest
+				vol_oi = int(volume)/int(open_interest)
+
+				# Implied volatility
+				imp_vol = data[30].replace('\n', '')
+
+				# Delta
+				delta = data[32].replace('\n', '')
+
+				# Gamma
+				gamma = data[40].replace('\n', '')
+
+				# Vega
+				vega = data[38].replace('\n', '')
+
+				# Theta
+				theta = data[42].replace('\n', '')
+
+				# Rho
+				rho = data[44].replace('\n', '')
+
+				# Ask
+				ask = data[20].replace('\n', '').replace('$', '')
+
+				entry = entry + f'{ticker}, {option_type}, {alert_date}, {day_of_week.day}, {alert_split[1]}, {header[1]}, {days_to_exp}, {strike}, ' + \
+					f'{underlying}, {diff}, {volume}, {open_interest}, {vol_oi}, {imp_vol}, {delta}, {gamma}, {vega}, {theta}, {rho}, {ask}\n'
+				index = index+46
+			output_file.write(entry)
+
 #########################################################################################################
 
 if __name__ == "__main__":
