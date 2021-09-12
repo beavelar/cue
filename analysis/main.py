@@ -59,22 +59,46 @@ def main():
 		# output_dir = os.path.dirname(os.path.normpath(PARSED_DATA_FILE))
 		# ouput_call_report = f'{output_dir}\\Call Report.xlsx'
 		# ouput_put_report = f'{output_dir}\\Put Report.xlsx'
+		call_report = None
+		put_report = None
 		call_df = output_historical_df.loc[output_historical_df['Option Type'] == 'call']
 		put_df = output_historical_df.loc[output_historical_df['Option Type'] == 'put']
 
-		call_report = report(call_df)
-		put_report = report(put_df)
+		try:
+			call_report = report(call_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating call report')
+			logger.warning(ex)
+		try:
+			put_report = report(put_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating put report')
+			logger.warning(ex)
 	# Rates Unusual Whales alerts and color codes the cells indicating if BAD, OKAY, GOOD, or BEST
 	elif graph_parse_prompt.lower() == valid_choices[6] or graph_parse_prompt.lower() == valid_choices[7]:
 		#########################################################################################################
+		call_report = None
+		put_report = None
 		call_df = output_historical_df.loc[output_historical_df['Option Type'] == 'call']
 		put_df = output_historical_df.loc[output_historical_df['Option Type'] == 'put']
 
-		call_report = report(call_df)
-		put_report = report(put_df)
+		try:
+			call_report = report(call_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating call report')
+			logger.warning(ex)
+		try:
+			put_report = report(put_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating put report')
+			logger.warning(ex)
 		#########################################################################################################
-		row_prompt = int(prompt_for_input(row_choice_prompt))
-		rate_excel(OPTIONS_RECAP_FILE, call_report, put_report, row_prompt)
+		if call_report != None and put_report != None:
+			row_prompt = int(prompt_for_input(row_choice_prompt))
+			rate_excel(OPTIONS_RECAP_FILE, call_report, put_report, row_prompt)
+		else:
+			report_failed = 'call' if call_report == None else 'put'
+			logger.warning(f'Unable to rate data, {report_failed} came back as None')
 
 if __name__ == "__main__":
 	main()
