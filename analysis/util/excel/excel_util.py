@@ -21,6 +21,7 @@ def generate_excel_body(worksheet: Worksheet, data: DataFrame) -> None:
 
 	This function will set the body of a excel sheet to the elements from the dataframe
 	'''
+	logger.info('Generating the body for the excel spread sheet')
 	for index in range(data.Ticker.size):
 		cell_number = str(index+2)
 		style_excel_body(worksheet, cell_number)
@@ -57,6 +58,7 @@ def create_excel_header(worksheet: Worksheet) -> None:
 
 	This function will set the header of a excel sheet
 	'''
+	logger.info('Creating the header for the excel spread sheet')
 	style_excel_header(worksheet)
 	worksheet['A1'] = 'Ticker'
 	worksheet['B1'] = 'Option Type'
@@ -91,6 +93,7 @@ def style_excel_header(worksheet: Worksheet) -> None:
 
 	This function will set the style of the header of a excel sheet
 	'''
+	logger.info('Styling the header for the excel spread sheet')
 	black_fill = PatternFill(start_color='00000000',
                    end_color='00000000',
                    fill_type='solid')
@@ -112,6 +115,7 @@ def style_excel_body(worksheet: Worksheet, cell_number: str) -> None:
 
 	This function will set the style of the body of a excel sheet
 	'''
+	logger.info('Styling the body of the excel spread sheet')
 	cells = worksheet[f'A{cell_number}':f'W{cell_number}'][0]
 	worksheet[f'J{cell_number}'].number_format = '0.00%'
 	worksheet[f'N{cell_number}'].number_format = '0.00%'
@@ -128,6 +132,7 @@ def set_worksheet_settings(worksheet: Worksheet) -> None:
 
 	This function will set the settings of a excel sheet
 	'''
+	logger.info('Setting the worksheet settings')
 	worksheet.title = 'Historical Alerts'
 	worksheet.column_dimensions['A'].width = 8
 	worksheet.column_dimensions['B'].width = 12
@@ -154,6 +159,7 @@ def create_scatter_chart(x_title: str, y_title: str) -> ScatterChart:
 
 	This function will create a scatter chart with the provided x-axis and y-axis titles
 	'''
+	logger.info('Creating scatter chart from the provided data')
 	chart = ScatterChart()
 	chart.title = f'{x_title} to {y_title}'
 	chart.x_axis.title = x_title
@@ -172,6 +178,7 @@ def generate_chart_series(worksheet: Worksheet, chart: ScatterChart, x_column: i
 
 	This function will generate the series from the columns provided and append it to the chart
 	'''
+	logger.info('Generating the chart series for the desired chart')
 	x_axis = Reference(worksheet, min_col=x_column, min_row=2, max_row=num_of_elems)
 	y_axis = Reference(worksheet, min_col=y_column, min_row=1, max_row=num_of_elems)
 	series = Series(y_axis, x_axis, title_from_data=True)
@@ -186,6 +193,7 @@ def style_chart(chart: ScatterChart) -> None:
 
 	This function will set the styling properties of the provided chart
 	'''
+	logger.info('Setting the style of the provided chart')
 	style = chart.series[0]
 	style.marker = Marker('circle')
 	style.marker.size = 3
@@ -203,6 +211,7 @@ def create_excel_chart(file: str, x_title: str, y_title: str, x_column: int, y_c
 
 	This function will create a scatter chart and set it in the provided cell
 	'''
+	logger.info('Creating the desired excel chart')
 	file_wb = load_workbook(file)
 	worksheet = file_wb.active
 	chart = create_scatter_chart(x_title, y_title)
@@ -220,6 +229,7 @@ def save_df_to_excel(dataframe: DataFrame, path: str) -> None:
 
 	This function will save the data provided by the dataframe onto the provided excel path
 	'''
+	logger.info('Saving the dataframe to the desired excel file')
 	output_wb = Workbook()
 	worksheet = output_wb.active
 
@@ -242,4 +252,3 @@ def color_cell(worksheet: Worksheet, cell: str, color: str) -> None:
                    fill_type='solid')
 	worksheet_cell = worksheet[cell]
 	worksheet_cell.fill = fill
-	# worksheet_cell.alignment = Alignment(horizontal='center')
