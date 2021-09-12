@@ -22,6 +22,7 @@ def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 	
 	The result of the appending will be returned
 	'''
+	logger.info('Retrieving numpy arrays to append to output dataframe')
 	ticker_np = np.append(output.Ticker.to_numpy(), input.ticker_symbol.to_numpy())
 	option_type_np = np.append(output['Option Type'].to_numpy(), input.option_type.to_numpy())
 	alerted_at_np = np.append(output['Alerted At'].to_numpy(), input.alert_time.to_numpy())
@@ -57,6 +58,7 @@ def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 		vega_np, theta_np, rho_np, alert_ask_np, high_ask_np, p_l_np, time_passed_np])
 
 	output_df = pd.DataFrame(data=output_data.T, columns=output.columns.values)
+	logger.log('Dataframe appended')
 	return output_df
 
 #########################################################################################################
@@ -70,6 +72,7 @@ def days_to_expiry(alerts: ndarray, expiries: ndarray) -> ndarray:
 	
 	how many days are between the alert date and the expiry date	
 	'''
+	logger.info('Calculating the amount of days until the expiry for the array')
 	result = []
 	for index in range(alerts.size):
 		alert_date = None
@@ -91,6 +94,7 @@ def expiry_to_string(data: ndarray) -> ndarray:
 
 	This function will loop through the provided nparray and turn the expiry into a consumable string	
 	'''
+	logger.info('Converting the expiry array to a list of strings')
 	result = []
 	for date_time in data:
 		result.append(str(date_time)[0:10])
@@ -105,6 +109,7 @@ def extract_date_time(alerts: ndarray): # -> tuple[ndarray, ndarray]:
 
 	This function will loop through the provided nparray and turn the expiry into a consumable string	
 	'''
+	logger.info('Extracting the date-time from the array')
 	date_result = []
 	time_result = []
 	week_days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
@@ -133,6 +138,7 @@ def determine_win_loss(highs: ndarray, high_dates: ndarray, lows: ndarray, low_d
 
 	This function will compare the elements and return the highest ask, the P/L, and the time passed
 	'''
+	logger.info('Determining win/loss and utilizing the corresponding high/low')
 	high_ask_result = []
 	p_l_result = []
 	time_passed_result = []
