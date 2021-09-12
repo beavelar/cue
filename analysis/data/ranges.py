@@ -170,6 +170,7 @@ class ranges:
 				elems['best'] = best_list.pop(0)
 
 			lowest = self.get_lowest(elems)
+			# TODO: Catch error possibly thrown from point
 			self.points.append(point(lowest, elems[lowest]))
 			elems[lowest] = None
 

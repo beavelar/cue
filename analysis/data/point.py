@@ -14,5 +14,8 @@ class point:
 	- best
 	'''
 	def __init__(self, rating: str, element: any) -> None:
-		self.rating = rating
-		self.element = element
+		if isinstance(rating, str):
+			self.rating = rating
+			self.element = element
+		else:
+			raise TypeError('Non-string parameter passed for rating when creating point, unable to create point')
