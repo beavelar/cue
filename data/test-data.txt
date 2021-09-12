@@ -1,5 +1,5 @@
 $LOW 2021-10-08 P $190.00
-Lowe`s Cos., Inc.
+Lowes Companies Inc
 Emoji legend
 Since Alert
 1m
@@ -45,7 +45,7 @@ Rho
 -1.9392
 
 $XLF 2021-10-01 P $35.00
-SSgA Active Trust - SSgA Financial Select Sector SPDR
+The Financial Select Sector SPDR Fund
 Emoji legend
 Since Alert
 1m
@@ -91,7 +91,7 @@ Rho
 -0.2851
 
 $SLB 2021-10-29 C $29.00
-Schlumberger Ltd.
+Schlumberger Limited
 Emoji legend
 Since Alert
 1m
@@ -137,7 +137,7 @@ Rho
 0.97
 
 $KWEB 2021-09-24 C $57.50
-Krane Shares Trust - KraneShares CSI China Internet ETF
+KraneShares CSI China Internet ETF
 Emoji legend
 Since Alert
 1m
@@ -183,7 +183,7 @@ Rho
 0.323
 
 $SLV 2021-11-19 P $20.00
-BlackRock Institutional Trust Company N.A. - BTC iShares Silver Trust
+iShares Silver Trust
 Emoji legend
 Since Alert
 1m
@@ -229,7 +229,7 @@ Rho
 -0.7212
 
 $GILD 2021-09-24 P $67.00
-Gilead Sciences, Inc.
+Gilead Sciences Inc
 Emoji legend
 Since Alert
 1m
@@ -275,7 +275,7 @@ Rho
 -0.459
 
 $SPXU 2021-09-17 C $19.00
-ProShares Trust - ProShares UltraPro Short S&P 500 ETF
+ProShares UltraPro Short S&P500
 Emoji legend
 Since Alert
 1m
@@ -367,7 +367,7 @@ Rho
 0.0171
 
 $PINS 2021-09-17 P $51.00
-Pinterest Inc - Class A
+Pinterest Inc
 Emoji legend
 Since Alert
 1m
@@ -505,7 +505,7 @@ Rho
 -0.5626
 
 $XPEV 2021-09-17 C $43.00
-XPeng Inc - ADR
+Xpeng Inc
 Emoji legend
 Since Alert
 1m
@@ -551,7 +551,7 @@ Rho
 0.1014
 
 $TSM 2021-09-24 P $105.00
-Taiwan Semiconductor Manufacturing - ADR
+Taiwan Semiconductor Manufacturing Co Ltd
 Emoji legend
 Since Alert
 1m
@@ -597,7 +597,7 @@ Rho
 -0.1728
 
 $SKLZ 2021-09-24 C $12.50
-Skillz Inc - Class A
+Skillz Inc
 Emoji legend
 Since Alert
 1m
@@ -643,7 +643,7 @@ Rho
 0.1459
 
 $FCX 2021-10-01 C $40.00
-Freeport-McMoRan Inc
+Freeport-Mcmoran Inc
 Emoji legend
 Since Alert
 1m
@@ -689,7 +689,7 @@ Rho
 0.3851
 
 $PBR 2021-09-24 C $10.50
-Petroleo Brasileiro S.A. Petrobras - ADR
+Petrobra
 Emoji legend
 Since Alert
 1m
@@ -735,7 +735,7 @@ Rho
 0.1067
 
 $KR 2021-10-29 C $46.00
-Kroger Co.
+Kroger Co
 Emoji legend
 Since Alert
 1m
@@ -781,7 +781,7 @@ Rho
 1.1976
 
 $PENN 2021-09-17 P $66.50
-Penn National Gaming, Inc.
+Penn National Gaming Inc
 Emoji legend
 Since Alert
 1m
@@ -827,7 +827,7 @@ Rho
 -0.0605
 
 $TEVA 2023-01-20 P $5.00
-Teva- Pharmaceutical Industries Ltd. - ADR
+Teva Pharmaceutical Industries Ltd
 Emoji legend
 Since Alert
 1m
@@ -919,7 +919,7 @@ Rho
 0.2721
 
 $CVX 2021-10-01 P $91.00
-Chevron Corp.
+Chevron Corp
 Emoji legend
 Since Alert
 1m
@@ -965,7 +965,7 @@ Rho
 -1.092
 
 $UVXY 2021-10-08 P $18.00
-ProShares Trust - ProShares Ultra VIX Short-Term Futures ETF
+ProShares Trust Ultra VIX Short Term Futures
 Emoji legend
 Since Alert
 1m
@@ -1011,7 +1011,7 @@ Rho
 -0.3034
 
 $M 2021-09-24 P $18.50
-Macy`s Inc
+Macy's Inc
 Emoji legend
 Since Alert
 1m
@@ -1057,7 +1057,7 @@ Rho
 -0.114
 
 $FXI 2021-10-15 P $36.00
-BlackRock Institutional Trust Company N.A. - BTC iShares China Large-C
+iShares China Large-Cap ETF
 Emoji legend
 Since Alert
 1m
@@ -1103,7 +1103,7 @@ Rho
 -0.3568
 
 $SPY 2021-09-15 P $370.00
-SSgA Active Trust - SSGA SPDR S&P 500
+Spdr S&P 500 Etf Trust
 Emoji legend
 Since Alert
 1m
@@ -1149,7 +1149,7 @@ Rho
 -0.0458
 
 $QQQ 2021-11-19 P $265.00
-Invesco Capital Management LLC - Invesco QQQ Trust Series 1
+Invesco Qqq Trust Series 1
 Emoji legend
 Since Alert
 1m
@@ -1195,7 +1195,7 @@ Rho
 -2.0519
 
 $CCJ 2021-11-19 P $18.00
-Cameco Corp.
+Cameco Corp
 Emoji legend
 Since Alert
 1m
