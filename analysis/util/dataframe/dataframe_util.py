@@ -58,7 +58,7 @@ def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 		vega_np, theta_np, rho_np, alert_ask_np, high_ask_np, p_l_np, time_passed_np])
 
 	output_df = pd.DataFrame(data=output_data.T, columns=output.columns.values)
-	logger.log('Dataframe appended')
+	logger.info('Dataframe appended')
 	return output_df
 
 #########################################################################################################
