@@ -37,33 +37,13 @@ def rate_excel(file: str, call_report: report, put_report: report, row: int) -> 
 	for index in range(int(row), dataframe.Ticker.size):
 		if dataframe.Ticker[index] == 'Ticker' or not isinstance(dataframe.Ticker[index], str):
 			continue
-		if dataframe['Option Type'][index] == 'Call':
+		if 'Call' in dataframe['Option Type'][index]:
 			# rate_list(worksheet, dataframe['Day of Week'][index], call_report.day_of_week.points, f'D{index+2}')
 			# rate_list(worksheet, dataframe['Time of Day'][index], call_report.time_of_day.points, f'E{index+2}')
 
-			# If excel returns nan for Days to Exp, we have to calculate it manually
-			# if isnan(dataframe['Days to Exp.'][index]):
-			# 	days_to_exp = dataframe.Expiry[index] - dataframe['Alerted At'][index]
-			# 	rate_list(worksheet, days_to_exp, call_report.days_to_exp.points, f'G{index+2}')
-			# else:
-			# 	rate_list(worksheet, dataframe['Days to Exp.'][index], call_report.days_to_exp.points, f'G{index+2}')
-
-			# If excel returns nan for Diff %, we have to calculate it manually
-			if isnan(dataframe['Diff %'][index]):
-				strike = float(dataframe.Strike[index])
-				underlying = float(dataframe.Underlying[index])
-				diff = (strike/underlying)-1 if underlying>strike else (strike-underlying)/underlying
-				rate_list(worksheet, diff, call_report.diff.points, f'J{index+2}')
-			else:
-				rate_list(worksheet, dataframe['Diff %'][index], call_report.diff.points, f'J{index+2}')
-			
-			# If excel returns nan for Vol/OI, we have to calculate it manually
-			if isnan(dataframe['Vol/OI'][index]):
-				vol_oi = float(dataframe.Volume[index])/float(dataframe['Open Interest'][index])
-				rate_list(worksheet, vol_oi, call_report.vol_oi.points, f'M{index+2}')
-			else:
-				rate_list(worksheet, dataframe['Vol/OI'][index], call_report.vol_oi.points, f'M{index+2}')
-
+			rate_list(worksheet, dataframe['Days to Exp.'][index], call_report.days_to_exp.points, f'G{index+2}')
+			rate_list(worksheet, dataframe['Diff %'][index], call_report.diff.points, f'J{index+2}')
+			rate_list(worksheet, dataframe['Vol/OI'][index], call_report.vol_oi.points, f'M{index+2}')
 			rate_list(worksheet, dataframe['Implied Volatility'][index], call_report.imp_vol.points, f'N{index+2}')
 			rate_list(worksheet, dataframe.Delta[index], call_report.delta.points, f'O{index+2}')
 			rate_list(worksheet, dataframe.Gamma[index], call_report.gamma.points, f'P{index+2}')
@@ -74,29 +54,9 @@ def rate_excel(file: str, call_report: report, put_report: report, row: int) -> 
 			# rate_list(worksheet, dataframe['Day of Week'][index], put_report.day_of_week.points, f'D{index+2}')
 			# rate_list(worksheet, dataframe['Time of Day'][index], put_report.time_of_day.points, f'E{index+2}')
 			
-			# If excel returns nan for Days to Exp, we have to calculate it manually
-			# if isnan(dataframe['Days to Exp.'][index]):
-			# 	days_to_exp = dataframe.Expiry[index] - dataframe['Alerted At'][index]
-			# 	rate_list(worksheet, days_to_exp, put_report.days_to_exp.points, f'G{index+2}')
-			# else:
-			# 	rate_list(worksheet, dataframe['Days to Exp.'][index], put_report.days_to_exp.points, f'G{index+2}')
-
-			# If excel returns nan for Diff %, we have to calculate it manually
-			if isnan(dataframe['Diff %'][index]):
-				strike = float(dataframe.Strike[index])
-				underlying = float(dataframe.Underlying[index])
-				diff = (strike/underlying)-1 if underlying>strike else (strike-underlying)/underlying
-				rate_list(worksheet, diff, put_report.diff.points, f'J{index+2}')
-			else:
-				rate_list(worksheet, dataframe['Diff %'][index], put_report.diff.points, f'J{index+2}')
-			
-			# If excel returns nan for Vol/OI, we have to calculate it manually
-			if isnan(dataframe['Vol/OI'][index]):
-				vol_oi = float(dataframe.Volume[index])/float(dataframe['Open Interest'][index])
-				rate_list(worksheet, vol_oi, put_report.vol_oi.points, f'M{index+2}')
-			else:
-				rate_list(worksheet, dataframe['Vol/OI'][index], put_report.vol_oi.points, f'M{index+2}')
-
+			rate_list(worksheet, dataframe['Days to Exp.'][index], put_report.days_to_exp.points, f'G{index+2}')
+			rate_list(worksheet, dataframe['Diff %'][index], put_report.diff.points, f'J{index+2}')
+			rate_list(worksheet, dataframe['Vol/OI'][index], put_report.vol_oi.points, f'M{index+2}')
 			rate_list(worksheet, dataframe['Implied Volatility'][index], put_report.imp_vol.points, f'N{index+2}')
 			rate_list(worksheet, dataframe.Delta[index], put_report.delta.points, f'O{index+2}')
 			rate_list(worksheet, dataframe.Gamma[index], put_report.gamma.points, f'P{index+2}')

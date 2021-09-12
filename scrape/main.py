@@ -94,8 +94,8 @@ def main():
 				# Ask
 				ask = data[20].replace('\n', '').replace('$', '')
 
-				entry = entry + f'{ticker}, {option_type}, {alert_date}, {day_of_week.day}, {alert_split[1]}, {header[1]}, {days_to_exp}, {strike}, ' + \
-					f'{underlying}, {diff}, {volume}, {open_interest}, {vol_oi}, {imp_vol}, {delta}, {gamma}, {vega}, {theta}, {rho}, {ask}\n'
+				entry = entry + f'{ticker},{option_type},{alert_date},{day_of_week.day},{alert_split[1]},{header[1]},{days_to_exp},{strike},' + \
+					f'{underlying},{diff},{volume},{open_interest},{vol_oi},{imp_vol},{delta},{gamma},{vega},{theta},{rho},{ask}\n'
 				index = index+46
 			output_file.write(entry)
 
