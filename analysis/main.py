@@ -14,6 +14,7 @@ logging.basicConfig(format='%(levelname)s: %(asctime)s - %(name)s.%(funcName)s -
 logger = logging.getLogger(__name__)
 
 try:
+	logger.info('Retrieving environment variables')
 	load_dotenv()
 	HISTORICAL_DATA_FILE = os.getenv('HISTORICAL_DATA_FILE')
 	PARSED_DATA_FILE = os.getenv('PARSED_DATA_FILE')
@@ -37,11 +38,13 @@ def main():
 
 	# Parsing Unusual Whales historical data
 	if graph_parse_prompt.lower() == valid_choices[0] or graph_parse_prompt.lower() == valid_choices[1]:
+		logger.info('User selected to parse historical data')
 		uw_historical_df = pd.read_excel(HISTORICAL_DATA_FILE)
 		appended_df = append_dataframe(uw_historical_df, output_historical_df)
 		save_df_to_excel(appended_df, PARSED_DATA_FILE)
 	# Graphing parsed data
 	elif graph_parse_prompt.lower() == valid_choices[2] or graph_parse_prompt.lower() == valid_choices[3]:
+		logger.info('User selected to graph parsed data')
 		num_of_elems = output_historical_df.Ticker.size
 		create_excel_chart(PARSED_DATA_FILE, 'Days to Exp.', 'P/L', 7, 22, 'X2', num_of_elems)
 		create_excel_chart(PARSED_DATA_FILE, 'Diff %', 'P/L', 10, 22, 'X17', num_of_elems)
@@ -56,25 +59,51 @@ def main():
 		create_excel_chart(PARSED_DATA_FILE, 'Time Passed', 'P/L', 23, 22, 'X152', num_of_elems)
 	# Analyzing historical report and creating call and put report containing the results
 	elif graph_parse_prompt.lower() == valid_choices[4] or graph_parse_prompt.lower() == valid_choices[5]:
+		logger.info('User selected to analyze parsed data')
 		# output_dir = os.path.dirname(os.path.normpath(PARSED_DATA_FILE))
 		# ouput_call_report = f'{output_dir}\\Call Report.xlsx'
 		# ouput_put_report = f'{output_dir}\\Put Report.xlsx'
+		call_report = None
+		put_report = None
 		call_df = output_historical_df.loc[output_historical_df['Option Type'] == 'call']
 		put_df = output_historical_df.loc[output_historical_df['Option Type'] == 'put']
 
-		call_report = report(call_df)
-		put_report = report(put_df)
+		try:
+			call_report = report(call_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating call report')
+			logger.warning(ex)
+		try:
+			put_report = report(put_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating put report')
+			logger.warning(ex)
 	# Rates Unusual Whales alerts and color codes the cells indicating if BAD, OKAY, GOOD, or BEST
 	elif graph_parse_prompt.lower() == valid_choices[6] or graph_parse_prompt.lower() == valid_choices[7]:
+		logger.info('User selected to rate parsed data')
 		#########################################################################################################
+		call_report = None
+		put_report = None
 		call_df = output_historical_df.loc[output_historical_df['Option Type'] == 'call']
 		put_df = output_historical_df.loc[output_historical_df['Option Type'] == 'put']
 
-		call_report = report(call_df)
-		put_report = report(put_df)
+		try:
+			call_report = report(call_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating call report')
+			logger.warning(ex)
+		try:
+			put_report = report(put_df)
+		except TypeError as ex:
+			logger.warning('TypeError exception caught creating put report')
+			logger.warning(ex)
 		#########################################################################################################
-		row_prompt = int(prompt_for_input(row_choice_prompt))
-		rate_excel(OPTIONS_RECAP_FILE, call_report, put_report, row_prompt)
+		if call_report != None and put_report != None:
+			row_prompt = int(prompt_for_input(row_choice_prompt))
+			rate_excel(OPTIONS_RECAP_FILE, call_report, put_report, row_prompt)
+		else:
+			report_failed = 'call' if call_report == None else 'put'
+			logger.warning(f'Unable to rate data, {report_failed} came back as None')
 
 if __name__ == "__main__":
 	main()

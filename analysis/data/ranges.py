@@ -40,7 +40,7 @@ class ranges:
 	def __init__(self, np: np.ndarray, pl_np: np.ndarray) -> None:
 		self.elements = {}
 		self.points = []
-		self.ratings = {
+		self.groups = {
 			'bad': [],
 			'okay': [],
 			'good': [],
@@ -73,6 +73,7 @@ class ranges:
 
 		- best: 1.5 < P/L
 		'''
+		logger.info('Populating self.elements with elements')
 		for index in range(np.size):
 			point = np[index]
 			p_l = pl_np[index]
@@ -120,6 +121,7 @@ class ranges:
 
 		This function will sort the elements dict to be a OrderedDict
 		'''
+		logger.info('Sorting self.elements')
 		self.elements = collections.OrderedDict(sorted(self.elements.items()))
 
 #########################################################################################################
@@ -129,13 +131,14 @@ class ranges:
 		populate_groups
 		----------
 
-		This function will populate self.ratings with the elements from self.elements
+		This function will populate self.groups with the elements from self.elements
 
 		self.elements is to be sorted before utilizing populate_groups to ensure groups are sorted
 		'''
+		logger.info('Populating self.groups with elements from self.elements')
 		for point in self.elements:
 			lead = self.get_lead(point)
-			self.ratings[lead].append(point)
+			self.groups[lead].append(point)
 
 #########################################################################################################
 
@@ -144,20 +147,21 @@ class ranges:
 		populate_points
 		----------
 
-		This function will populate self.points with the points from self.ratings
+		This function will populate self.points with the points from self.groups
 
-		self.ratings is to be sorted before utilizing populate_points to ensure points are sorted
+		self.groups is to be sorted before utilizing populate_points to ensure points are sorted
 		'''
+		logger.info('Populating self.points with elements from self.groups')
 		elems = {
 			'bad': None,
 			'okay': None,
 			'good': None,
 			'best': None
 		}
-		bad_list = self.ratings['bad'].copy()
-		okay_list = self.ratings['okay'].copy()
-		good_list = self.ratings['good'].copy()
-		best_list = self.ratings['best'].copy()
+		bad_list = self.groups['bad'].copy()
+		okay_list = self.groups['okay'].copy()
+		good_list = self.groups['good'].copy()
+		best_list = self.groups['best'].copy()
 
 		while not (len(bad_list) == 0 and len(okay_list) == 0 and len(good_list) == 0 and len(best_list) == 0):
 			if len(bad_list) > 0 and elems['bad'] == None:
@@ -170,7 +174,11 @@ class ranges:
 				elems['best'] = best_list.pop(0)
 
 			lowest = self.get_lowest(elems)
-			self.points.append(point(lowest, elems[lowest]))
+			try:
+				self.points.append(point(lowest, elems[lowest]))
+			except TypeError as ex:
+				logger.warning(f'TypeError exception caught creating point, {elems[lowest]} won\'t be added to self.points')
+				logger.warning(ex)
 			elems[lowest] = None
 
 #########################################################################################################

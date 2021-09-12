@@ -21,8 +21,11 @@ except Exception as ex:
 #########################################################################################################
 
 def main():
+	logger.info('Opening input file for reading')
 	with open(INPUT_FILE, 'r') as input_file:
+		logger.info('Opening input file for writing')
 		with open(OUTPUT_FILE, 'w') as output_file:
+			logger.info('Reading input file to parse data')
 			contents = input_file.readlines()
 			entry = ''
 			index = 0
@@ -42,7 +45,12 @@ def main():
 				alert_date_time = datetime.strptime(alert_date, '%m/%d/%Y %H:%M')
 
 				# Day of week
-				day_of_week = day(alert_date_time.weekday())
+				day_of_week = 'DAY OF WEEK'
+				try:
+					day_of_week = day(alert_date_time.weekday())
+				except TypeError as ex:
+					logger.warning('TypeError exception caught creating day')
+					logger.warning(ex)
 
 				# Expiry
 				expiry_date = datetime.fromisoformat(header[1])
@@ -97,6 +105,7 @@ def main():
 				entry = entry + f'{ticker},{option_type},{alert_date},{day_of_week.day},{alert_split[1]},{header[1]},{days_to_exp},{strike},' + \
 					f'{underlying},{diff},{volume},{open_interest},{vol_oi},{imp_vol},{delta},{gamma},{vega},{theta},{rho},{ask}\n'
 				index = index+46
+			logger.info('Writing parsed data to the output file')
 			output_file.write(entry)
 
 #########################################################################################################

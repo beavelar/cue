@@ -41,29 +41,32 @@ class report:
 	- Time Passed
 	'''
 	def __init__(self, data_frame: DataFrame) -> None:
-		p_l = data_frame['P/L'].to_numpy()
-		self.day_of_week = ranges(data_frame['Day of Week'].to_numpy(), p_l)
-		self.time_of_day = ranges(data_frame['Time of Day'].to_numpy(), p_l)
-		self.days_to_exp = ranges(data_frame['Days to Exp.'].to_numpy(), p_l)
-		self.diff = ranges(data_frame['Diff %'].to_numpy(), p_l)
-		self.vol_oi = ranges(data_frame['Vol/OI'].to_numpy(), p_l)
-		self.imp_vol = ranges(data_frame['Implied Volatility'].to_numpy(), p_l)
-		self.delta = ranges(data_frame.Delta.to_numpy(), p_l)
-		self.gamma = ranges(data_frame.Gamma.to_numpy(), p_l)
-		self.vega = ranges(data_frame.Vega.to_numpy(), p_l)
-		self.theta = ranges(data_frame.Theta.to_numpy(), p_l)
-		self.rho = ranges(data_frame.Rho.to_numpy(), p_l)
-		self.time_passed = ranges(data_frame['Time Passed'].to_numpy(), p_l)
-	
+		if isinstance(data_frame, DataFrame):
+			p_l = data_frame['P/L'].to_numpy()
+			self.day_of_week = ranges(data_frame['Day of Week'].to_numpy(), p_l)
+			self.time_of_day = ranges(data_frame['Time of Day'].to_numpy(), p_l)
+			self.days_to_exp = ranges(data_frame['Days to Exp.'].to_numpy(), p_l)
+			self.diff = ranges(data_frame['Diff %'].to_numpy(), p_l)
+			self.vol_oi = ranges(data_frame['Vol/OI'].to_numpy(), p_l)
+			self.imp_vol = ranges(data_frame['Implied Volatility'].to_numpy(), p_l)
+			self.delta = ranges(data_frame.Delta.to_numpy(), p_l)
+			self.gamma = ranges(data_frame.Gamma.to_numpy(), p_l)
+			self.vega = ranges(data_frame.Vega.to_numpy(), p_l)
+			self.theta = ranges(data_frame.Theta.to_numpy(), p_l)
+			self.rho = ranges(data_frame.Rho.to_numpy(), p_l)
+			self.time_passed = ranges(data_frame['Time Passed'].to_numpy(), p_l)
+		else:
+			raise TypeError('Non-DataFrame parameter passed for data_frame when creating report, unable to create report')
 #########################################################################################################
 
-	def to_dataframes(self) -> DataFrame:
+	def to_dataframe(self) -> DataFrame:
 		'''
 		to_dataframe
 		----------
 
 		This function will convert the data from this class into dataframes
 		'''
+		logger.info('Creating numpy arrays from report data points')
 		day_of_week = self.day_of_week.to_numpy()
 		time_of_day = self.time_of_day.to_numpy()
 		days_to_exp = self.days_to_exp.to_numpy()
@@ -82,5 +85,7 @@ class report:
 
 		columns = np.array(['Rating', 'Day of Week', 'Time of Day', 'Days to Exp.', 'Diff %', 'Volume/OI',
 			'Implied Volitily', 'Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Time Passed'])
+		
+		logger.info('Creating dataframe from numpy arrays')
 		dataframe = DataFrame(data=data.T, columns=columns)
 		return dataframe

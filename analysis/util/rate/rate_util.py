@@ -30,6 +30,7 @@ def rate_excel(file: str, call_report: report, put_report: report, row: int) -> 
 
 	- Best: Green
 	'''
+	logger.info('Rating the desired excel spread sheet')
 	workbook = load_workbook(file)
 	worksheet = workbook.active
 	dataframe = pd.read_excel(file)
