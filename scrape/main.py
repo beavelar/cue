@@ -3,11 +3,16 @@ import logging
 from date.day import day
 from datetime import datetime
 from dotenv import load_dotenv
+from util.directory_util import create_directories
 
 #########################################################################################################
 
 logging.basicConfig(format='%(levelname)s: %(asctime)s - %(name)s.%(funcName)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+PARSED_DIRECTORY = 'Parsed'
+PROCESSED_DIRECTORY = 'Processed'
+UNPROCESSED_DIRECTORY = 'Unprocessed'
 
 #########################################################################################################
 
@@ -107,7 +112,10 @@ if __name__ == "__main__":
 		load_dotenv()
 		INPUT_FILE = os.getenv('INPUT_FILE')
 		OUTPUT_FILE = os.getenv('OUTPUT_FILE')
-		main(INPUT_FILE, OUTPUT_FILE)
+		DATA_DIRECTORY = os.getenv('DATA_DIRECTORY')
+		directories = [f'{DATA_DIRECTORY}/{PARSED_DIRECTORY}', f'{DATA_DIRECTORY}/{PROCESSED_DIRECTORY}', f'{DATA_DIRECTORY}/{UNPROCESSED_DIRECTORY}']
+		create_directories(directories)
+		main(INPUT_FILE, OUTPUT_FILE, DATA_DIRECTORY)
 	except Exception as ex:
 		logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 		logger.critical(str(ex))
