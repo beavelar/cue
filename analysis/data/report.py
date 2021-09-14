@@ -41,6 +41,12 @@ class report:
 	- Time Passed
 	'''
 	def __init__(self, data_frame: DataFrame) -> None:
+		'''
+		__init__
+		----------
+
+		Creates a report object. data_frame must be a DataFrame, otherwise a TypeError will be raised
+		'''
 		if isinstance(data_frame, DataFrame):
 			p_l = data_frame['P/L'].to_numpy()
 			self.day_of_week = ranges(data_frame['Day of Week'].to_numpy(), p_l)

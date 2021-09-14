@@ -38,6 +38,14 @@ class ranges:
 		- list is sorted
 	'''
 	def __init__(self, np: np.ndarray, pl_np: np.ndarray) -> None:
+		'''
+		__init__
+		----------
+
+		Creates a ranges object. self.elements, self.points, and self.groups will be populated with the data
+
+		from np and pl_np
+		'''
 		self.elements = {}
 		self.points = []
 		self.groups = {

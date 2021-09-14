@@ -27,6 +27,12 @@ class day:
 	SUNDAY=6
 
 	def __init__(self, day_input: int) -> None:
+		'''
+		__init__
+		----------
+
+		Creates a day object. day_input must be a int, otherwise a TypeError will be raised
+		'''
 		if isinstance(day_input, int):
 			if day_input == self.MONDAY:
 				self.day = 'Monday'
