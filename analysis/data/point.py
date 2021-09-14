@@ -14,6 +14,12 @@ class point:
 	- best
 	'''
 	def __init__(self, rating: str, element: any) -> None:
+		'''
+		__init__
+		----------
+
+		Creates a point object. rating must be a string, otherwise a TypeError will be raised
+		'''
 		if isinstance(rating, str):
 			self.rating = rating
 			self.element = element
