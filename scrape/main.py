@@ -9,22 +9,13 @@ from dotenv import load_dotenv
 logging.basicConfig(format='%(levelname)s: %(asctime)s - %(name)s.%(funcName)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-try:
-	load_dotenv()
-	INPUT_FILE = os.getenv('INPUT_FILE')
-	OUTPUT_FILE = os.getenv('OUTPUT_FILE')
-except Exception as ex:
-	logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
-	logger.critical(str(ex))
-	exit(1)
-
 #########################################################################################################
 
-def main():
+def main(input_file_path, output_file_path):
 	logger.info('Opening input file for reading')
-	with open(INPUT_FILE, 'r') as input_file:
+	with open(input_file_path, 'r') as input_file:
 		logger.info('Opening input file for writing')
-		with open(OUTPUT_FILE, 'w') as output_file:
+		with open(output_file_path, 'w') as output_file:
 			logger.info('Reading input file to parse data')
 			contents = input_file.readlines()
 			entry = ''
@@ -111,4 +102,12 @@ def main():
 #########################################################################################################
 
 if __name__ == "__main__":
-	main()
+	try:
+		logger.info('Retrieving environment variables')
+		load_dotenv()
+		INPUT_FILE = os.getenv('INPUT_FILE')
+		OUTPUT_FILE = os.getenv('OUTPUT_FILE')
+		main(INPUT_FILE, OUTPUT_FILE)
+	except Exception as ex:
+		logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
+		logger.critical(str(ex))
