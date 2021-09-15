@@ -4,6 +4,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from data.report import report
 from util.rate.rate_util import rate_excel
+from environment.environment import environment
 from util.input.input_util import prompt_for_input
 from util.dataframe.dataframe_util import append_dataframe
 from util.excel.excel_util import save_df_to_excel, create_excel_chart
@@ -95,13 +96,9 @@ def main(historical_file, parsed_file, recap_file):
 			logger.warning(f'Unable to rate data, {report_failed} came back as None')
 
 if __name__ == "__main__":
-	try:
-		logger.info('Retrieving environment variables')
-		load_dotenv()
-		HISTORICAL_DATA_FILE = os.getenv('HISTORICAL_DATA_FILE')
-		PARSED_DATA_FILE = os.getenv('PARSED_DATA_FILE')
-		OPTIONS_RECAP_FILE = os.getenv('OPTIONS_RECAP_FILE')
-		main(HISTORICAL_DATA_FILE, PARSED_DATA_FILE, OPTIONS_RECAP_FILE)
-	except Exception as ex:
-		logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
-		logger.critical(str(ex))
+	env = environment()
+	if env.historical_file != '' and env.parsed_file != '' and env.options_file != '':
+		main(env.historical_file, env.parsed_file, env.options_file)
+	else:
+		logger.critical(f'Environment variables are not properly defined')
+		logger.critical(f'Exiting..')
