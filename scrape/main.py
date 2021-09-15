@@ -3,6 +3,8 @@ import logging
 from date.day import day
 from datetime import datetime
 from dotenv import load_dotenv
+from watchdog.observers import Observer
+from filewatcher.filewatcher import filewatcher
 from util.directory.directory_util import create_directories
 
 #########################################################################################################
@@ -16,7 +18,7 @@ UNPROCESSED_DIRECTORY = 'Unprocessed'
 
 #########################################################################################################
 
-def main(input_file_path, output_file_path):
+def main(input_file_path, output_file_path, data_file_path):
 	logger.info('Opening input file for reading')
 	with open(input_file_path, 'r') as input_file:
 		logger.info('Opening input file for writing')
@@ -107,15 +109,40 @@ def main(input_file_path, output_file_path):
 #########################################################################################################
 
 if __name__ == "__main__":
+	DATA_DIRECTORY = ''
+	
 	try:
 		logger.info('Retrieving environment variables')
 		load_dotenv()
 		INPUT_FILE = os.getenv('INPUT_FILE')
 		OUTPUT_FILE = os.getenv('OUTPUT_FILE')
 		DATA_DIRECTORY = os.getenv('DATA_DIRECTORY')
-		directories = [f'{DATA_DIRECTORY}/{PARSED_DIRECTORY}', f'{DATA_DIRECTORY}/{PROCESSED_DIRECTORY}', f'{DATA_DIRECTORY}/{UNPROCESSED_DIRECTORY}']
-		create_directories(directories)
-		main(INPUT_FILE, OUTPUT_FILE, DATA_DIRECTORY)
 	except Exception as ex:
 		logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 		logger.critical(str(ex))
+
+	if DATA_DIRECTORY != '':
+		directories = [f'{DATA_DIRECTORY}\\{PARSED_DIRECTORY}', f'{DATA_DIRECTORY}\\{PROCESSED_DIRECTORY}', f'{DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}']
+		create_directories(directories)
+		main(INPUT_FILE, OUTPUT_FILE, DATA_DIRECTORY)
+
+		try:
+			logger.info(f'Creating filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
+			event_handler = filewatcher()
+			observer = Observer()
+
+			logger.info(f'Starting up filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
+			observer.schedule(event_handler, path=f'{DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}', recursive=False)
+			observer.start()
+
+			while True:
+				try:
+					pass
+				except KeyboardInterrupt:
+					observer.stop()
+		except Exception as ex:
+			logger.critical(f'Failed to create filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
+			logger.critical(str(ex))
+	else:
+		logger.critical(f'DATA_DIRECTORY environment variable is not defined')
+		logger.critical(f'Exiting..')
