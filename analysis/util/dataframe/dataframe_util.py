@@ -45,16 +45,16 @@ def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 	theta_np = np.append(output.Theta.to_numpy(), input.theta.to_numpy())
 	rho_np = np.append(output.Rho.to_numpy(), input.rho.to_numpy())
 	alert_ask_np = np.append(output['Alert Ask'].to_numpy(), input.ask.to_numpy())
-	input_high_ask_np, input_p_l_np, input_time_passed_np = determine_win_loss(input.high.to_numpy(), \
-		input.high_date_time.to_numpy(), input.low.to_numpy(), input.low_date_time.to_numpy(), \
+	input_high_ask_np, input_p_l_np, input_time_passed_np = determine_win_loss(input.high.to_numpy(),
+		input.high_date_time.to_numpy(), input.low.to_numpy(), input.low_date_time.to_numpy(),
 		input.ask.to_numpy(), input.alert_time.to_numpy())
 	high_ask_np = np.append(output['Highest Ask'].to_numpy(), input_high_ask_np)
 	p_l_np = np.append(output['P/L'].to_numpy(), input_p_l_np)
 	time_passed_np = np.append(output['Time Passed'].to_numpy(), input_time_passed_np)
 
-	output_data = np.array([ticker_np, option_type_np, alerted_at_np, day_of_week_np, \
-		time_of_day_np, expiry_np, days_to_exp_np, strike_np, underlying_np, diff_np, \
-		volume_np, open_interest_np, vol_oi_np, implied_vol_np, delta_np, gamma_np, \
+	output_data = np.array([ticker_np, option_type_np, alerted_at_np, day_of_week_np,
+		time_of_day_np, expiry_np, days_to_exp_np, strike_np, underlying_np, diff_np,
+		volume_np, open_interest_np, vol_oi_np, implied_vol_np, delta_np, gamma_np,
 		vega_np, theta_np, rho_np, alert_ask_np, high_ask_np, p_l_np, time_passed_np])
 
 	output_df = pd.DataFrame(data=output_data.T, columns=output.columns.values)

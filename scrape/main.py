@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-def main(input_file_path, output_file_path, data_file_path):
+def main(input_file_path, output_file_path):
 	logger.info('Opening input file for reading')
 	with open(input_file_path, 'r') as input_file:
 		logger.info('Opening input file for writing')
@@ -114,11 +114,11 @@ if __name__ == "__main__":
 	if env.data_directory != '':
 		directories = [f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}', f'{env.data_directory}\\{unprocessed_directory}']
 		create_directories(directories)
-		main(env.input_file, env.output_file, env.data_directory)
+		main(env.input_file, env.output_file)
 
 		try:
 			logger.info(f'Creating filewatcher for {env.data_directory}\\{unprocessed_directory}')
-			event_handler = filewatcher()
+			event_handler = filewatcher(f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}')
 			observer = Observer()
 
 			logger.info(f'Starting up filewatcher for {env.data_directory}\\{unprocessed_directory}')

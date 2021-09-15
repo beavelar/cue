@@ -22,7 +22,7 @@ class environment:
 
 	- data_directory
 	'''
-	def __init__(self):
+	def __init__(self) -> None:
 		'''
 		__init__
 		----------
