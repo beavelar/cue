@@ -3,7 +3,7 @@ import logging
 from date.day import day
 from datetime import datetime
 from dotenv import load_dotenv
-from util.directory_util import create_directories
+from util.directory.directory_util import create_directories
 
 #########################################################################################################
 
