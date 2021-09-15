@@ -5,16 +5,13 @@ from datetime import datetime
 from dotenv import load_dotenv
 from watchdog.observers import Observer
 from filewatcher.filewatcher import filewatcher
+from environment.environment import environment
 from util.directory.directory_util import create_directories
 
 #########################################################################################################
 
 logging.basicConfig(format='%(levelname)s: %(asctime)s - %(name)s.%(funcName)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-PARSED_DIRECTORY = 'Parsed'
-PROCESSED_DIRECTORY = 'Processed'
-UNPROCESSED_DIRECTORY = 'Unprocessed'
 
 #########################################################################################################
 
@@ -109,30 +106,23 @@ def main(input_file_path, output_file_path, data_file_path):
 #########################################################################################################
 
 if __name__ == "__main__":
-	DATA_DIRECTORY = ''
-	
-	try:
-		logger.info('Retrieving environment variables')
-		load_dotenv()
-		INPUT_FILE = os.getenv('INPUT_FILE')
-		OUTPUT_FILE = os.getenv('OUTPUT_FILE')
-		DATA_DIRECTORY = os.getenv('DATA_DIRECTORY')
-	except Exception as ex:
-		logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
-		logger.critical(str(ex))
+	env = environment()
+	parsed_directory = 'Parsed'
+	processed_directory = 'Processed'
+	unprocessed_directory = 'Unprocessed'
 
-	if DATA_DIRECTORY != '':
-		directories = [f'{DATA_DIRECTORY}\\{PARSED_DIRECTORY}', f'{DATA_DIRECTORY}\\{PROCESSED_DIRECTORY}', f'{DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}']
+	if env.data_directory != '':
+		directories = [f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}', f'{env.data_directory}\\{unprocessed_directory}']
 		create_directories(directories)
-		main(INPUT_FILE, OUTPUT_FILE, DATA_DIRECTORY)
+		main(env.input_file, env.output_file, env.data_directory)
 
 		try:
-			logger.info(f'Creating filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
+			logger.info(f'Creating filewatcher for {env.data_directory}\\{unprocessed_directory}')
 			event_handler = filewatcher()
 			observer = Observer()
 
-			logger.info(f'Starting up filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
-			observer.schedule(event_handler, path=f'{DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}', recursive=False)
+			logger.info(f'Starting up filewatcher for {env.data_directory}\\{unprocessed_directory}')
+			observer.schedule(event_handler, path=f'{env.data_directory}\\{unprocessed_directory}', recursive=False)
 			observer.start()
 
 			while True:
@@ -141,8 +131,8 @@ if __name__ == "__main__":
 				except KeyboardInterrupt:
 					observer.stop()
 		except Exception as ex:
-			logger.critical(f'Failed to create filewatcher for {DATA_DIRECTORY}\\{UNPROCESSED_DIRECTORY}')
+			logger.critical(f'Failed to create filewatcher for {env.data_directory}\\{unprocessed_directory}')
 			logger.critical(str(ex))
 	else:
-		logger.critical(f'DATA_DIRECTORY environment variable is not defined')
+		logger.critical(f'Environment variables are not properly defined')
 		logger.critical(f'Exiting..')
