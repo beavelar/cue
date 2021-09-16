@@ -11,12 +11,14 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-if __name__ == "__main__":
-	env = environment()
-	parsed_directory = 'Parsed'
-	processed_directory = 'Processed'
-	unprocessed_directory = 'Unprocessed'
+def main(parsed_directory: str, processed_directory: str, unprocessed_directory: str) -> None:
+	'''
+	main
+	----------
 
+	This function will be the main driver of the scraper
+	'''
+	env = environment()
 	if env.data_directory != '':
 		directories = [f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}', f'{env.data_directory}\\{unprocessed_directory}']
 		create_directories(directories)
@@ -41,3 +43,11 @@ if __name__ == "__main__":
 	else:
 		logger.critical(f'Environment variables are not properly defined')
 		logger.critical(f'Exiting..')
+
+#########################################################################################################
+
+if __name__ == "__main__":
+	parsed_directory = 'Parsed'
+	processed_directory = 'Processed'
+	unprocessed_directory = 'Unprocessed'
+	main(parsed_directory, processed_directory, unprocessed_directory)

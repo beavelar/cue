@@ -25,7 +25,7 @@ class filewatcher(FileSystemEventHandler):
 	'''
 	def __init__(self, parsed_path: str, processed_path: str) -> None:
 		'''
-		filewatcher
+		__init__
 		----------
 
 		Creates a filewatcher object which will utilize the FileSystemEventHandler __init__ function and set the

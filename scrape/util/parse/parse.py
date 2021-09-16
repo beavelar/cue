@@ -10,6 +10,14 @@ logger = logging.getLogger(__name__)
 #########################################################################################################
 
 def parse_alerts(input_file_path: str, output_file_path: str) -> None:
+	'''
+	parse_alerts
+	----------
+
+	This function will parse the alerts pasted onto the input_file_path and produce comma seperated
+	
+	elements saved onto the out_file_path
+	'''
 	logger.info('Opening input file for reading')
 	with open(input_file_path, 'r') as input_file:
 		logger.info('Opening output file for writing')
