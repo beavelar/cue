@@ -1,9 +1,7 @@
 import os
-import shutil
 import logging
-from watchdog.events import (DirCreatedEvent, DirDeletedEvent, DirModifiedEvent, DirMovedEvent,
-	FileCreatedEvent, FileDeletedEvent, FileModifiedEvent, FileMovedEvent, FileSystemEvent,
-	FileSystemEventHandler)
+from util.parse.parse import parse_alerts
+from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
 
 #########################################################################################################
 
@@ -55,16 +53,5 @@ class filewatcher(FileSystemEventHandler):
 		'''
 		logger.info(f'New file detected in: {event.src_path}')
 		file_name = os.path.basename(event.src_path)
+		parse_alerts(event.src_path, f'{self.parsed_path}\\{file_name}')
 		os.replace(event.src_path, f'{self.processed_path}\\{file_name}')
-
-	# def on_any_event(self, event: FileSystemEvent):
-	# 	logger.info(f'{event.event_type}: {event.src_path}')
-
-	# def on_deleted(self, event: DirDeletedEvent or FileDeletedEvent):
-	# 	logger.info(f'on_deleted: {event.src_path}')
-
-	# def on_modified(self, event: DirModifiedEvent or FileModifiedEvent):
-	# 	logger.info(f'on_modified: {event.src_path}')
-
-	# def on_moved(self, event: DirMovedEvent or FileMovedEvent):
-	# 	logger.info(f'on_moved: {event.src_path}')
