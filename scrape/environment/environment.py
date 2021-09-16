@@ -16,10 +16,6 @@ class environment:
 
 	This class will contain the environment variables for the scraper:
 
-	- input_file
-
-	- output_file
-
 	- data_directory
 	'''
 	def __init__(self) -> None:
@@ -34,12 +30,8 @@ class environment:
 		logger.info('Retrieving environment variables')
 		try:
 			load_dotenv()
-			self.input_file = os.getenv('INPUT_FILE', '')
-			self.output_file = os.getenv('INPUT_FILE', '')
 			self.data_directory = os.getenv('DATA_DIRECTORY', '')
 		except Exception as ex:
 			logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 			logger.critical(str(ex))
-			self.input_file = ''
-			self.output_file = ''
 			self.data_directory = ''
