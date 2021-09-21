@@ -19,17 +19,17 @@ def main(parsed_directory: str, processed_directory: str, unprocessed_directory:
 	This function will be the main driver of the scraper
 	'''
 	env = environment()
-	if env.data_directory != '':
-		directories = [f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}', f'{env.data_directory}\\{unprocessed_directory}']
+	if env.incoming_alerts_dir != '':
+		directories = [f'{env.incoming_alerts_dir}\\{parsed_directory}', f'{env.incoming_alerts_dir}\\{processed_directory}', f'{env.incoming_alerts_dir}\\{unprocessed_directory}']
 		create_directories(directories)
 
 		try:
-			logger.info(f'Creating filewatcher for {env.data_directory}\\{unprocessed_directory}')
-			event_handler = filewatcher(f'{env.data_directory}\\{parsed_directory}', f'{env.data_directory}\\{processed_directory}')
+			logger.info(f'Creating filewatcher for {env.incoming_alerts_dir}\\{unprocessed_directory}')
+			event_handler = filewatcher(f'{env.incoming_alerts_dir}\\{parsed_directory}', f'{env.incoming_alerts_dir}\\{processed_directory}')
 			observer = Observer()
 
-			logger.info(f'Starting up filewatcher for {env.data_directory}\\{unprocessed_directory}')
-			observer.schedule(event_handler, path=f'{env.data_directory}\\{unprocessed_directory}', recursive=False)
+			logger.info(f'Starting up filewatcher for {env.incoming_alerts_dir}\\{unprocessed_directory}')
+			observer.schedule(event_handler, path=f'{env.incoming_alerts_dir}\\{unprocessed_directory}', recursive=False)
 			observer.start()
 
 			while True:
@@ -38,7 +38,7 @@ def main(parsed_directory: str, processed_directory: str, unprocessed_directory:
 				except KeyboardInterrupt:
 					observer.stop()
 		except Exception as ex:
-			logger.critical(f'Failed to create filewatcher for {env.data_directory}\\{unprocessed_directory}')
+			logger.critical(f'Failed to create filewatcher for {env.incoming_alerts_dir}\\{unprocessed_directory}')
 			logger.critical(str(ex))
 	else:
 		logger.critical(f'Environment variables are not properly defined')
