@@ -3,10 +3,13 @@ import logging
 import pandas as pd
 from dotenv import load_dotenv
 from data.report import report
+from watchdog.observers import Observer
 from util.rate.rate_util import rate_excel
+from filewatcher.filewatcher import filewatcher
 from environment.environment import environment
 from util.input.input_util import prompt_for_input
 from util.dataframe.dataframe_util import append_dataframe
+from util.directory.directory_util import create_directories
 from util.excel.excel_util import save_df_to_excel, create_excel_chart
 
 #########################################################################################################
@@ -16,7 +19,13 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-def main(historical_file, parsed_file, recap_file):	
+def main(historical_file, historical_dir, parsed_file, recap_file):
+	parsed_directory = 'Parsed'
+	processed_directory = 'Processed'
+	unprocessed_directory = 'Unprocessed'
+	directories = [f'{historical_dir}\\{parsed_directory}', f'{historical_dir}\\{processed_directory}', f'{historical_dir}\\{unprocessed_directory}']
+	create_directories(directories)
+
 	output_historical_df = None
 	valid_choices = ['p', 'parse', 'g', 'graph', 'a', 'analyze', 'r', 'rate']
 	choice_prompt = 'Parse, graph, analyze or rate historical data? (P/G/A/R): '
@@ -29,9 +38,26 @@ def main(historical_file, parsed_file, recap_file):
 	# Parsing Unusual Whales historical data
 	if graph_parse_prompt.lower() == valid_choices[0] or graph_parse_prompt.lower() == valid_choices[1]:
 		logger.info('User selected to parse historical data')
-		uw_historical_df = pd.read_excel(historical_file)
-		appended_df = append_dataframe(uw_historical_df, output_historical_df)
-		save_df_to_excel(appended_df, parsed_file)
+		# uw_historical_df = pd.read_excel(historical_file)
+		# appended_df = append_dataframe(uw_historical_df, output_historical_df)
+		# save_df_to_excel(appended_df, parsed_file)
+		try:
+			logger.info(f'Creating filewatcher for {historical_dir}\\{unprocessed_directory}')
+			event_handler = filewatcher(f'{historical_dir}\\{parsed_directory}', f'{historical_dir}\\{processed_directory}')
+			observer = Observer()
+
+			logger.info(f'Starting up filewatcher for {historical_dir}\\{unprocessed_directory}')
+			observer.schedule(event_handler, path=f'{historical_dir}\\{unprocessed_directory}', recursive=False)
+			observer.start()
+
+			while True:
+				try:
+					pass
+				except KeyboardInterrupt:
+					observer.stop()
+		except Exception as ex:
+			logger.critical(f'Failed to create filewatcher for {historical_dir}\\{unprocessed_directory}')
+			logger.critical(str(ex))
 	# Graphing parsed data
 	elif graph_parse_prompt.lower() == valid_choices[2] or graph_parse_prompt.lower() == valid_choices[3]:
 		logger.info('User selected to graph parsed data')
@@ -97,8 +123,8 @@ def main(historical_file, parsed_file, recap_file):
 
 if __name__ == "__main__":
 	env = environment()
-	if env.historical_file != '' and env.parsed_file != '' and env.options_file != '':
-		main(env.historical_file, env.parsed_file, env.options_file)
+	if env.historical_file != '' and env.historical_dir != '' and env.parsed_file != '' and env.options_file != '':
+		main(env.historical_file, env.historical_dir, env.parsed_file, env.options_file)
 	else:
 		logger.critical(f'Environment variables are not properly defined')
 		logger.critical(f'Exiting..')
