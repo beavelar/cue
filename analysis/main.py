@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-def main(historical_file, historical_dir, parsed_file, recap_file):
+def main(historical_dir, parsed_file, recap_file):
 	parsed_directory = 'Parsed'
 	processed_directory = 'Processed'
 	unprocessed_directory = 'Unprocessed'
@@ -34,10 +34,6 @@ def main(historical_file, historical_dir, parsed_file, recap_file):
 
 	# Parsing Unusual Whales historical data
 	if graph_parse_prompt.lower() == valid_choices[0] or graph_parse_prompt.lower() == valid_choices[1]:
-		logger.info('User selected to parse historical data')
-		# uw_historical_df = pd.read_excel(historical_file)
-		# appended_df = append_dataframe(uw_historical_df, output_historical_df)
-		# save_df_to_excel(appended_df, parsed_file)
 		try:
 			logger.info(f'Creating filewatcher for {historical_dir}\\{unprocessed_directory}')
 			event_handler = filewatcher(f'{historical_dir}\\{parsed_directory}', f'{historical_dir}\\{processed_directory}')
@@ -120,8 +116,8 @@ def main(historical_file, historical_dir, parsed_file, recap_file):
 
 if __name__ == "__main__":
 	env = environment()
-	if env.historical_file != '' and env.historical_dir != '' and env.parsed_file != '' and env.options_file != '':
-		main(env.historical_file, env.historical_dir, env.parsed_file, env.options_file)
+	if env.historical_dir != '' and env.parsed_file != '' and env.options_file != '':
+		main(env.historical_dir, env.parsed_file, env.options_file)
 	else:
 		logger.critical(f'Environment variables are not properly defined')
 		logger.critical(f'Exiting..')
