@@ -24,7 +24,6 @@ def generate_excel_body(worksheet: Worksheet, data: DataFrame) -> None:
 	logger.info('Generating the body for the excel spread sheet')
 	for index in range(data.Ticker.size):
 		cell_number = str(index+2)
-		style_excel_body(worksheet, cell_number)
 		worksheet[f'A{cell_number}'] = data.Ticker[index]
 		worksheet[f'B{cell_number}'] = data['Option Type'][index]
 		worksheet[f'C{cell_number}'] = data['Alerted At'][index]
@@ -104,23 +103,6 @@ def style_excel_header(worksheet: Worksheet) -> None:
 	for cell in cells:
 		cell.font = font
 		cell.fill = black_fill
-		cell.alignment = Alignment(horizontal='center')
-
-#########################################################################################################
-
-def style_excel_body(worksheet: Worksheet, cell_number: str) -> None:
-	'''
-	style_excel_body
-	----------
-
-	This function will set the style of the body of a excel sheet
-	'''
-	logger.info('Styling the body of the excel spread sheet')
-	cells = worksheet[f'A{cell_number}':f'W{cell_number}'][0]
-	worksheet[f'J{cell_number}'].number_format = '0.00%'
-	worksheet[f'N{cell_number}'].number_format = '0.00%'
-	worksheet[f'V{cell_number}'].number_format = '0.00%'
-	for cell in cells:
 		cell.alignment = Alignment(horizontal='center')
 
 #########################################################################################################
