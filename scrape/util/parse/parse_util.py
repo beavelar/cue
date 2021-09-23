@@ -14,9 +14,9 @@ def parse_alerts(input_file_path: str, output_file_path: str) -> None:
 	parse_alerts
 	----------
 
-	This function will parse the alerts pasted onto the input_file_path and produce comma seperated
+	This function will parse the alerts pasted onto the input_file_path
 	
-	elements saved onto the out_file_path
+	Will produce a comma seperated list and save it onto out_file_path
 	'''
 	logger.info('Opening input file for reading')
 	with open(input_file_path, 'r') as input_file:

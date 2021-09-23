@@ -18,7 +18,9 @@ class point:
 		__init__
 		----------
 
-		Creates a point object. rating must be a string, otherwise a TypeError will be raised
+		Creates a point object
+		
+		rating must be a string, otherwise a TypeError will be raised
 		'''
 		if isinstance(rating, str):
 			self.rating = rating

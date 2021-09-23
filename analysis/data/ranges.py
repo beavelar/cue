@@ -42,9 +42,9 @@ class ranges:
 		__init__
 		----------
 
-		Creates a ranges object. self.elements, self.points, and self.groups will be populated with the data
-
-		from np and pl_np
+		Creates a ranges object
+		
+		self.elements, self.points, and self.groups will be populated with the data from np and pl_np
 		'''
 		self.elements = {}
 		self.points = []

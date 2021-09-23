@@ -45,7 +45,9 @@ class report:
 		__init__
 		----------
 
-		Creates a report object. data_frame must be a DataFrame, otherwise a TypeError will be raised
+		Creates a report object
+		
+		data_frame must be a DataFrame, otherwise a TypeError will be raised
 		'''
 		if isinstance(data_frame, DataFrame):
 			p_l = data_frame['P/L'].to_numpy()

@@ -29,9 +29,9 @@ class filewatcher(FileSystemEventHandler):
 		__init__
 		----------
 
-		Creates a filewatcher object which will utilize the FileSystemEventHandler __init__ function and set the
-
-		parsed_path and processed_path variables
+		Creates a filewatcher object which will utilize the FileSystemEventHandler __init__ function
+		
+		Sets the parsed_path and processed_path variables
 
 		- parsed_path - Will contain the string path of where the parsed files will be saved to
 

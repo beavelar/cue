@@ -14,7 +14,7 @@ def prompt_for_input(prompt: str, valid_choices: list=[]) -> str:
 	prompt_for_input
 	----------
 
-	Prompts the user to provide input and select from a provided list of valid choices\n
+	Prompts the user to provide input and select from a provided list of valid choices
 
 	If the input provided from the user is not in valid_choices, the user will be prompted again
 	'''
