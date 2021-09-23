@@ -34,7 +34,7 @@ def parse_historical_directory(input_directory_path: str, output_file_path: str)
 	for file in files:
 		file_df = pd.read_excel(f'{input_directory_path}\\{file}')
 		historical_df = parse_dataframe(file_df)
-		parsed_df = append_parsed_dataframe(historical_df, historical_df)
+		parsed_df = append_parsed_dataframe(historical_df, parsed_df)
 	save_df_to_excel(parsed_df, output_file_path)
 
 	num_of_elems = historical_df.Ticker.size
