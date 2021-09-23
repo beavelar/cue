@@ -1,6 +1,6 @@
 import logging
 import pandas as pd
-from util.dataframe.dataframe_util import append_dataframe
+from util.dataframe.dataframe_util import parse_dataframe
 from util.excel.excel_util import save_df_to_excel, create_excel_chart
 
 #########################################################################################################
@@ -32,8 +32,6 @@ def parse_historical_file(input_file_path: str, output_file_path: str) -> None:
 	
 	Parsed result will be a excel sheet saved in the output file path
 	'''
-	temp=''
-	# historical_df = pd.read_excel(input_file_path)
-	# output_historical_df = pd.read_excel('')
-	# appended_df = append_dataframe(historical_df, output_historical_df)
-	# save_df_to_excel(appended_df, output_file_path)
+	historical_df = pd.read_excel(input_file_path)
+	parsed_df = parse_dataframe(historical_df)
+	save_df_to_excel(parsed_df, output_file_path)

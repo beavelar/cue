@@ -13,6 +13,60 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
+def parse_dataframe(input: DataFrame) -> DataFrame:
+	'''
+	append_dataframe
+	----------
+
+	This function will append input DataFrame with output DataFrame
+	
+	The result of the appending will be returned
+	'''
+	logger.info('Retrieving numpy arrays from dataframe')
+	ticker_np = input.ticker_symbol.to_numpy()
+	option_type_np = input.option_type.to_numpy()
+	alerted_at_np = input.alert_time.to_numpy()
+	input_day_np, input_time_np = extract_date_time(input.alert_time.to_numpy())
+	day_of_week_np = input_day_np
+	time_of_day_np = input_time_np
+	temp_expiry_np = expiry_to_string(input.expires_at.to_numpy())
+	expiry_np = temp_expiry_np
+	days_to_exp_np = days_to_expiry(alerted_at_np, expiry_np)
+	strike_np = input.strike_price.to_numpy()
+	underlying_np = input.underlying_purchase_price.to_numpy()
+	diff_np = (input['diff'].to_numpy()/100)
+	volume_np = input.volume.to_numpy()
+	open_interest_np = input.open_interest.to_numpy()
+	vol_oi_np = volume_np/open_interest_np
+	implied_vol_np = input.implied_volatility.to_numpy()
+	delta_np = input.delta.to_numpy()
+	gamma_np = input.gamma.to_numpy()
+	vega_np = input.vega.to_numpy()
+	theta_np = input.theta.to_numpy()
+	rho_np = input.rho.to_numpy()
+	alert_ask_np = input.ask.to_numpy()
+	input_high_ask_np, input_p_l_np, input_time_passed_np = determine_win_loss(input.high.to_numpy(),
+		input.high_date_time.to_numpy(), input.low.to_numpy(), input.low_date_time.to_numpy(),
+		input.ask.to_numpy(), input.alert_time.to_numpy())
+	high_ask_np = input_high_ask_np
+	p_l_np = input_p_l_np
+	time_passed_np = input_time_passed_np
+
+	output_data = np.array([ticker_np, option_type_np, alerted_at_np, day_of_week_np,
+		time_of_day_np, expiry_np, days_to_exp_np, strike_np, underlying_np, diff_np,
+		volume_np, open_interest_np, vol_oi_np, implied_vol_np, delta_np, gamma_np,
+		vega_np, theta_np, rho_np, alert_ask_np, high_ask_np, p_l_np, time_passed_np])
+
+	df_columns = np.array(['Ticker', 'Option Type', 'Alerted At', 'Day of Week', 'Time of Day', 'Expiry',
+		'Days to Exp.', 'Strike', 'Underlying', 'Diff %', 'Volume', 'Open Interest', 'Vol/OI',
+		'Implied Volatility', 'Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Alert Ask', 'Highest Ask', 'P/L',
+		'Time Passed'])
+	output_df = pd.DataFrame(data=output_data.T, columns=df_columns)
+	logger.info('Dataframe created from extracted data from incoming dataframe')
+	return output_df
+
+#########################################################################################################
+
 def append_dataframe(input: DataFrame, output: DataFrame) -> DataFrame:
 	'''
 	append_dataframe
