@@ -1,7 +1,7 @@
 import os
 import shutil
 import logging
-from util.parse.parse import parse_alerts
+from util.parse.parse_util import parse_alerts
 from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
 
 #########################################################################################################

@@ -6,7 +6,6 @@ from util.rate.rate_util import rate_excel
 from filewatcher.filewatcher import filewatcher
 from environment.environment import environment
 from util.input.input_util import prompt_for_input
-from util.excel.excel_util import create_excel_chart
 from util.directory.directory_util import create_directories
 
 #########################################################################################################
@@ -24,8 +23,8 @@ def main(historical_dir, parsed_file, recap_file):
 	create_directories(directories)
 
 	output_historical_df = None
-	valid_choices = ['p', 'parse', 'g', 'graph', 'a', 'analyze', 'r', 'rate']
-	choice_prompt = 'Parse, graph, analyze or rate historical data? (P/G/A/R): '
+	valid_choices = ['p', 'parse', 'a', 'analyze', 'r', 'rate']
+	choice_prompt = 'Parse, analyze or rate historical data? (P/A/R): '
 	row_choice_prompt = 'Which row to start on?: '
 
 	graph_parse_prompt = prompt_for_input(choice_prompt, valid_choices)
@@ -51,21 +50,6 @@ def main(historical_dir, parsed_file, recap_file):
 		except Exception as ex:
 			logger.critical(f'Failed to create filewatcher for {historical_dir}\\{unprocessed_directory}')
 			logger.critical(str(ex))
-	# Graphing parsed data
-	elif graph_parse_prompt.lower() == valid_choices[2] or graph_parse_prompt.lower() == valid_choices[3]:
-		logger.info('User selected to graph parsed data')
-		num_of_elems = output_historical_df.Ticker.size
-		create_excel_chart(parsed_file, 'Days to Exp.', 'P/L', 7, 22, 'X2', num_of_elems)
-		create_excel_chart(parsed_file, 'Diff %', 'P/L', 10, 22, 'X17', num_of_elems)
-		create_excel_chart(parsed_file, 'Vol/OI', 'P/L', 13, 22, 'X32', num_of_elems)
-		create_excel_chart(parsed_file, 'Implied Volatility', 'P/L', 14, 22, 'X47', num_of_elems)
-		create_excel_chart(parsed_file, 'Delta', 'P/L', 15, 22, 'X62', num_of_elems)
-		create_excel_chart(parsed_file, 'Gamma', 'P/L', 16, 22, 'X77', num_of_elems)
-		create_excel_chart(parsed_file, 'Vega', 'P/L', 17, 22, 'X92', num_of_elems)
-		create_excel_chart(parsed_file, 'Theta', 'P/L', 18, 22, 'X107', num_of_elems)
-		create_excel_chart(parsed_file, 'Rho', 'P/L', 19, 22, 'X122', num_of_elems)
-		create_excel_chart(parsed_file, 'Alert Ask', 'P/L', 20, 22, 'X137', num_of_elems)
-		create_excel_chart(parsed_file, 'Time Passed', 'P/L', 23, 22, 'X152', num_of_elems)
 	# Analyzing historical report and creating call and put report containing the results
 	elif graph_parse_prompt.lower() == valid_choices[4] or graph_parse_prompt.lower() == valid_choices[5]:
 		logger.info('User selected to analyze parsed data')

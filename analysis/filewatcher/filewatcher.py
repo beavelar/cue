@@ -1,7 +1,7 @@
 import os
 import shutil
 import logging
-from util.parse.parse import parse_historical_directory, parse_historical_file
+from util.parse.parse_util import parse_historical_directory, parse_historical_file
 from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
 
 #########################################################################################################
