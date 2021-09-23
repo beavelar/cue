@@ -60,7 +60,7 @@ class filewatcher(FileSystemEventHandler):
 		logger.info(f'New {event_type} detected in: {event.src_path}')
 		event_name = os.path.basename(event.src_path)
 		if isinstance(event, DirCreatedEvent):
-			parse_historical_directory(event.src_path, f'{self.parsed_path}\\{event_name}')
+			parse_historical_directory(event.src_path, f'{self.parsed_path}\\{event_name}.xlsx')
 		else:
 			parse_historical_file(event.src_path, f'{self.parsed_path}\\{event_name}')
 		shutil.move(event.src_path, f'{self.processed_path}\\{event_name}')
