@@ -1,7 +1,7 @@
 import os
 import shutil
 import logging
-from util.parse.parse_util import parse_alerts
+from util.parse.parse_util import parse_historical_directory, parse_historical_file
 from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
 
 #########################################################################################################
@@ -46,16 +46,22 @@ class filewatcher(FileSystemEventHandler):
 		on_created
 		----------
 
-		This function will handle DirCreatedEvents or FileCreatedEvents
+		This function will handle DirCreatedEvents or FileCreatedEvents  
 		
-		We don't expect DirCreatedEvents so we will assume all events are FileCreatedEvents
+		On DirCreatedEvent, we parse all files located in that directory
 		
+		On FileCreatedEvent, we parse the single file provideWe don't expect DirCreatedEvents so we
+
 		The file from the event will be parsed and copied over to the processed directory
-		
-		The parsed result will be placed in the parsed directory
+
+		The parsed result will be placed in the parsed directory 
 		'''
-		logger.info(f'New file detected in: {event.src_path}')
-		file_name = os.path.basename(event.src_path)
-		parse_alerts(event.src_path, f'{self.parsed_path}\\{file_name}')
-		shutil.move(event.src_path, f'{self.processed_path}\\{file_name}')
-		logger.info(f'Moved {event.src_path} to {self.processed_path}\\{file_name}')
+		event_type = 'directory' if isinstance(event, DirCreatedEvent) else 'file'
+		logger.info(f'New {event_type} detected in: {event.src_path}')
+		event_name = os.path.basename(event.src_path)
+		if isinstance(event, DirCreatedEvent):
+			parse_historical_directory(event.src_path, f'{self.parsed_path}\\{event_name}.xlsx')
+		else:
+			parse_historical_file(event.src_path, f'{self.parsed_path}\\{event_name}')
+		shutil.move(event.src_path, f'{self.processed_path}\\{event_name}')
+		logger.info(f'Moved {event.src_path} to {self.processed_path}\\{event_name}')

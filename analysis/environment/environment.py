@@ -34,12 +34,12 @@ class environment:
 		logger.info('Retrieving environment variables')
 		try:
 			load_dotenv()
-			self.historical_file = os.getenv('HISTORICAL_DATA_FILE', '')
+			self.historical_dir = os.getenv('HISTORICAL_DATA_DIR', '')
 			self.parsed_file = os.getenv('PARSED_DATA_FILE', '')
 			self.options_file = os.getenv('OPTIONS_RECAP_FILE', '')
 		except Exception as ex:
 			logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 			logger.critical(str(ex))
-			self.historical_file = ''
+			self.historical_dir = ''
 			self.parsed_file = ''
 			self.options_file = ''
