@@ -1,16 +1,13 @@
-import os
 import logging
 import pandas as pd
-from dotenv import load_dotenv
 from data.report import report
 from watchdog.observers import Observer
 from util.rate.rate_util import rate_excel
 from filewatcher.filewatcher import filewatcher
 from environment.environment import environment
 from util.input.input_util import prompt_for_input
-from util.dataframe.dataframe_util import append_dataframe
+from util.excel.excel_util import create_excel_chart
 from util.directory.directory_util import create_directories
-from util.excel.excel_util import save_df_to_excel, create_excel_chart
 
 #########################################################################################################
 

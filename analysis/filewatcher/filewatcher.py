@@ -1,4 +1,5 @@
 import os
+import shutil
 import logging
 from util.parse.parse import parse_historical_directory, parse_historical_file
 from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
@@ -62,5 +63,5 @@ class filewatcher(FileSystemEventHandler):
 			parse_historical_directory(event.src_path, f'{self.parsed_path}\\{event_name}')
 		else:
 			parse_historical_file(event.src_path, f'{self.parsed_path}\\{event_name}')
-		os.replace(event.src_path, f'{self.processed_path}\\{event_name}')
+		shutil.move(event.src_path, f'{self.processed_path}\\{event_name}')
 		logger.info(f'Moved {event.src_path} to {self.processed_path}\\{event_name}')

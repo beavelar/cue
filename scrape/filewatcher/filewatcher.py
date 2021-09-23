@@ -1,4 +1,5 @@
 import os
+import shutil
 import logging
 from util.parse.parse import parse_alerts
 from watchdog.events import DirCreatedEvent, FileCreatedEvent, FileSystemEventHandler
@@ -56,5 +57,5 @@ class filewatcher(FileSystemEventHandler):
 		logger.info(f'New file detected in: {event.src_path}')
 		file_name = os.path.basename(event.src_path)
 		parse_alerts(event.src_path, f'{self.parsed_path}\\{file_name}')
-		os.replace(event.src_path, f'{self.processed_path}\\{file_name}')
+		shutil.move(event.src_path, f'{self.processed_path}\\{file_name}')
 		logger.info(f'Moved {event.src_path} to {self.processed_path}\\{file_name}')
