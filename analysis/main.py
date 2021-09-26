@@ -51,7 +51,7 @@ def main(historical_dir, parsed_file, recap_file):
 			logger.critical(f'Failed to create filewatcher for {historical_dir}\\{unprocessed_directory}')
 			logger.critical(str(ex))
 	# Analyzing historical report and creating call and put report containing the results
-	elif graph_parse_prompt.lower() == valid_choices[4] or graph_parse_prompt.lower() == valid_choices[5]:
+	elif graph_parse_prompt.lower() == valid_choices[2] or graph_parse_prompt.lower() == valid_choices[3]:
 		logger.info('User selected to analyze parsed data')
 		# output_dir = os.path.dirname(os.path.normpath(parsed_file))
 		# ouput_call_report = f'{output_dir}\\Call Report.xlsx'
@@ -72,7 +72,7 @@ def main(historical_dir, parsed_file, recap_file):
 			logger.warning('TypeError exception caught creating put report')
 			logger.warning(ex)
 	# Rates Unusual Whales alerts and color codes the cells indicating if BAD, OKAY, GOOD, or BEST
-	elif graph_parse_prompt.lower() == valid_choices[6] or graph_parse_prompt.lower() == valid_choices[7]:
+	elif graph_parse_prompt.lower() == valid_choices[4] or graph_parse_prompt.lower() == valid_choices[5]:
 		logger.info('User selected to rate parsed data')
 		#########################################################################################################
 		call_report = None
