@@ -74,11 +74,11 @@ def parse_alert(data: list) -> None:
 	days_to_exp = days_to_exp_delta.days
 
 	# Underlying
-	underlying = float(data[16].replace('\n', '').replace('$', ''))
+	underlying = float(data[16].replace('\n', '').replace('$', '').replace(',', ''))
 
 	# Diff %
 	diff = 'DIFF'
-	strike = float(header[3].replace('$', ''))
+	strike = float(header[3].replace('$', '').replace(',', ''))
 	if underlying > strike:
 		diff = '%.2f'%(((strike/underlying)-1)*100)
 		diff = f'{diff}%'
