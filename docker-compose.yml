@@ -5,6 +5,10 @@ services:
       - PARSED_DATA_FILE=${PARSED_DATA_FILE}
       - OPTIONS_RECAP_FILE=${OPTIONS_RECAP_FILE}
       - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
+  historical:
+    build: ./alerts/historical
+    environment:
+      - HISTORICAL_ALERTS_DIRECTORY=${HISTORICAL_ALERTS_DIRECTORY}
   realtime:
     build: ./alerts/realtime
     environment:

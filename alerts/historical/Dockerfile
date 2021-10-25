@@ -1,6 +1,6 @@
 FROM python:3.9.7
 
-WORKDIR /realtime
+WORKDIR /historical
 
 COPY . .
 
