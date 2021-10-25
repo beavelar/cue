@@ -11,43 +11,40 @@ logger = logging.getLogger(__name__)
 
 #########################################################################################################
 
-def main(parsed_directory: str, processed_directory: str, unprocessed_directory: str) -> None:
+def main(realtime_alerts_dir: str) -> None:
 	'''
 	main
 	----------
 
 	This function will be the main driver of the scraper
 	'''
-	env = environment()
-	if env.realtime_alerts_dir != '':
-		directories = [f'{env.realtime_alerts_dir}\\{parsed_directory}', f'{env.realtime_alerts_dir}\\{processed_directory}', f'{env.realtime_alerts_dir}\\{unprocessed_directory}']
-		create_directories(directories)
+	directories = [f'{realtime_alerts_dir}\\Parsed', f'{realtime_alerts_dir}\\Processed', f'{realtime_alerts_dir}\\Unprocessed']
+	create_directories(directories)
 
-		try:
-			logger.info(f'Creating filewatcher for {env.realtime_alerts_dir}\\{unprocessed_directory}')
-			event_handler = filewatcher(f'{env.realtime_alerts_dir}\\{parsed_directory}', f'{env.realtime_alerts_dir}\\{processed_directory}')
-			observer = Observer()
+	try:
+		logger.info(f'Creating filewatcher for {realtime_alerts_dir}\\Unprocessed')
+		event_handler = filewatcher(f'{realtime_alerts_dir}\\Parsed', f'{realtime_alerts_dir}\\Processed')
+		observer = Observer()
 
-			logger.info(f'Starting up filewatcher for {env.realtime_alerts_dir}\\{unprocessed_directory}')
-			observer.schedule(event_handler, path=f'{env.realtime_alerts_dir}\\{unprocessed_directory}', recursive=False)
-			observer.start()
+		logger.info(f'Starting up filewatcher for {realtime_alerts_dir}\\Unprocessed')
+		observer.schedule(event_handler, path=f'{realtime_alerts_dir}\\Unprocessed', recursive=False)
+		observer.start()
 
-			while True:
-				try:
-					pass
-				except KeyboardInterrupt:
-					observer.stop()
-		except Exception as ex:
-			logger.critical(f'Failed to create filewatcher for {env.realtime_alerts_dir}\\{unprocessed_directory}')
-			logger.critical(str(ex))
-	else:
-		logger.critical(f'Environment variables are not properly defined')
-		logger.critical(f'Exiting..')
+		while True:
+			try:
+				pass
+			except KeyboardInterrupt:
+				observer.stop()
+	except Exception as ex:
+		logger.critical(f'Failed to create filewatcher for {realtime_alerts_dir}\\Unprocessed')
+		logger.critical(str(ex))
 
 #########################################################################################################
 
 if __name__ == "__main__":
-	parsed_directory = 'Parsed'
-	processed_directory = 'Processed'
-	unprocessed_directory = 'Unprocessed'
-	main(parsed_directory, processed_directory, unprocessed_directory)
+	env = environment()
+	if env.realtime_alerts_dir != '':
+		main(env.realtime_alerts_dir)
+	else:
+		logger.critical(f'Environment variables are not properly defined')
+		logger.critical(f'Exiting..')
