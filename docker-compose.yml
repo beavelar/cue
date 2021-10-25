@@ -5,7 +5,7 @@ services:
       - PARSED_DATA_FILE=${PARSED_DATA_FILE}
       - OPTIONS_RECAP_FILE=${OPTIONS_RECAP_FILE}
       - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
-  scrape:
-    build: ./scrape
+  realtime:
+    build: ./realtime
     environment:
-      - INCOMING_ALERTS_DIRECTORY=${INCOMING_ALERTS_DIRECTORY}
+      - REALTIME_ALERTS_DIRECTORY=${REALTIME_ALERTS_DIRECTORY}

@@ -60,7 +60,7 @@ def parse_dataframe(input: DataFrame) -> DataFrame:
 		'Implied Volatility', 'Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Alert Ask', 'Highest Ask', 'P/L',
 		'Time Passed'])
 	output_df = pd.DataFrame(data=output_data.T, columns=df_columns)
-	logger.info('Dataframe created from extracted data from incoming dataframe')
+	logger.info('Dataframe created from extracted data from realtime alerts dataframe')
 	return output_df
 
 #########################################################################################################
