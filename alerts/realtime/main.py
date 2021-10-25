@@ -1,3 +1,4 @@
+import os
 import logging
 from watchdog.observers import Observer
 from filewatcher.filewatcher import filewatcher
