@@ -6,6 +6,6 @@ services:
       - OPTIONS_RECAP_FILE=${OPTIONS_RECAP_FILE}
       - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
   realtime:
-    build: ./realtime
+    build: ./alerts/realtime
     environment:
       - REALTIME_ALERTS_DIRECTORY=${REALTIME_ALERTS_DIRECTORY}
