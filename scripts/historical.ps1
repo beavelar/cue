@@ -1,4 +1,4 @@
-$FILE_NAME = "2020-12"
+$FILE_NAME = "2021-08"
 $CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\csv\$($FILE_NAME).csv"
 $OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\json\$($FILE_NAME).json"
 
@@ -32,15 +32,15 @@ function Main {
 			$timePassed = ($highDate - $alertDate).Days
 		}
 		else {
-			$highestAsk = $line.low
+			$highestAsk = [double]$line.low
 			$pl = ([double]$line.low/[double]$line.ask) - 1
 			$timePassed = ($lowDate - $alertDate).Days
 		}
 		$lineHashTable = @{
 			"ticker" = $line.ticker_symbol
 			"option_type" = $line.option_type
-			"alert_time" = $dateTimeString
-			"time_of_day" = $dateTimeString.Split("T")[1].Replace("Z", "")
+			"alert_time" = $alertDateString
+			"time_of_day" = $alertDateString.Split("T")[1].Replace("Z", "")
 			"expires" = $line.expires_at
 			"days_to_expiry" = ($expireDate - $alertDate).Days
 			"strike" = [double]$line.strike_price
