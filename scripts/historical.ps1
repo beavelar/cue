@@ -1,6 +1,6 @@
 $FILE_NAME = "2021-08"
-$CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\csv\$($FILE_NAME).csv"
-$OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\json\$($FILE_NAME).json"
+$CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\csv\$($FILE_NAME).csv"
+$OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\json\$($FILE_NAME).json"
 
 function GetWinLoss {
 	param($ask, $low, $lowDate, $alertDate)
@@ -14,6 +14,7 @@ function Main {
 	param ($csvFilePath, $outputJsonPath)
 	$data = Import-Csv -Path $csvFilePath
 	$json = [ordered]@{}
+	$TextInfo = (Get-Culture).TextInfo
 
 	foreach ($line in $data) {
 		$alertDateString = $line.alert_time.Replace(" ", "T")
@@ -38,7 +39,7 @@ function Main {
 		}
 		$lineHashTable = @{
 			"ticker" = $line.ticker_symbol
-			"option_type" = $line.option_type
+			"option_type" = $TextInfo.ToTitleCase($line.option_type)
 			"alert_time" = $alertDateString
 			"time_of_day" = $alertDateString.Split("T")[1].Replace("Z", "")
 			"expires" = $line.expires_at
