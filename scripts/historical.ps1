@@ -1,3 +1,7 @@
+$FILE_NAME = "2020-12"
+$CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\csv\$($FILE_NAME).csv"
+$OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\json\$($FILE_NAME).json"
+
 function GetWinLoss {
 	param($ask, $low, $lowDate, $alertDate)
 	$dateDiff = ($highDate - $lowDate).Days
@@ -7,12 +11,8 @@ function GetWinLoss {
 }
 
 function Main {
-	param ()
-	$FILE_NAME = "2020-12"
-	$CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\csv\$($FILE_NAME).csv"
-	$OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\CM\json\$($FILE_NAME).json"
-
-	$data = Import-Csv -Path $CSV_FILE_PATH
+	param ($csvFilePath, $outputJsonPath)
+	$data = Import-Csv -Path $csvFilePath
 	$json = [ordered]@{}
 
 	foreach ($line in $data) {
@@ -62,7 +62,7 @@ function Main {
 		}
 		$json.Add($line.alert_time, $lineHashTable)
 	}
-	$json | ConvertTo-Json | Out-File $OUTPUT_JSON_PATH	
+	$json | ConvertTo-Json | Out-File $outputJsonPath	
 }
 
-Main
+Main $CSV_FILE_PATH $OUTPUT_JSON_PATH
