@@ -62,7 +62,7 @@ function Main {
 			"p/l" = $pl
 			"time_passed" = $timePassed
 		}
-		$json.Add($line.alert_time, $lineHashTable)
+		$json.Add($alertDateString, $lineHashTable)
 	}
 	$json | ConvertTo-Json | Out-File $outputJsonPath
 	Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
