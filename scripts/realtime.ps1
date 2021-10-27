@@ -1,4 +1,4 @@
-$FILE_NAME = "2021-09-14"
+$FILE_NAME = "2021-10-01"
 $REALTIME_ALERTS_URI = "http://localhost:3001/realtime"
 $TXT_FILE_PATH = "$(Get-Location)\data\realtime-alerts\txt\$($FILE_NAME).txt"
 $OUTPUT_JSON_PATH = "$(Get-Location)\data\realtime-alerts\json\$($FILE_NAME).json"
@@ -60,10 +60,10 @@ function Main {
 			"rho" = $rho
 			"ask" = $ask
 		}
-		$json.Add($alertDateString, $lineHashTable)
+		$json.Add("$($ticker)|$($optionType)|$($alertDateString)", $lineHashTable)
     }
     $json | ConvertTo-Json | Out-File $outputJsonPath
-	# Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+	Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 }
 
 Main $TXT_FILE_PATH $OUTPUT_JSON_PATH $REALTIME_ALERTS_URI
