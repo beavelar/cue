@@ -3,35 +3,33 @@ $REALTIME_ALERTS_URI = "http://localhost:3001/realtime"
 $TXT_FILE_PATH = "$(Get-Location)\data\realtime-alerts\txt\$($FILE_NAME).txt"
 $OUTPUT_JSON_PATH = "$(Get-Location)\data\realtime-alerts\json\$($FILE_NAME).json"
 
-function Main {
-	param ($txtFilePath, $outputJsonPath, $uri)
-	$data = Get-Content -Path $txtFilePath
+function TxtToJSON {
+	param($txt)
 	$json = [ordered]@{}
-
 	try {
-		for ($index = 0; $index -lt $data.Length; $index = $index + 46) {
-			$header = $data[$index].Split(" ")
+		for ($index = 0; $index -lt $txt.Length; $index = $index + 46) {
+			$header = $txt[$index].Split(" ")
 			$ticker = $header[0].Replace("$", "")
 			$optionType = if ($header[2] -eq "C") { "Call" } else { "Put" }
-			$alertDate = Get-Date $data[$index+22]
+			$alertDate = Get-Date $txt[$index+22]
 			$alertDateString = $alertDate.ToString("yyyy-MM-ddThh:mm:ss")
 			$alertTimeString = $alertDate.ToString("hh:mm:ss")
 			$expiryDate = Get-Date $header[1]
 			$daysToExp = ($expiryDate - $alertDate).Days
-			$underlying = [double]$data[$index+16].Replace("$", "").Replace(",", "")
+			$underlying = [double]$txt[$index+16].Replace("$", "").Replace(",", "")
 			$strike = [double]$header[3].Replace("$", "").Replace(",", "")
 			$diff = if ($underlying -gt $strike) { (($strike/$underlying)-1)*100 } else { ($strike-$underlying)*100 }
-			$volume = [int]$data[$index+28]
-			$openInterest = [int]$data[$index+26]
+			$volume = [int]$txt[$index+28]
+			$openInterest = [int]$txt[$index+26]
 			$vol_oi = $volume/$openInterest
-			$impliedVolatility = [double]$data[$index+30].Replace("%", "")
-			$delta = [double]$data[$index+32]
-			$gamma = [double]$data[$index+40]
-			$vega = [double]$data[$index+38]
-			$theta = [double]$data[$index+42]
-			$rho = [double]$data[$index+44]
-			$ask = [double]$data[$index+20].Replace("$", "")
-
+			$impliedVolatility = [double]$txt[$index+30].Replace("%", "")
+			$delta = [double]$txt[$index+32]
+			$gamma = [double]$txt[$index+40]
+			$vega = [double]$txt[$index+38]
+			$theta = [double]$txt[$index+42]
+			$rho = [double]$txt[$index+44]
+			$ask = [double]$txt[$index+20].Replace("$", "")
+	
 			$lineHashTable = @{
 				"ticker" = $ticker
 				"option_type" = $optionType
@@ -55,11 +53,33 @@ function Main {
 			}
 			$json.Add("$($ticker)|$($optionType)|$($alertDateString)", $lineHashTable)
 		}
-		$json | ConvertTo-Json | Out-File $outputJsonPath
-		Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+		$json | ConvertTo-Json
+		return $json
 	}
 	catch {
 		Write-Host "Whoopsies"
+	}
+	return $null
+}
+function Main {
+	param ($txtFilePath, $outputJsonPath, $uri)
+	if (-not (Test-Path -Path $txtFilePath -PathType Leaf)) {
+		Write-Host "No txt file :("
+		return
+	}
+	if ((Test-Path -Path $outputJsonPath -PathType Leaf) -and ($null -ne ($json = Get-Content $outputJsonPath))) {
+		Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+	}
+	else {
+		$data = Get-Content -Path $txtFilePath
+		$json = TxtToJSON $data
+		if ($null -ne $json) {
+			$json | Out-File $outputJsonPath
+			Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+		}
+		else {
+			Write-Host "Empty json :("
+		}
 	}
 }
 

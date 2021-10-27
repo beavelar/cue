@@ -11,14 +11,12 @@ function GetWinLoss {
 	return -not ($dateDiff -gt 0 -and $lossPL -lt -.25)
 }
 
-function Main {
-	param ($csvFilePath, $outputJsonPath, $uri)
-	$data = Import-Csv -Path $csvFilePath
+function CSVToJSON {
+	param($csv)
 	$json = [ordered]@{}
 	$TextInfo = (Get-Culture).TextInfo
-
 	try {
-		foreach ($line in $data) {
+		foreach ($line in $csv) {
 			$alertDateString = $line.alert_time.Replace(" ", "T")
 			$highDateString = $line.high_date_time.Replace(" ", "T")
 			$lowDateString = $line.low_date_time.Replace(" ", "T")
@@ -65,11 +63,34 @@ function Main {
 			}
 			$json.Add("$($line.ticker_symbol)|$($TextInfo.ToTitleCase($line.option_type))|$($alertDateString)", $lineHashTable)
 		}
-		$json | ConvertTo-Json | Out-File $outputJsonPath
-		Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+		$json | ConvertTo-Json
+		return $json
 	}
 	catch {
 		Write-Host "Whoopsies"
+	}
+	return $null
+}
+
+function Main {
+	param ($csvFilePath, $outputJsonPath, $uri)
+	if (-not (Test-Path -Path $csvFilePath -PathType Leaf)) {
+		Write-Host "No csv file :("
+		return
+	}
+	if ((Test-Path -Path $outputJsonPath -PathType Leaf) -and ($null -ne ($json = Get-Content $outputJsonPath))) {
+		Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+	}
+	else {
+		$data = Import-Csv -Path $csvFilePath
+		$json = CSVToJSON $data
+		if ($null -ne $json) {
+			$json | Out-File $outputJsonPath
+			Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
+		}
+		else {
+			Write-Host "Empty json :("
+		}
 	}
 }
 
