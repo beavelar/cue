@@ -1,6 +1,7 @@
 $FILE_NAME = "2021-08"
-$CSV_FILE_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\csv\$($FILE_NAME).csv"
-$OUTPUT_JSON_PATH = "D:\Projects\Programming\Cue\data\historical-alerts\json\$($FILE_NAME).json"
+$HISTORICAL_ALERTS_URI = "http://localhost:3001/historical"
+$CSV_FILE_PATH = "$(Get-Location)\data\historical-alerts\csv\$($FILE_NAME).csv"
+$OUTPUT_JSON_PATH = "$(Get-Location)\data\historical-alerts\json\$($FILE_NAME).json"
 
 function GetWinLoss {
 	param($ask, $low, $lowDate, $alertDate)
@@ -11,7 +12,7 @@ function GetWinLoss {
 }
 
 function Main {
-	param ($csvFilePath, $outputJsonPath)
+	param ($csvFilePath, $outputJsonPath, $uri)
 	$data = Import-Csv -Path $csvFilePath
 	$json = [ordered]@{}
 	$TextInfo = (Get-Culture).TextInfo
@@ -63,7 +64,8 @@ function Main {
 		}
 		$json.Add($line.alert_time, $lineHashTable)
 	}
-	$json | ConvertTo-Json | Out-File $outputJsonPath	
+	$json | ConvertTo-Json | Out-File $outputJsonPath
+	Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 }
 
-Main $CSV_FILE_PATH $OUTPUT_JSON_PATH
+Main $CSV_FILE_PATH $OUTPUT_JSON_PATH $HISTORICAL_ALERTS_URI
