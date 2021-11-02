@@ -7,15 +7,11 @@ services:
       - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
   historical:
     build: ./alerts/historical
-    # Watchdogs doesn't work...
-    # volumes:
-    #    - ./data/realtime-alerts:${HISTORICAL_ALERTS_DIRECTORY}
     environment:
-      - HISTORICAL_ALERTS_DIRECTORY=${HISTORICAL_ALERTS_DIRECTORY}
+      - HISTORICAL_ALERTS_HOSTNAME=${HISTORICAL_ALERTS_HOSTNAME}
+      - HISTORICAL_ALERTS_PORT=${HISTORICAL_ALERTS_PORT}
   realtime:
     build: ./alerts/realtime
-    # Watchdogs doesn't work...
-    # volumes:
-    #    - ./data/realtime-alerts:${REALTIME_ALERTS_DIRECTORY}
     environment:
-      - REALTIME_ALERTS_DIRECTORY=${REALTIME_ALERTS_DIRECTORY}
+      - REALTIME_ALERTS_HOSTNAME=${REALTIME_ALERTS_HOSTNAME}
+      - REALTIME_ALERTS_PORT=${REALTIME_ALERTS_PORT}
