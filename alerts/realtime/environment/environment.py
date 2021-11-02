@@ -16,7 +16,9 @@ class environment:
 
 	This class will contain the environment variables for the scraper:
 
-	- realtime_alerts_dir
+	- realtime_server_hostname
+
+	- realtime_server_port
 	'''
 	def __init__(self) -> None:
 		'''
@@ -32,8 +34,10 @@ class environment:
 		logger.info('Retrieving environment variables')
 		try:
 			load_dotenv()
-			self.realtime_alerts_dir = os.getenv('REALTIME_ALERTS_DIRECTORY', '')
+			self.realtime_server_hostname = os.getenv('REALTIME_SERVER_HOSTNAME', '')
+			self.realtime_server_port = os.getenv('REALTIME_SERVER_PORT', '')
 		except Exception as ex:
 			logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 			logger.critical(str(ex))
-			self.realtime_alerts_dir = ''
+			self.realtime_server_hostname = ''
+			self.realtime_server_port = ''

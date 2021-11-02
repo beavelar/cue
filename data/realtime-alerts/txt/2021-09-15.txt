@@ -1,0 +1,1425 @@
+$TLRY 2021-09-17 C $11.50
+Tilray Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-17
+Underlying
+$12.18
+Bid
+$0.73
+Ask
+$0.78
+Alerted At
+9/15/2021, 08:13
+Daily $ Volume
+$154,548.50
+Open Interest
+259
+Volume
+2047
+Implied Volatility
+90.72%
+Delta
+0.794
+Highest Since Alert
+$0.68
+Highest % Change
+-12.82%
+Vega
+0.0027
+Gamma
+0.3269
+Theta
+-0.0545
+Rho
+0.0555
+
+$CRK 2021-10-15 C $10.00
+Comstock Resources Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$9.26
+Bid
+$0.50
+Ask
+$0.55
+Alerted At
+9/15/2021, 08:26
+Daily $ Volume
+$190,365.00
+Open Interest
+29
+Volume
+3626
+Implied Volatility
+77.51%
+Delta
+0.4033
+Highest Since Alert
+$0.55
+Highest % Change
+0.00%
+Vega
+0.0103
+Gamma
+0.1878
+Theta
+-0.0132
+Rho
+0.2653
+
+$COG 2021-09-24 C $21.00
+Cabot Oil & Gas Corp
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-24
+Underlying
+$19.81
+Bid
+$0.20
+Ask
+$0.30
+Alerted At
+9/15/2021, 08:31
+Daily $ Volume
+$29,575.00
+Open Interest
+36
+Volume
+1183
+Implied Volatility
+55.82%
+Delta
+0.2676
+Highest Since Alert
+$0.35
+Highest % Change
+16.67%
+Vega
+0.0104
+Gamma
+0.187
+Theta
+-0.0313
+Rho
+0.1275
+
+$SWN 2022-03-18 C $7.00
+Southwestern Energy Co
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-03-18
+Underlying
+$5.35
+Bid
+$0.53
+Ask
+$0.55
+Alerted At
+9/15/2021, 08:46
+Daily $ Volume
+$308,880.00
+Open Interest
+715
+Volume
+5720
+Implied Volatility
+69.28%
+Delta
+0.3801
+Highest Since Alert
+$0.63
+Highest % Change
+14.55%
+Vega
+0.0144
+Gamma
+0.145
+Theta
+-0.0027
+Rho
+0.7511
+
+$RDSA 2021-10-15 C $45.00
+-
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$41.14
+Bid
+$0.20
+Ask
+$0.25
+Alerted At
+9/15/2021, 08:47
+Daily $ Volume
+$169,740.00
+Open Interest
+1402
+Volume
+7544
+Implied Volatility
+27.93%
+Delta
+0.1395
+Highest Since Alert
+$0.30
+Highest % Change
+20.00%
+Vega
+0.0263
+Gamma
+0.0671
+Theta
+-0.0121
+Rho
+0.4567
+
+$ET 2021-10-29 C $10.00
+Energy Transfer LP
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-29
+Underlying
+$9.37
+Bid
+$0.24
+Ask
+$0.29
+Alerted At
+9/15/2021, 09:19
+Daily $ Volume
+$76,717.50
+Open Interest
+269
+Volume
+2895
+Implied Volatility
+38.87%
+Delta
+0.3384
+Highest Since Alert
+$0.31
+Highest % Change
+6.90%
+Vega
+0.0119
+Gamma
+0.2887
+Theta
+-0.0052
+Rho
+0.3519
+
+$MLCO 2021-10-15 P $9.00
+Melco Resorts & Entertainment LTD
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$10.48
+Bid
+$0.25
+Ask
+$0.30
+Alerted At
+9/15/2021, 09:20
+Daily $ Volume
+$29,892.50
+Open Interest
+62
+Volume
+1087
+Implied Volatility
+72.39%
+Delta
+-0.2025
+Highest Since Alert
+$0.55
+Highest % Change
+83.33%
+Vega
+0.0085
+Gamma
+0.1292
+Theta
+-0.0102
+Rho
+-0.1984
+
+$UBER 2021-09-24 P $35.00
+Uber Technologies Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-24
+Underlying
+$38.45
+Bid
+$0.15
+Ask
+$0.16
+Alerted At
+9/15/2021, 09:28
+Daily $ Volume
+$20,537.50
+Open Interest
+405
+Volume
+1325
+Implied Volatility
+48.63%
+Delta
+-0.1044
+Highest Since Alert
+$0.16
+Highest % Change
+0.00%
+Vega
+0.0111
+Gamma
+0.0609
+Theta
+-0.0292
+Rho
+-0.1053
+
+$SQQQ 2022-03-18 P $6.00
+ProShares UltraPro Short QQQ
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-03-18
+Underlying
+$7.63
+Bid
+$0.54
+Ask
+$0.63
+Alerted At
+9/15/2021, 09:28
+Daily $ Volume
+$19,890.00
+Open Interest
+94
+Volume
+340
+Implied Volatility
+61.86%
+Delta
+-0.225
+Highest Since Alert
+$0.65
+Highest % Change
+3.17%
+Vega
+0.0162
+Gamma
+0.0892
+Theta
+-0.0028
+Rho
+-1.1443
+
+$FXI 2021-10-22 P $37.00
+iShares China Large-Cap ETF
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-22
+Underlying
+$39.94
+Bid
+$0.48
+Ask
+$0.52
+Alerted At
+9/15/2021, 09:35
+Daily $ Volume
+$50,000.00
+Open Interest
+27
+Volume
+1000
+Implied Volatility
+31.54%
+Delta
+-0.2093
+Highest Since Alert
+$0.53
+Highest % Change
+1.92%
+Vega
+0.0367
+Gamma
+0.0715
+Theta
+-0.0155
+Rho
+-0.9034
+
+$MO 2021-10-01 P $46.00
+Altria Group Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-01
+Underlying
+$49.11
+Bid
+$0.17
+Ask
+$0.18
+Alerted At
+9/15/2021, 09:50
+Daily $ Volume
+$90,107.50
+Open Interest
+621
+Volume
+5149
+Implied Volatility
+27.23%
+Delta
+-0.1212
+Highest Since Alert
+$0.19
+Highest % Change
+5.56%
+Vega
+0.0209
+Gamma
+0.0715
+Theta
+-0.0176
+Rho
+-0.2721
+
+$CLF 2021-10-08 C $25.00
+Cleveland-Cliffs Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-08
+Underlying
+$22.84
+Bid
+$0.62
+Ask
+$0.67
+Alerted At
+9/15/2021, 09:52
+Daily $ Volume
+$134,805.00
+Open Interest
+261
+Volume
+2090
+Implied Volatility
+61.58%
+Delta
+0.3075
+Highest Since Alert
+$0.68
+Highest % Change
+1.49%
+Vega
+0.0203
+Gamma
+0.0991
+Theta
+-0.0269
+Rho
+0.4057
+
+$SPY 2021-09-20 P $380.00
+Spdr S&P 500 Etf Trust
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-20
+Underlying
+$445.17
+Bid
+$0.05
+Ask
+$0.06
+Alerted At
+9/15/2021, 10:10
+Daily $ Volume
+$55,555.50
+Open Interest
+528
+Volume
+10101
+Implied Volatility
+52.39%
+Delta
+-0.0058
+Highest Since Alert
+$0.07
+Highest % Change
+16.67%
+Vega
+0.0088
+Gamma
+0.0006
+Theta
+-0.0458
+Rho
+-0.0378
+
+$GE 2021-10-01 P $94.00
+General Electric Co
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-01
+Underlying
+$102.11
+Bid
+$0.51
+Ask
+$0.56
+Alerted At
+9/15/2021, 10:26
+Daily $ Volume
+$119,465.50
+Open Interest
+128
+Volume
+2233
+Implied Volatility
+36.10%
+Delta
+-0.1304
+Highest Since Alert
+$0.57
+Highest % Change
+1.79%
+Vega
+0.0456
+Gamma
+0.0273
+Theta
+-0.0513
+Rho
+-0.6141
+
+$SDC 2021-10-29 P $5.50
+SmileDirectClub Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-29
+Underlying
+$5.78
+Bid
+$0.86
+Ask
+$0.94
+Alerted At
+9/15/2021, 10:34
+Daily $ Volume
+$27,180.00
+Open Interest
+7
+Volume
+302
+Implied Volatility
+131.49%
+Delta
+-0.3707
+Highest Since Alert
+$0.94
+Highest % Change
+0.00%
+Vega
+0.0076
+Gamma
+0.1423
+Theta
+-0.0116
+Rho
+-0.3681
+
+$SLV 2022-04-14 C $28.00
+iShares Silver Trust
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-04-14
+Underlying
+$22.00
+Bid
+$0.60
+Ask
+$0.61
+Alerted At
+9/15/2021, 10:37
+Daily $ Volume
+$60,500.00
+Open Interest
+27
+Volume
+1000
+Implied Volatility
+33.97%
+Delta
+0.2113
+Highest Since Alert
+$0.62
+Highest % Change
+1.64%
+Vega
+0.0484
+Gamma
+0.0509
+Theta
+-0.0039
+Rho
+2.3401
+
+$UEC 2022-02-18 C $4.00
+Uranium Energy Corp
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-02-18
+Underlying
+$3.54
+Bid
+$0.90
+Ask
+$0.95
+Alerted At
+9/15/2021, 10:41
+Daily $ Volume
+$246,050.00
+Open Interest
+285
+Volume
+2660
+Implied Volatility
+121.68%
+Delta
+0.5836
+Highest Since Alert
+$1.05
+Highest % Change
+10.53%
+Vega
+0.0089
+Gamma
+0.1359
+Theta
+-0.0033
+Rho
+0.4893
+
+$TROX 2021-10-15 P $21.00
+Tronox Holdings plc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$24.72
+Bid
+$0.20
+Ask
+$0.35
+Alerted At
+9/15/2021, 10:58
+Daily $ Volume
+$48,867.50
+Open Interest
+86
+Volume
+1777
+Implied Volatility
+57.57%
+Delta
+-0.1432
+Highest Since Alert
+$0.35
+Highest % Change
+0.00%
+Vega
+0.0161
+Gamma
+0.0553
+Theta
+-0.0153
+Rho
+-0.3192
+
+$PFE 2022-03-18 P $35.00
+Pfizer Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-03-18
+Underlying
+$44.87
+Bid
+$0.48
+Ask
+$0.51
+Alerted At
+9/15/2021, 11:10
+Daily $ Volume
+$594,049.50
+Open Interest
+893
+Volume
+12001
+Implied Volatility
+28.91%
+Delta
+-0.1034
+Highest Since Alert
+$0.52
+Highest % Change
+1.96%
+Vega
+0.0571
+Gamma
+0.0195
+Theta
+-0.0048
+Rho
+-2.5905
+
+$BP 2021-09-24 C $27.00
+Bp Plc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-24
+Underlying
+$25.59
+Bid
+$0.10
+Ask
+$0.11
+Alerted At
+9/15/2021, 11:30
+Daily $ Volume
+$77,847.00
+Open Interest
+862
+Volume
+7414
+Implied Volatility
+32.60%
+Delta
+0.1535
+Highest Since Alert
+$0.12
+Highest % Change
+9.09%
+Vega
+0.0096
+Gamma
+0.1794
+Theta
+-0.017
+Rho
+0.0958
+
+$LCID 2021-10-29 C $25.00
+Lucid Group Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-29
+Underlying
+$19.87
+Bid
+$0.75
+Ask
+$0.79
+Alerted At
+9/15/2021, 11:39
+Daily $ Volume
+$42,889.00
+Open Interest
+157
+Volume
+557
+Implied Volatility
+82.75%
+Delta
+0.2566
+Highest Since Alert
+$0.83
+Highest % Change
+5.06%
+Vega
+0.0223
+Gamma
+0.0563
+Theta
+-0.0208
+Rho
+0.5239
+
+$ARKK 2021-10-29 P $90.00
+ARK Innovation ETF
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-29
+Underlying
+$116.88
+Bid
+$0.84
+Ask
+$0.91
+Alerted At
+9/15/2021, 11:47
+Daily $ Volume
+$43,050.00
+Open Interest
+8
+Volume
+492
+Implied Volatility
+56.21%
+Delta
+-0.0782
+Highest Since Alert
+$0.91
+Highest % Change
+0.00%
+Vega
+0.0593
+Gamma
+0.0064
+Theta
+-0.0386
+Rho
+-1.2113
+
+$ATUS 2021-11-19 C $30.00
+Altice USA Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-11-19
+Underlying
+$26.65
+Bid
+$0.65
+Ask
+$0.70
+Alerted At
+9/15/2021, 11:55
+Daily $ Volume
+$140,197.50
+Open Interest
+623
+Volume
+2077
+Implied Volatility
+39.86%
+Delta
+0.2678
+Highest Since Alert
+$0.70
+Highest % Change
+0.00%
+Vega
+0.0371
+Gamma
+0.0734
+Theta
+-0.0113
+Rho
+1.1533
+
+$WMB 2022-02-18 C $29.00
+Williams Companies Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2022-02-18
+Underlying
+$25.67
+Bid
+$0.30
+Ask
+$0.40
+Alerted At
+9/15/2021, 12:01
+Daily $ Volume
+$22,260.00
+Open Interest
+25
+Volume
+636
+Implied Volatility
+21.39%
+Delta
+0.1882
+Highest Since Alert
+$0.50
+Highest % Change
+25.00%
+Vega
+0.0451
+Gamma
+0.0748
+Theta
+-0.0028
+Rho
+1.9181
+
+$ARKK 2021-10-29 C $135.00
+ARK Innovation ETF
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-29
+Underlying
+$116.83
+Bid
+$0.46
+Ask
+$0.56
+Alerted At
+9/15/2021, 12:04
+Daily $ Volume
+$28,101.00
+Open Interest
+34
+Volume
+551
+Implied Volatility
+30.87%
+Delta
+0.0909
+Highest Since Alert
+$0.61
+Highest % Change
+8.93%
+Vega
+0.0664
+Gamma
+0.013
+Theta
+-0.0222
+Rho
+1.2222
+
+$ANY 2021-09-17 C $7.00
+Sphere 3D Corp
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-09-17
+Underlying
+$7.46
+Bid
+$0.85
+Ask
+$0.90
+Alerted At
+9/15/2021, 12:15
+Daily $ Volume
+$3,292,712.50
+Open Interest
+11838
+Volume
+37631
+Implied Volatility
+298.49%
+Delta
+0.6334
+Highest Since Alert
+$1.10
+Highest % Change
+22.22%
+Vega
+0.0021
+Gamma
+0.2182
+Theta
+-0.1251
+Rho
+0.0223
+
+$XLV 2021-10-01 P $127.00
+The Health Care Select Sector SPDR Fund
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-01
+Underlying
+$133.65
+Bid
+$0.31
+Ask
+$0.33
+Alerted At
+9/15/2021, 12:31
+Daily $ Volume
+$82,208.00
+Open Interest
+27
+Volume
+2569
+Implied Volatility
+19.52%
+Delta
+-0.1169
+Highest Since Alert
+$0.34
+Highest % Change
+3.03%
+Vega
+0.0551
+Gamma
+0.0358
+Theta
+-0.0367
+Rho
+-0.7036
+
+$TSLA 2021-10-22 C $980.00
+Tesla Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-22
+Underlying
+$754.31
+Bid
+$0.69
+Ask
+$0.84
+Alerted At
+9/15/2021, 12:52
+Daily $ Volume
+$24,327.00
+Open Interest
+10
+Volume
+318
+Implied Volatility
+39.68%
+Delta
+0.0224
+Highest Since Alert
+$0.94
+Highest % Change
+11.90%
+Vega
+0.1284
+Gamma
+0.0006
+Theta
+-0.0687
+Rho
+1.6428
+
+$CVE 2021-10-15 C $10.00
+Cenovus Energy Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$9.04
+Bid
+$0.15
+Ask
+$0.20
+Alerted At
+9/15/2021, 12:53
+Daily $ Volume
+$38,832.50
+Open Interest
+560
+Volume
+2219
+Implied Volatility
+48.37%
+Delta
+0.2498
+Highest Since Alert
+$0.20
+Highest % Change
+0.00%
+Vega
+0.0082
+Gamma
+0.2528
+Theta
+-0.0065
+Rho
+0.1717
+
+$AAPL 2021-10-01 P $138.00
+Apple Inc
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-01
+Underlying
+$148.46
+Bid
+$0.51
+Ask
+$0.52
+Alerted At
+9/15/2021, 13:17
+Daily $ Volume
+$86,365.50
+Open Interest
+558
+Volume
+1677
+Implied Volatility
+29.47%
+Delta
+-0.1126
+Highest Since Alert
+$0.48
+Highest % Change
+-7.69%
+Vega
+0.0596
+Gamma
+0.0208
+Theta
+-0.0546
+Rho
+-0.7584
+
+$EWZ 2021-10-15 C $42.00
+iShares MSCI Brazil ETF
+Emoji legend
+Since Alert
+1m
+3m
+6m
+Volume
+Strike
+Underlying
+News
+Technicals
+Technicals
+Expiry
+2021-10-15
+Underlying
+$34.75
+Bid
+$0.02
+Ask
+$0.03
+Alerted At
+9/15/2021, 13:53
+Daily $ Volume
+$116,340.00
+Open Interest
+6318
+Volume
+46536
+Implied Volatility
+32.23%
+Delta
+0.0221
+Highest Since Alert
+$0.04
+Highest % Change
+33.33%
+Vega
+0.0052
+Gamma
+0.0164
+Theta
+-0.0028
+Rho
+0.061
