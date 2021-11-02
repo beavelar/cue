@@ -34,8 +34,8 @@ class environment:
 		logger.info('Retrieving environment variables')
 		try:
 			load_dotenv()
-			self.realtime_server_hostname = os.getenv('REALTIME_ALERTS_HOSTNAME', '')
-			self.realtime_server_port = os.getenv('REALTIME_ALERTS_PORT', '')
+			self.realtime_server_hostname = os.getenv('REALTIME_SERVER_HOSTNAME', '')
+			self.realtime_server_port = os.getenv('REALTIME_SERVER_PORT', '')
 		except Exception as ex:
 			logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 			logger.critical(str(ex))
