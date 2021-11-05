@@ -1,4 +1,14 @@
 services:
+  proxy:
+    build: ./proxy
+    environment:
+      - PROXY_PORT=${PROXY_PORT}
+      - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
+      - HISTORICAL_SERVER_PORT=${HISTORICAL_SERVER_PORT}
+      - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
+      - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
+    ports:
+      - ${PROXY_PORT}:${PROXY_PORT}
   # analysis:
   #   build: ./analysis
   #   environment:
@@ -15,3 +25,7 @@ services:
     environment:
       - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
+  # mongodb:
+  #   image: mongo:latest
+  #   volumes:
+  #     - /database/data:/data/db
