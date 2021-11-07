@@ -9,6 +9,10 @@ services:
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
     ports:
       - ${PROXY_PORT}:${PROXY_PORT}
+  db-store:
+    build: ./database
+    environment:
+      - DB_STORE_PORT=${DB_STORE_PORT}
   # analysis:
   #   build: ./analysis
   #   environment:
