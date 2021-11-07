@@ -11,6 +11,8 @@ services:
       - ${PROXY_PORT}:${PROXY_PORT}
   db-store:
     build: ./database
+    depends_on:
+      - "mongodb"
     environment:
       - DB_STORE_PORT=${DB_STORE_PORT}
   # analysis:
@@ -29,7 +31,7 @@ services:
     environment:
       - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
-  # mongodb:
-  #   image: mongo:latest
-  #   volumes:
-  #     - /database/data:/data/db
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - /database/data:/data/db
