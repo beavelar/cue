@@ -15,6 +15,7 @@ services:
       - "mongodb"
     environment:
       - DB_STORE_PORT=${DB_STORE_PORT}
+      - DATABASE_URI=${DATABASE_URI}
   # analysis:
   #   build: ./analysis
   #   environment:
