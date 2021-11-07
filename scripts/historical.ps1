@@ -40,7 +40,7 @@ function CSVToJSON {
 			$lineHashTable = @{
 				"ticker" = $line.ticker_symbol
 				"option_type" = $TextInfo.ToTitleCase($line.option_type)
-				"alert_time" = $alertDateString
+				"alert_date" = $alertDateString
 				"time_of_day" = $alertDateString.Split("T")[1].Replace("Z", "")
 				"expires" = $line.expires_at
 				"days_to_expiry" = ($expireDate - $alertDate).Days
