@@ -56,7 +56,7 @@ function CSVToJSON {
 				"vega" = [double]$line.vega
 				"theta" = [double]$line.theta
 				"rho" = [double]$line.rho
-				"ask" = [int]$line.ask
+				"ask" = [double]$line.ask
 				"highest_ask" = $highestAsk
 				"p/l" = $pl
 				"time_passed" = $timePassed
