@@ -63,8 +63,7 @@ function CSVToJSON {
 			}
 			$json.Add("$($line.ticker_symbol)|$($TextInfo.ToTitleCase($line.option_type))|$($alertDateString)", $lineHashTable)
 		}
-		$json | ConvertTo-Json
-		return $json
+		return ConvertTo-Json $json
 	}
 	catch {
 		Write-Host "Whoopsies"
