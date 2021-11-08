@@ -66,19 +66,27 @@ export class DBStore {
     connect(url);
   }
 
-  public writeRealtime(realtime: RealtimeAlert): void {
+  public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
     this.logger.log('writeRealtime', `Received realtime write request`);
-    for (const key of Object.keys(realtime)) {
-      const doc = new this.RealtimeModel(realtime[key]);
-      doc.save();
-    }
+    const promise = new Promise<string>((resolve, reject) => {
+      this.RealtimeModel.insertMany(Object.values(realtime)).then((onfulfilled) => {
+        resolve('Realtime alerts written');
+      }).catch((onrejected) => {
+        reject(`Failed to write data to database: ${onrejected}`);
+      });
+    });
+    return promise;
   }
 
-  public writeHistorical(historical: HistoricalAlert): void {
+  public async writeHistorical(historical: HistoricalAlert): Promise<string> {
     this.logger.log('writeHistorical', `Received historical write request`);
-    for (const key of Object.keys(historical)) {
-      const doc = new this.HistoricalModel(historical[key]);
-      doc.save();
-    }
+    const promise = new Promise<string>((resolve, reject) => {
+      this.HistoricalModel.insertMany(Object.values(historical)).then((onfulfilled) => {
+        resolve('Historical alerts written');
+      }).catch((onrejected) => {
+        reject(`Failed to write data to database: ${onrejected}`);
+      });
+    });
+    return promise;
   }
 }

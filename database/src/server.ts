@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { Environment } from './env/env';
 import { Logger } from './logging/logger';
 import { DBStore } from './store/db-store';
@@ -9,17 +8,25 @@ const env = new Environment();
 if (env.validKeys()) {
   const store = new DBStore(env.DATABASE_URI);
   const server = express();
-  server.use(bodyParser.urlencoded({ extended: true }));
-  server.use(bodyParser.json());
+  server.use(express.urlencoded({ extended: true }));
+  server.use(express.json());
 
   server.post('/write_realtime', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
-    store.writeRealtime(req.body);
+    store.writeRealtime(req.body).then((onfulfilled) => {
+      res.status(200).json('Realtime alerts written');
+    }).catch((onrejected) => {
+      res.status(500).json(onrejected);
+    });
   });
 
   server.post('/write_historical', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
-    store.writeHistorical(req.body);
+    store.writeHistorical(req.body).then((onfulfilled) => {
+      res.status(200).json('Historical alerts written');
+    }).catch((onrejected) => {
+      res.status(500).json(onrejected);
+    });
   });
 
   server.listen(env.DB_STORE_PORT, () => {
