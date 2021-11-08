@@ -11,10 +11,28 @@ if (env.validKeys()) {
   server.use(express.json({ limit: '50mb' }));
   server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+  server.get('/get_realtime', (req, res) => {
+    logger.log('main', `Receive GET request - ${req.url}`);
+    store.getAllRealtime().then((data) => {
+      res.status(200).json(data);
+    }).catch((err) => {
+      res.status(500).json(err);
+    });
+  });
+
+  server.get('/get_historical', (req, res) => {
+    logger.log('main', `Receive GET request - ${req.url}`);
+    store.getAllHistorical().then((data) => {
+      res.status(200).json(data);
+    }).catch((err) => {
+      res.status(500).json(err);
+    });
+  });
+
   server.post('/write_realtime', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
     store.writeRealtime(req.body).then((onfulfilled) => {
-      res.status(200).json('Realtime alerts written');
+      res.status(200).json(onfulfilled);
     }).catch((onrejected) => {
       res.status(500).json(onrejected);
     });
@@ -23,7 +41,7 @@ if (env.validKeys()) {
   server.post('/write_historical', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
     store.writeHistorical(req.body).then((onfulfilled) => {
-      res.status(200).json('Historical alerts written');
+      res.status(200).json(onfulfilled);
     }).catch((onrejected) => {
       res.status(500).json(onrejected);
     });

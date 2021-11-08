@@ -66,6 +66,34 @@ export class DBStore {
     connect(url);
   }
 
+  public async getAllRealtime(): Promise<Array<RealtimeContents>> {
+    const promise = new Promise<Array<RealtimeContents>>((resolve, reject) => {
+      this.RealtimeModel.find((err, data) => {
+        if (err) {
+          reject(`Failed to get all realtime data: ${err}`);
+        }
+        else {
+          resolve(data);
+        }
+      });
+    });
+    return promise;
+  }
+
+  public async getAllHistorical(): Promise<Array<HistoricalContents>> {
+    const promise = new Promise<Array<HistoricalContents>>((resolve, reject) => {
+      this.HistoricalModel.find((err, data) => {
+        if (err) {
+          reject(`Failed to get all historical data: ${err}`);
+        }
+        else {
+          resolve(data);
+        }
+      });
+    });
+    return promise;
+  }
+
   public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
     this.logger.log('writeRealtime', `Received realtime write request`);
     const promise = new Promise<string>((resolve, reject) => {
