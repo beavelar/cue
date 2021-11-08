@@ -53,7 +53,7 @@ function TxtToJSON {
 			}
 			$json.Add("$($ticker)|$($optionType)|$($alertDateString)", $lineHashTable)
 		}
-		return ConvertTo-Json $json
+		return ConvertTo-Json $json -Compress
 	}
 	catch {
 		Write-Host "Whoopsies"
