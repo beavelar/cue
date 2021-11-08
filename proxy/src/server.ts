@@ -1,6 +1,5 @@
 import needle from 'needle';
 import express from 'express';
-import bodyParser from 'body-parser';
 import { Environment } from './env/env';
 import { Logger } from './logging/logger';
 
@@ -8,8 +7,8 @@ const logger = new Logger('server');
 const env = new Environment();
 if (env.validKeys()) {
   const server = express();
-  server.use(bodyParser.urlencoded({ extended: true }));
-  server.use(bodyParser.json());
+  server.use(express.json({ limit: '50mb' }));
+  server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
   server.post('/historical', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);

@@ -8,8 +8,8 @@ const env = new Environment();
 if (env.validKeys()) {
   const store = new DBStore(env.DATABASE_URI);
   const server = express();
-  server.use(express.urlencoded({ extended: true }));
-  server.use(express.json());
+  server.use(express.json({ limit: '50mb' }));
+  server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
   server.post('/write_realtime', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
