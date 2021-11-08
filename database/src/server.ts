@@ -12,13 +12,14 @@ if (env.validKeys()) {
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
 
-  server.post('/', (req, res) => {
+  server.post('/write_realtime', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
-    store.write({
-      name: 'TEST NAME',
-      email: 'TEST EMAIL',
-      avatar: 'TEST AVATAR'
-    });
+    store.writeRealtime(req.body);
+  });
+
+  server.post('/write_historical', (req, res) => {
+    logger.log('main', `Receive POST request - ${req.url}`);
+    store.writeHistorical(req.body);
   });
 
   server.listen(env.DB_STORE_PORT, () => {

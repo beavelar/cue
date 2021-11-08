@@ -1,27 +1,84 @@
-import { User } from '../types/user';
 import { Logger } from '../logging/logger';
 import { Schema, model, connect } from 'mongoose';
+import { RealtimeAlert, RealtimeContents } from '../types/db-store/realtime';
+import { HistoricalAlert, HistoricalContents } from '../types/db-store/historical';
 
 export class DBStore {
-  private readonly logger = new Logger('server');
-  private schema = new Schema<User>({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    avatar: String
-  });
-  private UserModel = model<User>('User', this.schema);
+  /** Logger for DBStore */
+  private readonly logger = new Logger('DBStore');
+  
+  /** Schema structure for realtime data points */
+  private realtimeSchema = new Schema<RealtimeContents>({
+    alert_date: { type: String, required: true },
+    ask: { type: Number, required: true },
+    days_to_expiry: { type: Number, required: true },
+    delta: { type: Number, required: true },
+    diff: { type: Number, required: true },
+    expires: { type: String, required: true },
+    gamma: { type: Number, required: true },
+    implied_volatility: { type: Number, required: true },
+    open_interest: { type: Number, required: true },
+    option_type: { type: String, required: true },
+    rho: { type: Number, required: true },
+    strike: { type: Number, required: true },
+    theta: { type: Number, required: true },
+    ticker: { type: String, required: true },
+    time_of_day: { type: String, required: true },
+    underlying: { type: Number, required: true },
+    vega: { type: Number, required: true },
+    volume: { type: Number, required: true },
+    'vol/oi': { type: Number, required: true } 
+  }, { collection: 'realtime' });
+  
+  /** Schema structure for historical data points */
+  private historicalSchema = new Schema<HistoricalContents>({
+    alert_date: { type: String, required: true },
+    ask: { type: Number, required: true },
+    days_to_expiry: { type: Number, required: true },
+    delta: { type: Number, required: true },
+    diff: { type: Number, required: true },
+    expires: { type: String, required: true },
+    gamma: { type: Number, required: true },
+    highest_ask: { type: Number, required: true },
+    implied_volatility: { type: Number, required: true },
+    open_interest: { type: Number, required: true },
+    option_type: { type: String, required: true },
+    'p/l': { type: Number, required: true },
+    rho: { type: Number, required: true },
+    strike: { type: Number, required: true },
+    theta: { type: Number, required: true },
+    ticker: { type: String, required: true },
+    time_of_day: { type: String, required: true },
+    time_passed: { type: Number, required: true },
+    underlying: { type: Number, required: true },
+    vega: { type: Number, required: true },
+    volume: { type: Number, required: true },
+    'vol/oi': { type: Number, required: true }
+  }, { collection: 'historical' });
+
+  /** MongoDB model for realtime data points */
+  private RealtimeModel = model<RealtimeContents>('realtime', this.realtimeSchema);
+
+  /** MongoDB model for realtime data points */
+  private HistoricalModel = model<HistoricalContents>('historical', this.historicalSchema);
 
   constructor(url: string) {
     connect(url);
   }
 
-  public write(user: User): void {
-    this.logger.log('write', `Received write request: ${JSON.stringify(user)}`);
-    const doc = new this.UserModel({
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar
-    });
-    doc.save();
+  public writeRealtime(realtime: RealtimeAlert): void {
+    this.logger.log('writeRealtime', `Received realtime write request`);
+    for (const key of Object.keys(realtime)) {
+      const doc = new this.RealtimeModel(realtime[key]);
+      doc.save();
+    }
+  }
+
+  public writeHistorical(historical: HistoricalAlert): void {
+    this.logger.log('writeHistorical', `Received historical write request`);
+    for (const key of Object.keys(historical)) {
+      const doc = new this.HistoricalModel(historical[key]);
+      doc.save();
+    }
   }
 }
