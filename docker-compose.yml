@@ -27,11 +27,15 @@ services:
     environment:
       - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
       - HISTORICAL_SERVER_PORT=${HISTORICAL_SERVER_PORT}
+      - DB_STORE_HOSTNAME=${DB_STORE_HOSTNAME}
+      - DB_STORE_PORT=${DB_STORE_PORT}
   realtime:
     build: ./alerts/realtime
     environment:
       - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
+      - DB_STORE_HOSTNAME=${DB_STORE_HOSTNAME}
+      - DB_STORE_PORT=${DB_STORE_PORT}
   mongodb:
     image: mongo:latest
     volumes:
