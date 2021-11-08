@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.route('/', methods = ['POST'])
 def ingest():
+	logger.info('Received POST request')
 	data = request.form
 	logger.info(data)
 	return 'Hello World!'

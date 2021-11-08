@@ -40,7 +40,7 @@ function CSVToJSON {
 			$lineHashTable = @{
 				"ticker" = $line.ticker_symbol
 				"option_type" = $TextInfo.ToTitleCase($line.option_type)
-				"alert_time" = $alertDateString
+				"alert_date" = $alertDateString
 				"time_of_day" = $alertDateString.Split("T")[1].Replace("Z", "")
 				"expires" = $line.expires_at
 				"days_to_expiry" = ($expireDate - $alertDate).Days
@@ -56,15 +56,14 @@ function CSVToJSON {
 				"vega" = [double]$line.vega
 				"theta" = [double]$line.theta
 				"rho" = [double]$line.rho
-				"ask" = [int]$line.ask
+				"ask" = [double]$line.ask
 				"highest_ask" = $highestAsk
 				"p/l" = $pl
 				"time_passed" = $timePassed
 			}
 			$json.Add("$($line.ticker_symbol)|$($TextInfo.ToTitleCase($line.option_type))|$($alertDateString)", $lineHashTable)
 		}
-		$json | ConvertTo-Json
-		return $json
+		return ConvertTo-Json $json -Compress
 	}
 	catch {
 		Write-Host "Whoopsies"
