@@ -35,4 +35,4 @@ services:
   mongodb:
     image: mongo:latest
     volumes:
-      - /database/data:/data/db
+      - ./database/data:/data/db
