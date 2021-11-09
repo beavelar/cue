@@ -16,8 +16,8 @@ app = Flask(__name__)
 @app.route('/', methods = ['POST'])
 def ingest():
 	logger.info('Received POST request')
-	data = request.form
-	response = requests.post(f'http://{env.db_store_hostname}:{env.db_store_port}/write_historical', data=data)
+	data = request.json
+	response = requests.post(f'http://{env.db_store_hostname}:{env.db_store_port}/write_historical', json=data)
 	return response.text, response.status_code
 
 #########################################################################################################

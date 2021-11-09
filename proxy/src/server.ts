@@ -14,7 +14,7 @@ if (env.validKeys()) {
     logger.log('main', `Receive POST request - ${req.url}`);
     req.url = req.url.replace('/historical', '');
     const url = `http://${env.HISTORICAL_SERVER_HOSTNAME}:${env.HISTORICAL_SERVER_PORT}/`;
-    needle.post(url, req.body, (err, _res) => {
+    needle.post(url, req.body, { json: true }, (err, _res) => {
       if (err) {
         res.status(500).json(err);
       }
@@ -27,7 +27,7 @@ if (env.validKeys()) {
   server.post('/realtime', (req, res) => {
     logger.log('main', `Receive POST request - ${req.url}`);
     const url = `http://${env.REALTIME_SERVER_HOSTNAME}:${env.REALTIME_SERVER_PORT}/`;
-    needle.post(url, req.body, (err, _res) => {
+    needle.post(url, req.body, { json: true }, (err, _res) => {
       if (err) {
         res.status(500).json(err);
       }
