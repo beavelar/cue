@@ -19,6 +19,10 @@ class environment:
 	- historical_server_hostname
 
 	- historical_server_port
+
+	- db_store_hostname
+
+	- db_store_port
 	'''
 	def __init__(self) -> None:
 		'''
@@ -36,8 +40,12 @@ class environment:
 			load_dotenv()
 			self.historical_server_hostname = os.getenv('HISTORICAL_SERVER_HOSTNAME', '')
 			self.historical_server_port = os.getenv('HISTORICAL_SERVER_PORT', '')
+			self.db_store_hostname = os.getenv('DB_STORE_HOSTNAME', '')
+			self.db_store_port = os.getenv('DB_STORE_PORT', '')
 		except Exception as ex:
 			logger.critical('Failed to retrieve environment variables. Please verify environment variable exists')
 			logger.critical(str(ex))
 			self.historical_server_hostname = ''
 			self.historical_server_port = ''
+			self.db_store_hostname = ''
+			self.db_store_port = ''
