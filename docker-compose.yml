@@ -3,7 +3,7 @@ services:
     build:
       context: ./src/node/proxy
       dockerfile: Dockerfile-dev
-    # command: bash -c "set -xe; npm install; npm run build; npm start"
+    # command: bash -c "set -xe; npm install; npm start"
     command: bash -c "set -xe; npm start"
     # command: "tail -f /dev/null"
     environment:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./src/node/database
       dockerfile: Dockerfile-dev
-    # command: bash -c "set -xe; npm install; npm run build; npm start"
+    # command: bash -c "set -xe; npm install; npm start"
     command: bash -c "set -xe; npm start"
     # command: "tail -f /dev/null"
     depends_on:
