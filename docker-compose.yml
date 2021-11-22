@@ -1,6 +1,7 @@
 services:
   proxy:
     build: ./src/node/proxy
+    # command: "tail -f /dev/null"
     environment:
       - PROXY_PORT=${PROXY_PORT}
       - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
@@ -11,6 +12,7 @@ services:
       - ${PROXY_PORT}:${PROXY_PORT}
   db-store:
     build: ./src/node/database
+    # command: "tail -f /dev/null"
     depends_on:
       - "mongodb"
     environment:
@@ -24,6 +26,7 @@ services:
   #     - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
   historical:
     build: ./src/python/historical
+    # command: "tail -f /dev/null"
     environment:
       - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
       - HISTORICAL_SERVER_PORT=${HISTORICAL_SERVER_PORT}
@@ -31,6 +34,7 @@ services:
       - DB_STORE_PORT=${DB_STORE_PORT}
   realtime:
     build: ./src/python/realtime
+    # command: "tail -f /dev/null"
     environment:
       - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
