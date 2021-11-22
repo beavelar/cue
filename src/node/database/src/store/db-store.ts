@@ -81,6 +81,18 @@ export class DBStore {
     return promise;
   }
 
+  public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
+    this.logger.log('writeRealtime', `Received realtime write request`);
+    const promise = new Promise<string>((resolve, reject) => {
+      this.RealtimeModel.insertMany(Object.values(realtime)).then((onfulfilled) => {
+        resolve('Realtime alerts written');
+      }).catch((onrejected) => {
+        reject(`Failed to write data to database: ${onrejected}`);
+      });
+    });
+    return promise;
+  }
+
   public async getAllHistorical(): Promise<Array<HistoricalContents>> {
     const promise = new Promise<Array<HistoricalContents>>((resolve, reject) => {
       this.HistoricalModel.find((err, data) => {
@@ -90,18 +102,6 @@ export class DBStore {
         else {
           resolve(data);
         }
-      });
-    });
-    return promise;
-  }
-
-  public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
-    this.logger.log('writeRealtime', `Received realtime write request`);
-    const promise = new Promise<string>((resolve, reject) => {
-      this.RealtimeModel.insertMany(Object.values(realtime)).then((onfulfilled) => {
-        resolve('Realtime alerts written');
-      }).catch((onrejected) => {
-        reject(`Failed to write data to database: ${onrejected}`);
       });
     });
     return promise;
