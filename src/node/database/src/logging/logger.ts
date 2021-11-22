@@ -1,5 +1,5 @@
 export class Logger {
-  constructor(private readonly filename: string) {}
+  constructor(private readonly filename: string) { }
 
   public debug(funcName: string, message: string): void {
     const date = this.formatDate(new Date());
@@ -26,7 +26,7 @@ export class Logger {
 
   private formatDate(date: Date): string {
     const year = date.getUTCFullYear();
-    const month = date.getUTCMonth()+1 < 10 ? `0${date.getUTCMonth()+1}` : date.getUTCMonth()+1;
+    const month = date.getUTCMonth() + 1 < 10 ? `0${date.getUTCMonth() + 1}` : date.getUTCMonth() + 1;
     const day = date.getUTCDate() < 10 ? `0${date.getUTCDate()}` : date.getUTCDate();
     const hour = date.getUTCHours() < 10 ? `0${date.getUTCHours()}` : date.getUTCHours();
     const minute = date.getUTCMinutes() < 10 ? `0${date.getUTCMinutes()}` : date.getUTCMinutes();

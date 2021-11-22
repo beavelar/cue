@@ -6,7 +6,7 @@ import { HistoricalAlert, HistoricalContents } from '../types/db-store/historica
 export class DBStore {
   /** Logger for DBStore */
   private readonly logger = new Logger('DBStore');
-  
+
   /** Schema structure for realtime data points */
   private realtimeSchema = new Schema<RealtimeContents>({
     alert_date: { type: String, required: true },
@@ -27,9 +27,9 @@ export class DBStore {
     underlying: { type: Number, required: true },
     vega: { type: Number, required: true },
     volume: { type: Number, required: true },
-    'vol/oi': { type: Number, required: true } 
+    'vol/oi': { type: Number, required: true }
   }, { collection: 'realtime' });
-  
+
   /** Schema structure for historical data points */
   private historicalSchema = new Schema<HistoricalContents>({
     alert_date: { type: String, required: true },
