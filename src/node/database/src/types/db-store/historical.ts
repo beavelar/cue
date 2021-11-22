@@ -15,6 +15,7 @@ export interface HistoricalContents {
   open_interest: number,
   option_type: string,
   'p/l': number,
+  rate: string,
   rho: number,
   strike: number,
   theta: number,

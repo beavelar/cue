@@ -44,6 +44,7 @@ export class DBStore {
     open_interest: { type: Number, required: true },
     option_type: { type: String, required: true },
     'p/l': { type: Number, required: true },
+    rate: { type: String, required: true },
     rho: { type: Number, required: true },
     strike: { type: Number, required: true },
     theta: { type: Number, required: true },
