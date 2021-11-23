@@ -4,7 +4,9 @@ import { HistoricalAlert, HistoricalAlerts } from '../types/db-store/historical'
 import { createEmptyRatedAlert, RealtimeAlert, RatedRealtimeAlert } from '../types/db-store/realtime';
 
 /**
- * The interface which will be responsible for the database read/writes
+ * The interface which will be responsible for the database read/writes. Users must
+ * first call the connect method before attempting to use the rest of the interface.
+ * Attempting to use the rest of the interface before connecting will yield no results.
  */
 export class DBStore {
   /** Logger for DBStore */
@@ -69,8 +71,7 @@ export class DBStore {
   /** Keys that shouldn't be rated as they can't be compared */
   private unratedKeys: Array<string> = new Array<string>();
 
-  constructor(url: string) {
-    connect(url);
+  constructor() {
     this.unratedKeys.push('alert_date');
     this.unratedKeys.push('expires');
     this.unratedKeys.push('option_type');
@@ -79,7 +80,20 @@ export class DBStore {
   }
 
   /**
-   * Interface to retrieve the Mongo "find" promise based on the parameters provided for the
+   * Method to return the Promise created by the mongoose 'connect' method. If connection
+   * to the database is succesful, the promise will resolve, if the connection is unsuccessful,
+   * the promise will reject. This method must executed first before attempting to use the rest
+   * of the interface.
+   * 
+   * @param url String containing the database url
+   * @returns The Promise created from the mongoose 'connect' method
+   */
+  public async connect(url: string): Promise<typeof import('mongoose')> {
+    return connect(url);
+  }
+
+  /**
+   * Method to retrieve the Mongo "find" promise based on the parameters provided for the
    * realtime collection.
    * 
    * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
@@ -177,13 +191,16 @@ export class DBStore {
           this.logger.info('writeRealtime', `Failed to write realtime data to database: ${onrejected}`);
           reject(`Failed to write realtime data to database: ${onrejected}`);
         });
+      }).catch((err) => {
+        this.logger.critical('writeRealtime', 'An error occurred attempting to retrieve historical data from the database', err);
+        reject(`An error occurred attempting to retrieve historical data from the database: ${err}`);
       });
     });
     return promise;
   }
 
   /**
-   * Interface to retrieve the Mongo "find" promise based on the parameters provided for the
+   * Method to retrieve the Mongo "find" promise based on the parameters provided for the
    * historical collection.
    * 
    * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
