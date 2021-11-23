@@ -11,9 +11,12 @@ export class Logger {
     console.log(`LOG: ${date} - ${this.filename}.${funcName} - ${message}`);
   }
 
-  public warning(funcName: string, message: string): void {
+  public warning(funcName: string, message: string, error?: any): void {
     const date = this.formatDate(new Date());
     console.log(`WARNING: ${date} - ${this.filename}.${funcName} - ${message}`);
+    if (error) {
+      console.error(error);
+    }
   }
 
   public error(funcName: string, message: string, error?: any): void {
