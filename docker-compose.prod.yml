@@ -20,12 +20,6 @@ services:
     environment:
       - DB_STORE_PORT=${DB_STORE_PORT}
       - DATABASE_URI=${DATABASE_URI}
-  # analysis:
-  #   build: ./src/python/analysis
-  #   environment:
-  #     - PARSED_DATA_FILE=${PARSED_DATA_FILE}
-  #     - OPTIONS_RECAP_FILE=${OPTIONS_RECAP_FILE}
-  #     - HISTORICAL_DATA_DIR=${HISTORICAL_DATA_DIR}
   historical:
     build:
       context: ./src/python/historical
