@@ -14,7 +14,10 @@ if (env.validKeys()) {
     server.use(express.json({ limit: '50mb' }));
     server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-    server.get('/get_realtime', (req, res) => {
+    /**
+     * DB-Store realtime GET request
+     */
+    server.get('/realtime', (req, res) => {
       logger.info('main', `Receive GET request - ${req.url}`);
       store.getAllRealtime().then((data) => {
         logger.info('main', 'Successfully retrieved realtime data from the database');
@@ -25,7 +28,38 @@ if (env.validKeys()) {
       });
     });
 
-    server.get('/get_historical', (req, res) => {
+    /**
+     * DB-Store realtime POST request
+     */
+    server.post('/historical', (req, res) => {
+      logger.info('main', `Receive POST request - ${req.url}`);
+      store.writeHistorical(req.body).then((result) => {
+        logger.info('main', 'Successfully wrote historical data to the database');
+        res.status(200).json(result);
+      }).catch((err) => {
+        logger.critical('main', 'An error occurred writing historical data to the database', err);
+        res.status(500).json(err);
+      });
+    });
+
+    /**
+     * DB-Store realtime DELETE request
+     */
+    server.delete('/historical', (req, res) => {
+      logger.info('main', `Receive DELETE request - ${req.url}`);
+      store.deleteAllHistorical().then((result) => {
+        logger.info('main', 'Successfully deleted historical data from the database');
+        res.status(200).json(result);
+      }).catch((err) => {
+        logger.critical('main', 'An error occurred deleting historical data from the database', err);
+        res.status(500).json(err);
+      });
+    });
+
+    /**
+     * DB-Store historical GET request
+     */
+    server.get('/historical', (req, res) => {
       logger.info('main', `Receive GET request - ${req.url}`);
       store.getAllHistorical().then((data) => {
         logger.info('main', 'Successfully retrieved historical data from the database');
@@ -36,7 +70,10 @@ if (env.validKeys()) {
       });
     });
 
-    server.post('/write_realtime', (req, res) => {
+    /**
+     * DB-Store realtime POST request
+     */
+    server.post('/realtime', (req, res) => {
       logger.info('main', `Receive POST request - ${req.url}`);
       store.writeRealtime(req.body).then((result) => {
         logger.info('main', 'Successfully rated and wrote realtime data to the database');
@@ -47,13 +84,16 @@ if (env.validKeys()) {
       });
     });
 
-    server.post('/write_historical', (req, res) => {
-      logger.info('main', `Receive POST request - ${req.url}`);
-      store.writeHistorical(req.body).then((result) => {
-        logger.info('main', 'Successfully wrote historical data to the database');
+    /**
+     * DB-Store realtime DELETE request
+     */
+    server.delete('/realtime', (req, res) => {
+      logger.info('main', `Receive DELETE request - ${req.url}`);
+      store.deleteAllRealtime().then((result) => {
+        logger.info('main', 'Successfully deleted realtime data from the database');
         res.status(200).json(result);
       }).catch((err) => {
-        logger.critical('main', 'An error occurred writing historical data to the database', err);
+        logger.critical('main', 'An error occurred deleting realtime data from the database', err);
         res.status(500).json(err);
       });
     });
