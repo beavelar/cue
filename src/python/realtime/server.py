@@ -19,6 +19,12 @@ app = Flask(__name__)
 
 @app.route("/", methods=["POST"])
 def ingest():
+    """
+    ingest
+    ----------
+
+    Any POST requests made to the realtime server will be received here.
+    """
     logger.info("Received POST request")
     data = request.json
 
