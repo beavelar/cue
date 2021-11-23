@@ -15,7 +15,14 @@ export class Environment {
   public readonly DATABASE_URI: string;
 
   constructor() {
-    this.DB_STORE_PORT = parseInt(process.env.DB_STORE_PORT);
+    try {
+      this.DB_STORE_PORT = parseInt(process.env.DB_STORE_PORT);
+    }
+    catch {
+      this.logger.critical('Environment', `Invalid DB_STORE_PORT environment variable provided: ${process.env.DB_STORE_PORT}`);
+      this.DB_STORE_PORT = NaN;
+    }
+
     this.DATABASE_URI = process.env.DATABASE_URI;
   }
 
@@ -25,16 +32,19 @@ export class Environment {
    * @returns Boolean indicating if the environment variables are valid
    */
   public validKeys(): boolean {
+    let valid = true;
     if (isNaN(this.DB_STORE_PORT)) {
       this.logger.critical('validKeys', `Invalid environment variable for DB_STORE_PORT: ${this.DB_STORE_PORT}`);
-      return false;
+      valid = false;
     }
-    else if (!this.DATABASE_URI) {
+    if (!this.DATABASE_URI) {
       this.logger.critical('validKeys', `Invalid environment variable for DATABASE_URI: ${this.DATABASE_URI}`);
-      return false;
+      valid = false;
     }
-    this.logger.info('validKeys', `DB-Store Server Port: ${this.DB_STORE_PORT}`);
-    this.logger.info('validKeys', `Database URI: ${this.DATABASE_URI}`);
-    return true;
+    if (valid) {
+      this.logger.info('validKeys', `DB-Store Server Port: ${this.DB_STORE_PORT}`);
+      this.logger.info('validKeys', `Database URI: ${this.DATABASE_URI}`);
+    }
+    return valid;
   }
 }

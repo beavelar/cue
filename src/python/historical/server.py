@@ -1,8 +1,8 @@
 import logging
 import requests
 from flask import Flask, request
-from environment.environment import environment
 from util.rating.rating import rate_pl
+from environment.environment import environment
 
 #########################################################################################################
 
@@ -23,17 +23,23 @@ def ingest():
     logger.info("Received POST request")
     data = request.json
 
+    logger.info("Rating incoming historical data")
     for key, value in data.items():
         value["rate"] = rate_pl(value["p/l"])
 
+    logger.info("Sending POST request to DB-Store server with rated historical data")
     response = requests.post(
         f"http://{env.db_store_hostname}:{env.db_store_port}/write_historical",
         json=data,
     )
+
+    logger.info(f"DB-Store Response Status Code: {response.status_code}")
+    logger.info(f"DB-Store Response Text: {response.text}")
     return response.text, response.status_code
 
 
 #########################################################################################################
 
 if __name__ == "__main__":
-    app.run(host=env.historical_server_hostname, port=env.historical_server_port)
+    if env.valid_environment():
+        app.run(host=env.historical_server_hostname, port=env.historical_server_port)

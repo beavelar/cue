@@ -24,11 +24,32 @@ export class Environment {
   public readonly REALTIME_SERVER_PORT: number;
 
   constructor() {
-    this.PROXY_PORT = parseInt(process.env.PROXY_PORT);
+    try {
+      this.PROXY_PORT = parseInt(process.env.PROXY_PORT);
+    }
+    catch {
+      this.logger.critical('Environment', `Invalid PROXY_PORT environment variable provided: ${process.env.PROXY_PORT}`);
+      this.PROXY_PORT = NaN;
+    }
+
+    try {
+      this.HISTORICAL_SERVER_PORT = parseInt(process.env.HISTORICAL_SERVER_PORT);
+    }
+    catch {
+      this.logger.critical('Environment', `Invalid HISTORICAL_SERVER_PORT environment variable provided: ${process.env.HISTORICAL_SERVER_PORT}`);
+      this.HISTORICAL_SERVER_PORT = NaN;
+    }
+
+    try {
+      this.REALTIME_SERVER_PORT = parseInt(process.env.REALTIME_SERVER_PORT);
+    }
+    catch {
+      this.logger.critical('Environment', `Invalid REALTIME_SERVER_PORT environment variable provided: ${process.env.REALTIME_SERVER_PORT}`);
+      this.REALTIME_SERVER_PORT = NaN;
+    }
+
     this.HISTORICAL_SERVER_HOSTNAME = process.env.HISTORICAL_SERVER_HOSTNAME;
-    this.HISTORICAL_SERVER_PORT = parseInt(process.env.HISTORICAL_SERVER_PORT);
     this.REALTIME_SERVER_HOSTNAME = process.env.REALTIME_SERVER_HOSTNAME;
-    this.REALTIME_SERVER_PORT = parseInt(process.env.REALTIME_SERVER_PORT);
   }
 
   /**
@@ -37,31 +58,34 @@ export class Environment {
    * @returns Boolean indicating if the environment variables are valid
    */
   public validKeys(): boolean {
+    let valid = true;
     if (isNaN(this.PROXY_PORT)) {
       this.logger.critical('validKeys', `Invalid environment variable for PROXY_PORT: ${this.PROXY_PORT}`);
-      return false;
+      valid = false;
     }
-    else if (!this.HISTORICAL_SERVER_HOSTNAME) {
+    if (!this.HISTORICAL_SERVER_HOSTNAME) {
       this.logger.critical('validKeys', `Invalid environment variable for HISTORICAL_SERVER_HOSTNAME: ${this.HISTORICAL_SERVER_HOSTNAME}`);
-      return false;
+      valid = false;
     }
-    else if (isNaN(this.HISTORICAL_SERVER_PORT)) {
+    if (isNaN(this.HISTORICAL_SERVER_PORT)) {
       this.logger.critical('validKeys', `Invalid environment variable for HISTORICAL_SERVER_PORT: ${this.HISTORICAL_SERVER_PORT}`);
-      return false;
+      valid = false;
     }
-    else if (!this.REALTIME_SERVER_HOSTNAME) {
+    if (!this.REALTIME_SERVER_HOSTNAME) {
       this.logger.critical('validKeys', `Invalid environment variable for REALTIME_SERVER_HOSTNAME: ${this.REALTIME_SERVER_HOSTNAME}`);
-      return false;
+      valid = false;
     }
-    else if (isNaN(this.REALTIME_SERVER_PORT)) {
+    if (isNaN(this.REALTIME_SERVER_PORT)) {
       this.logger.critical('validKeys', `Invalid environment variable for REALTIME_SERVER_PORT: ${this.REALTIME_SERVER_PORT}`);
-      return false;
+      valid = false;
     }
-    this.logger.info('validKeys', `Proxy Server Port: ${this.PROXY_PORT}`);
-    this.logger.info('validKeys', `Historical Server Hostname: ${this.HISTORICAL_SERVER_HOSTNAME}`);
-    this.logger.info('validKeys', `Historical Server Port: ${this.HISTORICAL_SERVER_PORT}`);
-    this.logger.info('validKeys', `Realtime Server Hostname: ${this.REALTIME_SERVER_HOSTNAME}`);
-    this.logger.info('validKeys', `Realtime Server Port: ${this.REALTIME_SERVER_PORT}`);
-    return true;
+    if (valid) {
+      this.logger.info('validKeys', `Proxy Server Port: ${this.PROXY_PORT}`);
+      this.logger.info('validKeys', `Historical Server Hostname: ${this.HISTORICAL_SERVER_HOSTNAME}`);
+      this.logger.info('validKeys', `Historical Server Port: ${this.HISTORICAL_SERVER_PORT}`);
+      this.logger.info('validKeys', `Realtime Server Hostname: ${this.REALTIME_SERVER_HOSTNAME}`);
+      this.logger.info('validKeys', `Realtime Server Port: ${this.REALTIME_SERVER_PORT}`);
+    }
+    return valid;
   }
 }
