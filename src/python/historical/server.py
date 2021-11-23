@@ -15,6 +15,34 @@ logger = logging.getLogger(__name__)
 env = environment()
 app = Flask(__name__)
 
+
+#########################################################################################################
+
+
+@app.route("/", methods=["GET"])
+def get():
+    """
+    get
+    ----------
+
+    Any GET requests made to the historical server will be received here.
+    """
+    logger.info("Received GET request")
+
+    try:
+        logger.info("Sending GET request to DB-Store server")
+        response = requests.get(
+            f"http://{env.db_store_hostname}:{env.db_store_port}/historical"
+        )
+        logger.info(f"DB-Store Response Status Code: {response.status_code}")
+        return response.text, response.status_code
+    except Exception as ex:
+        message = "An error occurred sending GET request to the DB-Store server"
+        logger.critical(message)
+        logger.critical(ex)
+        return message, 500
+
+
 #########################################################################################################
 
 

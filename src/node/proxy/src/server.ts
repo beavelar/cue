@@ -11,6 +11,34 @@ if (env.validKeys()) {
   server.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
   /**
+   * Historical GET proxy
+   */
+  server.get('/historical', (req, res) => {
+    logger.info('main', `Receive GET request - ${req.url}`);
+    req.url = req.url.replace('/historical', '');
+    const url = `http://${env.HISTORICAL_SERVER_HOSTNAME}:${env.HISTORICAL_SERVER_PORT}/`;
+
+    try {
+      needle.get(url, (err, _res) => {
+        if (err) {
+          const message = 'An error occurred proxying the GET request to the historical server';
+          logger.critical('main', message, err);
+          res.status(500).json(message);
+        }
+        else {
+          logger.info('main', 'Successfully proxied GET request to the historical server');
+          res.status(200).json(_res.body);
+        }
+      });
+    }
+    catch (ex) {
+      const message = 'An error occurred proxying the GET request to the historical server';
+      logger.critical('main', message, ex);
+      res.status(500).json(message);
+    }
+  });
+
+  /**
    * Historical POST proxy
    */
   server.post('/historical', (req, res) => {
@@ -61,6 +89,34 @@ if (env.validKeys()) {
     }
     catch (ex) {
       const message = 'An error occurred proxying the DELETE request to the historical server';
+      logger.critical('main', message, ex);
+      res.status(500).json(message);
+    }
+  });
+
+  /**
+   * Realtime GET proxy
+   */
+  server.get('/realtime', (req, res) => {
+    logger.info('main', `Receive GET request - ${req.url}`);
+    req.url = req.url.replace('/realtime', '');
+    const url = `http://${env.REALTIME_SERVER_HOSTNAME}:${env.REALTIME_SERVER_PORT}/`;
+
+    try {
+      needle.get(url, (err, _res) => {
+        if (err) {
+          const message = 'An error occurred proxying the GET request to the realtime server';
+          logger.critical('main', message, err);
+          res.status(500).json(message);
+        }
+        else {
+          logger.info('main', 'Successfully proxied GET request to the realtime server');
+          res.status(200).json(_res.body);
+        }
+      });
+    }
+    catch (ex) {
+      const message = 'An error occurred proxying the GET request to the realtime server';
       logger.critical('main', message, ex);
       res.status(500).json(message);
     }
