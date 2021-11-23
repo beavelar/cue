@@ -31,7 +31,7 @@ def ingest():
     try:
         logger.info("Sending POST request to DB-Store server with realtime data")
         response = requests.post(
-            f"http://{env.db_store_hostname}:{env.db_store_port}/write_realtime",
+            f"http://{env.db_store_hostname}:{env.db_store_port}/realtime",
             json=data,
         )
         logger.info(f"DB-Store Response Status Code: {response.status_code}")
@@ -39,6 +39,34 @@ def ingest():
         return response.text, response.status_code
     except Exception as ex:
         message = "An error occurred sending POST request to the DB-Store server"
+        logger.critical(message)
+        logger.critical(ex)
+        return message, 500
+
+
+#########################################################################################################
+
+
+@app.route("/", methods=["DELETE"])
+def delete():
+    """
+    delete
+    ----------
+
+    Any DELETE requests made to the realtime server will be received here.
+    """
+    logger.info("Received DELETE request")
+
+    try:
+        logger.info("Sending DELETE request to DB-Store server")
+        response = requests.delete(
+            f"http://{env.db_store_hostname}:{env.db_store_port}/realtime"
+        )
+        logger.info(f"DB-Store Response Status Code: {response.status_code}")
+        logger.info(f"DB-Store Response Text: {response.text}")
+        return response.text, response.status_code
+    except Exception as ex:
+        message = "An error occurred sending DELETE request to the DB-Store server"
         logger.critical(message)
         logger.critical(ex)
         return message, 500

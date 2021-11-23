@@ -1,5 +1,5 @@
 import { Logger } from '../logging/logger';
-import { Schema, model, connect } from 'mongoose';
+import { Document, Schema, model, connect } from 'mongoose';
 import { HistoricalAlert, HistoricalAlerts } from '../types/db-store/historical';
 import { createEmptyRatedAlert, RealtimeAlert, RatedRealtimeAlert } from '../types/db-store/realtime';
 
@@ -200,6 +200,16 @@ export class DBStore {
   }
 
   /**
+   * Method to retrieve the Mongo "remove" promise. No options will be provided to "remove"
+   * to remove all realtime data.
+   * 
+   * @returns A promise which will resolve to a Mongo Document
+   */
+  public async deleteAllRealtime(): Promise<this> {
+    return this.RealtimeModel.remove({});
+  }
+
+  /**
    * Method to retrieve the Mongo "find" promise based on the parameters provided for the
    * historical collection.
    * 
@@ -239,5 +249,15 @@ export class DBStore {
       });
     });
     return promise;
+  }
+
+  /**
+   * Method to retrieve the Mongo "remove" promise. No options will be provided to "remove"
+   * to remove all historical data.
+   * 
+   * @returns A promise which will resolve to a Mongo Document
+   */
+  public async deleteAllHistorical(): Promise<Document> {
+    return this.HistoricalModel.remove({});
   }
 }
