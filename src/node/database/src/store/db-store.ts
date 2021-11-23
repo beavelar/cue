@@ -1,14 +1,17 @@
 import { Logger } from '../logging/logger';
 import { Schema, model, connect } from 'mongoose';
-import { HistoricalAlert, HistoricalContents } from '../types/db-store/historical';
-import { createEmptyRatedAlert, RealtimeAlert, RealtimeContentsRated } from '../types/db-store/realtime';
+import { HistoricalAlert, HistoricalAlerts } from '../types/db-store/historical';
+import { createEmptyRatedAlert, RealtimeAlert, RatedRealtimeAlert } from '../types/db-store/realtime';
 
+/**
+ * The interface which will be responsible for the database read/writes
+ */
 export class DBStore {
   /** Logger for DBStore */
   private readonly logger = new Logger('DBStore');
 
   /** Schema structure for realtime data points */
-  private realtimeSchema = new Schema<RealtimeContentsRated>({
+  private realtimeSchema = new Schema<RatedRealtimeAlert>({
     alert_date: { type: String, required: true },
     ask: { type: { rate: String, value: Number }, required: true },
     days_to_expiry: { type: { rate: String, value: Number }, required: true },
@@ -31,7 +34,7 @@ export class DBStore {
   }, { collection: 'realtime' });
 
   /** Schema structure for historical data points */
-  private historicalSchema = new Schema<HistoricalContents>({
+  private historicalSchema = new Schema<HistoricalAlert>({
     alert_date: { type: String, required: true },
     ask: { type: Number, required: true },
     days_to_expiry: { type: Number, required: true },
@@ -58,12 +61,12 @@ export class DBStore {
   }, { collection: 'historical' });
 
   /** MongoDB model for realtime data points */
-  private RealtimeModel = model<RealtimeContentsRated>('realtime', this.realtimeSchema);
+  private RealtimeModel = model<RatedRealtimeAlert>('realtime', this.realtimeSchema);
 
   /** MongoDB model for realtime data points */
-  private HistoricalModel = model<HistoricalContents>('historical', this.historicalSchema);
+  private HistoricalModel = model<HistoricalAlert>('historical', this.historicalSchema);
 
-  /** Keys that shouldn't rated as they can't be compared */
+  /** Keys that shouldn't be rated as they can't be compared */
   private unratedKeys: Array<string> = new Array<string>();
 
   constructor(url: string) {
@@ -75,7 +78,16 @@ export class DBStore {
     this.unratedKeys.push('time_of_day');
   }
 
-  public async getAllRealtime(filter?: any, sort?: any): Promise<Array<RealtimeContentsRated>> {
+  /**
+   * Interface to retrieve the Mongo "find" promise based on the parameters provided for the
+   * realtime collection.
+   * 
+   * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
+   *               omitted in the Mongo response 
+   * @param sort The "sort" that controls how the document is sorted
+   * @returns A promise which will resolve to a array of RatedRealtimeAlert
+   */
+  public async getAllRealtime(filter?: any, sort?: any): Promise<Array<RatedRealtimeAlert>> {
     if (filter && sort) {
       return this.RealtimeModel.find({}, filter).sort(sort);
     }
@@ -87,13 +99,25 @@ export class DBStore {
     }
   }
 
+  /**
+   * Will write the incoming realtime alerts with a rating on select fields onto the Mongo
+   * database.
+   * 
+   * @param realtime The incoming realtime alerts
+   * @returns A promise which will resolve to a string containing the result of the
+   *          operation
+   */
   public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
-    this.logger.log('writeRealtime', `Received realtime write request`);
+    this.logger.info('writeRealtime', 'Received realtime write request');
     const promise = new Promise<string>((resolve, reject) => {
-      const ratedAlerts = new Array<RealtimeContentsRated>();
+      const ratedAlerts = new Array<RatedRealtimeAlert>();
+
+      this.logger.info('writeRealtime', 'Requesting historical data from the historical collection');
       this.getAllHistorical().then((data) => {
         const sortedHistoricalAlerts = {};
 
+        // Sorts the receiving historical data for easier comparisons
+        this.logger.info('writeRealtime', 'Sorting received historical data');
         for (const key of Object.keys(Object.values(realtime)[0])) {
           if (!this.unratedKeys.includes(key)) {
             sortedHistoricalAlerts[key] = data.map((item) => {
@@ -105,6 +129,8 @@ export class DBStore {
           }
         }
 
+        // Rates the incoming realtime data by comparing values to sorted historical data
+        this.logger.info('writeRealtime', 'Rating incoming realtime data');
         for (const alert of Object.values(realtime)) {
           const ratedAlert = createEmptyRatedAlert();
           ratedAlert.alert_date = alert.alert_date;
@@ -141,9 +167,14 @@ export class DBStore {
           }
         }
 
+        // Writes the rated realtime data onto the realtime collection. Result of the operation will be
+        // flowed back to the executor of the method
+        this.logger.info('writeRealtime', 'Writing rated realtime data onto realtime collection');
         this.RealtimeModel.insertMany(ratedAlerts).then((onfulfilled) => {
+          this.logger.info('writeRealtime', 'Successfully saved rated realtime alerts onto realtime collection');
           resolve('Realtime alerts written');
         }).catch((onrejected) => {
+          this.logger.info('writeRealtime', `Failed to write realtime data to database: ${onrejected}`);
           reject(`Failed to write realtime data to database: ${onrejected}`);
         });
       });
@@ -151,7 +182,16 @@ export class DBStore {
     return promise;
   }
 
-  public async getAllHistorical(filter?: any, sort?: any): Promise<Array<HistoricalContents>> {
+  /**
+   * Interface to retrieve the Mongo "find" promise based on the parameters provided for the
+   * historical collection.
+   * 
+   * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
+   *               omitted in the Mongo response 
+   * @param sort The "sort" that controls how the document is sorted
+   * @returns A promise which will resolve to a array of RatedRealtimeAlert
+   */
+  public async getAllHistorical(filter?: any, sort?: any): Promise<Array<HistoricalAlert>> {
     if (filter && sort) {
       return this.HistoricalModel.find({}, filter).sort(sort);
     }
@@ -163,12 +203,21 @@ export class DBStore {
     }
   }
 
-  public async writeHistorical(historical: HistoricalAlert): Promise<string> {
-    this.logger.log('writeHistorical', `Received historical write request`);
+  /**
+   * Will write the incoming historical alerts onto the Mongo database.
+   * 
+   * @param historical The incoming historical alerts
+   * @returns A promise which will resolve to a string containing the result of the
+   *          operation
+   */
+  public async writeHistorical(historical: HistoricalAlerts): Promise<string> {
+    this.logger.info('writeHistorical', 'Received historical write request');
     const promise = new Promise<string>((resolve, reject) => {
       this.HistoricalModel.insertMany(Object.values(historical)).then((onfulfilled) => {
+        this.logger.info('writeHistorical', 'Successfully saved historical alerts onto historical collection');
         resolve('Historical alerts written');
       }).catch((onrejected) => {
+        this.logger.info('writeHistorical', `Failed to write historical data to database: ${onrejected}`);
         reject(`Failed to write historical data to database: ${onrejected}`);
       });
     });

@@ -1,22 +1,54 @@
+/**
+ * The interface which will be responsible for the application logging
+ */
 export class Logger {
   constructor(private readonly filename: string) { }
 
+  /**
+   * Debug level log implementation.
+   * 
+   * @param funcName The name of the function utilizing the method 
+   * @param message The desired message to log
+   */
   public debug(funcName: string, message: string): void {
     const date = this.formatDate(new Date());
     console.log(`DEBUG: ${date} - ${this.filename}.${funcName} - ${message}`);
   }
 
-  public log(funcName: string, message: string): void {
+  /**
+   * Info level log implementation.
+   * 
+   * @param funcName The name of the function utilizing the method 
+   * @param message The desired message to log
+   */
+  public info(funcName: string, message: string): void {
     const date = this.formatDate(new Date());
     console.log(`LOG: ${date} - ${this.filename}.${funcName} - ${message}`);
   }
 
-  public warning(funcName: string, message: string): void {
+  /**
+   * Warning level log implementation.
+   * 
+   * @param funcName The name of the function utilizing the method 
+   * @param message The desired message to log
+   * @param error The error to display after the message
+   */
+  public warning(funcName: string, message: string, error?: any): void {
     const date = this.formatDate(new Date());
     console.log(`WARNING: ${date} - ${this.filename}.${funcName} - ${message}`);
+    if (error) {
+      console.error(error);
+    }
   }
 
-  public error(funcName: string, message: string, error?: any): void {
+  /**
+   * Critical level log implementation.
+   * 
+   * @param funcName The name of the function utilizing the method 
+   * @param message The desired message to log
+   * @param error The error to display after the message
+   */
+  public critical(funcName: string, message: string, error?: any): void {
     const date = this.formatDate(new Date());
     console.error(`ERROR: ${date} - ${this.filename}.${funcName} - ${message}`);
     if (error) {
@@ -24,6 +56,12 @@ export class Logger {
     }
   }
 
+  /**
+   * Helper function to format the date displayed in the log line
+   * 
+   * @param date The date of the log
+   * @returns The date as a string in YYYY-MM-DD hh:mm:ss form
+   */
   private formatDate(date: Date): string {
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth() + 1 < 10 ? `0${date.getUTCMonth() + 1}` : date.getUTCMonth() + 1;
