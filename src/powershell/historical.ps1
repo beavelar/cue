@@ -1,7 +1,13 @@
-$FILE_NAME = "2021-08"
 $HISTORICAL_ALERTS_URI = "http://localhost:3001/historical"
-$CSV_FILE_PATH = "$(Get-Location)\data\historical-alerts\csv\$($FILE_NAME).csv"
-$OUTPUT_JSON_PATH = "$(Get-Location)\data\historical-alerts\json\$($FILE_NAME).json"
+
+# Variables to utilize if ingesting a single file
+# $FILE_NAME = "2021-08"
+# $INPUT_PATH = "$(Get-Location)\data\historical-alerts\input\$($FILE_NAME).csv"
+# $OUTPUT_PATH = "$(Get-Location)\data\historical-alerts\output\$($FILE_NAME).json"
+
+# Variables to utilize if ingesting a directory with files
+$INPUT_PATH = "$(Get-Location)\data\historical-alerts\input"
+$OUTPUT_PATH = "$(Get-Location)\data\historical-alerts\output"
 
 function GetWinLoss {
 	param($ask, $low, $lowDate, $alertDate)
@@ -11,12 +17,13 @@ function GetWinLoss {
 	return -not ($dateDiff -gt 0 -and $lossPL -lt -.25)
 }
 
-function CSVToJSON {
-	param($csv)
+function InputToJSON {
+	param($inputData)
 	$json = [ordered]@{}
 	$TextInfo = (Get-Culture).TextInfo
 	try {
-		foreach ($line in $csv) {
+		Write-Host "Parsing ingested historical data"
+		foreach ($line in $inputData) {
 			$alertDateString = $line.alert_time.Replace(" ", "T")
 			$highDateString = $line.high_date_time.Replace(" ", "T")
 			$lowDateString = $line.low_date_time.Replace(" ", "T")
@@ -66,31 +73,49 @@ function CSVToJSON {
 		return ConvertTo-Json $json -Compress
 	}
 	catch {
-		Write-Host "Whoopsies"
+		Write-Host "An error occurred parsing incoming realtime data"
 	}
 	return $null
 }
 
-function Main {
-	param ($csvFilePath, $outputJsonPath, $uri)
-	if (-not (Test-Path -Path $csvFilePath -PathType Leaf)) {
-		Write-Host "No csv file :("
-		return
-	}
-	if ((Test-Path -Path $outputJsonPath -PathType Leaf) -and ($null -ne ($json = Get-Content $outputJsonPath))) {
+function IngestAlerts {
+	param ($inputFilePath, $outputFilePath, $uri)
+	if ((Test-Path -Path $outputFilePath -PathType Leaf) -and ($null -ne ($json = Get-Content $outputFilePath))) {
+		Write-Host "Executing POST request to: $($uri)"
 		Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 	}
 	else {
-		$data = Import-Csv -Path $csvFilePath
-		$json = CSVToJSON $data
+		$data = Import-Csv -Path $inputFilePath
+		$json = InputToJSON $data
 		if ($null -ne $json) {
-			$json | Out-File $outputJsonPath
+			Write-Host "Saving parsed historical data to: $($outputFilePath)"
+			$json | Out-File $outputFilePath
+			Write-Host "Executing POST request to: $($uri)"
 			Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 		}
 		else {
-			Write-Host "Empty json :("
+			Write-Host "No historical JSON data in the provided output path :("
 		}
 	}
 }
 
-Main $CSV_FILE_PATH $OUTPUT_JSON_PATH $HISTORICAL_ALERTS_URI
+function Main {
+	param ($inputPath, $outputPath, $uri)
+	if (Test-Path -Path $inputPath -PathType Leaf) {
+		IngestAlerts $inputPath $outputPath $uri
+	}
+	elseif (Test-Path -Path $inputPath -PathType Container) {
+		$files = Get-ChildItem -Path $inputPath
+		foreach ($file in $files) {
+			$inputFilePath = $file.FullName
+			$outputFilePath = "$($outputPath)\$($file.Basename).json"
+			IngestAlerts $inputFilePath $outputFilePath $uri
+		}
+	}
+	else {
+		Write-Host "Invalid historical alerts path :("
+		return
+	}
+}
+
+Main $INPUT_PATH $OUTPUT_PATH $HISTORICAL_ALERTS_URI
