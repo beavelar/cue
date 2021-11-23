@@ -2,10 +2,7 @@ services:
   proxy:
     build:
       context: ./src/node/proxy
-      dockerfile: Dockerfile-dev
-    # command: bash -c "set -xe; npm install; npm start"
-    command: bash -c "set -xe; npm start"
-    # command: "tail -f /dev/null"
+      dockerfile: Dockerfile
     environment:
       - PROXY_PORT=${PROXY_PORT}
       - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
@@ -14,48 +11,33 @@ services:
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
     ports:
       - ${PROXY_PORT}:${PROXY_PORT}
-    volumes:
-      - ./src/node/proxy:/usr/src/app
   db-store:
     build:
       context: ./src/node/database
-      dockerfile: Dockerfile-dev
-    # command: bash -c "set -xe; npm install; npm start"
-    command: bash -c "set -xe; npm start"
-    # command: "tail -f /dev/null"
+      dockerfile: Dockerfile
     depends_on:
       - "mongodb"
     environment:
       - DB_STORE_PORT=${DB_STORE_PORT}
       - DATABASE_URI=${DATABASE_URI}
-    volumes:
-      - ./src/node/database:/usr/src/app/
   historical:
     build:
       context: ./src/python/historical
-      dockerfile: Dockerfile-dev
-    command: bash -c "set -xe; pip install -r requirements.txt; python server.py"
-    # command: "tail -f /dev/null"
+      dockerfile: Dockerfile
     environment:
       - HISTORICAL_SERVER_HOSTNAME=${HISTORICAL_SERVER_HOSTNAME}
       - HISTORICAL_SERVER_PORT=${HISTORICAL_SERVER_PORT}
       - DB_STORE_HOSTNAME=${DB_STORE_HOSTNAME}
       - DB_STORE_PORT=${DB_STORE_PORT}
-    volumes:
-      - ./src/python/historical:/historical
   realtime:
     build:
       context: ./src/python/realtime
-      dockerfile: Dockerfile-dev
-    command: bash -c "set -xe; pip install -r requirements.txt; python server.py"
-    # command: "tail -f /dev/null"
+      dockerfile: Dockerfile
     environment:
       - REALTIME_SERVER_HOSTNAME=${REALTIME_SERVER_HOSTNAME}
       - REALTIME_SERVER_PORT=${REALTIME_SERVER_PORT}
       - DB_STORE_HOSTNAME=${DB_STORE_HOSTNAME}
       - DB_STORE_PORT=${DB_STORE_PORT}
-    volumes:
-      - ./src/python/realtime:/realtime
   mongodb:
     image: mongo:latest
     volumes:
