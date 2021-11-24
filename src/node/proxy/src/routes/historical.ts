@@ -1,7 +1,7 @@
 import needle from 'needle';
-import express from "express";
-import { Environment } from 'src/env/env';
-import { Logger } from "../logging/logger";
+import express from 'express';
+import { Environment } from 'src/util/env/env';
+import { Logger } from "../util/logging/logger";
 
 export class Historical {
   /** The express router to utilize for the routes */

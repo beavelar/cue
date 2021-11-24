@@ -1,7 +1,7 @@
 import express from 'express';
-import { Environment } from './env/env';
-import { Logger } from './logging/logger';
+import { Environment } from './util/env/env';
 import { Realtime } from './routes/realtime';
+import { Logger } from './util/logging/logger';
 import { Historical } from './routes/historical';
 
 const logger = new Logger('server');

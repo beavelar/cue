@@ -1,4 +1,4 @@
-import { Logger } from '../logging/logger';
+import { Logger } from '../util/logging/logger';
 import { Document, Schema, model, connect } from 'mongoose';
 import { HistoricalAlert, HistoricalAlerts } from '../types/db-store/historical';
 import { createEmptyRatedAlert, RealtimeAlert, RatedRealtimeAlert } from '../types/db-store/realtime';

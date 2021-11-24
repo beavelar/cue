@@ -1,6 +1,6 @@
-import express from "express";
-import { Logger } from "../logging/logger";
+import express from 'express';
 import { DBStore } from 'src/store/db-store';
+import { Logger } from '../util/logging/logger';
 
 export class Historical {
   /** The express router to utilize for the routes */

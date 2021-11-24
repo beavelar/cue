@@ -1,7 +1,7 @@
 import needle from 'needle';
-import express from "express";
-import { Environment } from '../env/env';
-import { Logger } from "../logging/logger";
+import express from 'express';
+import { Environment } from '../util/env/env';
+import { Logger } from "../util/logging/logger";
 
 export class Realtime {
   /** The express router to utilize for the routes */

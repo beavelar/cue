@@ -1,9 +1,9 @@
 import express from 'express';
-import { Environment } from './env/env';
-import { Logger } from './logging/logger';
-import { Historical } from './routes/historical';
-import { Realtime } from './routes/realtime';
 import { DBStore } from './store/db-store';
+import { Realtime } from './routes/realtime';
+import { Environment } from './util/env/env';
+import { Logger } from './util/logging/logger';
+import { Historical } from './routes/historical';
 
 const logger = new Logger('server');
 const env = new Environment();
