@@ -15,17 +15,50 @@ function InputToJSON {
 	try {
 		Write-Host "Parsing ingested realtime data"
 		for ($index = 0; $index -lt $inputData.Length; $index = $index + 46) {
+			# Retrieve header info:
+			#  - Ticker
+			#  - Option type
+			#  - Exiry date
+			#  - Strike price
 			$header = $inputData[$index].Split(" ")
 			$ticker = $header[0].Replace("$", "")
 			$optionType = if ($header[2] -eq "C") { "Call" } else { "Put" }
-			$alertDate = Get-Date $inputData[$index + 22]
-			$alertDateString = $alertDate.ToString("yyyy-MM-ddThh:mm:ss")
-			$alertTimeString = $alertDate.ToString("hh:mm:ss")
 			$expiryDate = Get-Date $header[1]
-			$daysToExp = ($expiryDate - $alertDate).Days
-			$underlying = [double]$inputData[$index + 16].Replace("$", "").Replace(",", "")
 			$strike = [double]$header[3].Replace("$", "").Replace(",", "")
+
+			# Date info:
+			#  - Alert date
+			#  - Alert date seconds
+			#  - Day of alert
+			#  - Seconds of day
+			#  - Alert time seconds
+			#  - Days to expiration
+			#  - Expiration in seconds
+			$alertDate = Get-Date $inputData[$index + 22]
+			$alertDateSeconds = ([DateTimeOffset]$alertDate).ToUnixTimeSeconds()
+			$dayOfAlert = Get-Date $alertDate.ToString("yyyy-MM-dd")
+			$secondsOfDay = ([DateTimeOffset]$dayOfAlert).ToUnixTimeSeconds()
+			$alertTimeSeconds = $alertDateSeconds - $secondsOfDay
+			$daysToExp = ($expiryDate - $alertDate).Days
+			$expirySeconds = ([DateTimeOffset]$expiryDate).ToUnixTimeSeconds()
+
+			# Pricing:
+			#  - Underlying price
+			#  - Difference between the strike price and underlying price
+			$underlying = [double]$inputData[$index + 16].Replace("$", "").Replace(",", "")
 			$diff = if ($underlying -gt $strike) { (($strike / $underlying) - 1) * 100 } else { ($strike - $underlying) * 100 }
+
+			# Option field values:
+			#  - Volume
+			#  - Open interest
+			#  - Volume/Open interest
+			#  - Implied volatility
+			#  - Delta
+			#  - Gamma
+			#  - Vega
+			#  - Theta
+			#  - Rho
+			#  - Ask
 			$volume = [int]$inputData[$index + 28]
 			$openInterest = [int]$inputData[$index + 26]
 			$vol_oi = $volume / $openInterest
@@ -40,9 +73,9 @@ function InputToJSON {
 			$lineHashTable = @{
 				"ticker"             = $ticker
 				"option_type"        = $optionType
-				"alert_date"         = $alertDateString
-				"time_of_day"        = $alertTimeString
-				"expires"            = $expiryDate.ToString("yyyy-MM-dd")
+				"alert_date"         = $alertDateSeconds
+				"time_of_day"        = $alertTimeSeconds
+				"expires"            = $expirySeconds
 				"days_to_expiry"     = $daysToExp
 				"strike"             = $strike
 				"underlying"         = $underlying
@@ -58,12 +91,13 @@ function InputToJSON {
 				"rho"                = $rho
 				"ask"                = $ask
 			}
-			$json.Add("$($ticker)|$($optionType)|$($alertDateString)", $lineHashTable)
+			$json.Add("$($ticker)|$($optionType)|$($alertDateSeconds)", $lineHashTable)
 		}
 		return ConvertTo-Json $json -Compress
 	}
 	catch {
 		Write-Host "An error occurred parsing incoming realtime data"
+		Write-Error $_
 	}
 	return $null
 }
@@ -84,7 +118,7 @@ function IngestAlerts {
 			Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 		}
 		else {
-			Write-Host "No realtime JSON data in the provided output path :("
+			Write-Host "No realtime data in the provided input path :("
 		}
 	}
 }
