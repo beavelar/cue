@@ -24,13 +24,32 @@ function InputToJSON {
 	try {
 		Write-Host "Parsing ingested historical data"
 		foreach ($line in $inputData) {
-			$alertDateString = $line.alert_time.Replace(" ", "T")
-			$highDateString = $line.high_date_time.Replace(" ", "T")
-			$lowDateString = $line.low_date_time.Replace(" ", "T")
-			$expireDate = Get-Date $line.expires_at
-			$alertDate = Get-Date $alertDateString
-			$highDate = Get-Date $highDateString
-			$lowDate = Get-Date $lowDateString
+			# Date info:
+			#  - Alert date
+			#  - Alert date seconds
+			#  - Day of alert
+			#  - Seconds of day
+			#  - Alert time seconds
+			#  - Expiry date
+			#  - Days to expiration
+			#  - Expiration in seconds
+			#  - High date
+			#  - Low date
+			$alertDate = Get-Date $line.alert_time.Replace(" ", "T")
+			$alertDateSeconds = ([DateTimeOffset]$alertDate).ToUnixTimeSeconds()
+			$dayOfAlert = Get-Date $alertDate.ToString("yyyy-MM-dd")
+			$secondsOfDay = ([DateTimeOffset]$dayOfAlert).ToUnixTimeSeconds()
+			$alertTimeSeconds = $alertDateSeconds - $secondsOfDay
+			$expiryDate = Get-Date $line.expires_at
+			$daysToExp = ($expiryDate - $alertDate).Days
+			$expirySeconds = ([DateTimeOffset]$expiryDate).ToUnixTimeSeconds()
+			$highDate = Get-Date $line.high_date_time.Replace(" ", "T")
+			$lowDate = Get-Date $line.low_date_time.Replace(" ", "T")
+			
+			# P/L info:
+			#  - Highest ask
+			#  - P/L
+			#  - Time passed after alert date to highest ask date
 			$highestAsk = 0
 			$pl = 0
 			$timePassed = 0
@@ -44,13 +63,14 @@ function InputToJSON {
 				$pl = ([double]$line.low / [double]$line.ask) - 1
 				$timePassed = ($lowDate - $alertDate).Days
 			}
+
 			$lineHashTable = @{
 				"ticker"             = $line.ticker_symbol
 				"option_type"        = $TextInfo.ToTitleCase($line.option_type)
-				"alert_date"         = $alertDateString
-				"time_of_day"        = $alertDateString.Split("T")[1].Replace("Z", "")
-				"expires"            = $line.expires_at
-				"days_to_expiry"     = ($expireDate - $alertDate).Days
+				"alert_date"         = $alertDateSeconds
+				"time_of_day"        = $alertTimeSeconds
+				"expires"            = $expirySeconds
+				"days_to_expiry"     = $daysToExp
 				"strike"             = [double]$line.strike_price
 				"underlying"         = [double]$line.underlying_purchase_price
 				"diff"               = [double]$line.diff
@@ -68,12 +88,13 @@ function InputToJSON {
 				"p/l"                = $pl
 				"time_passed"        = $timePassed
 			}
-			$json.Add("$($line.ticker_symbol)|$($TextInfo.ToTitleCase($line.option_type))|$($alertDateString)", $lineHashTable)
+			$json.Add("$($line.ticker_symbol)|$($TextInfo.ToTitleCase($line.option_type))|$($alertDateSeconds)", $lineHashTable)
 		}
 		return ConvertTo-Json $json -Compress
 	}
 	catch {
 		Write-Host "An error occurred parsing incoming realtime data"
+		Write-Error $_
 	}
 	return $null
 }
@@ -94,7 +115,7 @@ function IngestAlerts {
 			Invoke-RestMethod -Uri $uri -Method POST -Body $json -ContentType "application/json"
 		}
 		else {
-			Write-Host "No historical JSON data in the provided output path :("
+			Write-Host "No historical data in the provided input path :("
 		}
 	}
 }
