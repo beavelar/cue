@@ -11,8 +11,8 @@ export interface HistoricalAlerts {
  * saved onto the database.
  */
 export interface HistoricalAlert {
-  /** The date the alert was raised. Ex. 2000-01-01T00:00:00Z. */
-  alert_date: string;
+  /** The date the alert was raised in seconds. */
+  alert_date: number;
   /** The ask price of the option at the time of the alert. */
   ask: number;
   /** The number of days between the alert date and the expiry date. */
@@ -21,8 +21,8 @@ export interface HistoricalAlert {
   delta: number;
   /** The difference between the strike price and the underlying value. */
   diff: number;
-  /** The expiry date of the option. Ex. 2000-01-01. */
-  expires: string;
+  /** The expiry date of the option in seconds. */
+  expires: number;
   /** The option gamma value. */
   gamma: number;
   /** The highest price the option reached in it's lifetime. */
@@ -45,8 +45,8 @@ export interface HistoricalAlert {
   theta: number;
   /** The ticker of the option. */
   ticker: string;
-  /** The time of day that the alert was raised. Ex. 00:00:00. */
-  time_of_day: string;
+  /** The time of day that the alert was raised in seconds. */
+  time_of_day: number;
   /** The number of days between the alert date and the date the option reached
    * the highest ask. */
   time_passed: number;

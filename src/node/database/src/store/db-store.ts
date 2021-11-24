@@ -14,12 +14,12 @@ export class DBStore {
 
   /** Schema structure for realtime data points */
   private realtimeSchema = new Schema<RatedRealtimeAlert>({
-    alert_date: { type: String, required: true },
+    alert_date: { type: Number, required: true },
     ask: { type: { rate: String, value: Number }, required: true },
     days_to_expiry: { type: { rate: String, value: Number }, required: true },
     delta: { type: { rate: String, value: Number }, required: true },
     diff: { type: { rate: String, value: Number }, required: true },
-    expires: { type: String, required: true },
+    expires: { type: Number, required: true },
     gamma: { type: { rate: String, value: Number }, required: true },
     implied_volatility: { type: { rate: String, value: Number }, required: true },
     open_interest: { type: { rate: String, value: Number }, required: true },
@@ -28,7 +28,7 @@ export class DBStore {
     strike: { type: { rate: String, value: Number }, required: true },
     theta: { type: { rate: String, value: Number }, required: true },
     ticker: { type: String, required: true },
-    time_of_day: { type: String, required: true },
+    time_of_day: { type: { rate: String, value: Number }, required: true },
     underlying: { type: { rate: String, value: Number }, required: true },
     vega: { type: { rate: String, value: Number }, required: true },
     volume: { type: { rate: String, value: Number }, required: true },
@@ -37,12 +37,12 @@ export class DBStore {
 
   /** Schema structure for historical data points */
   private historicalSchema = new Schema<HistoricalAlert>({
-    alert_date: { type: String, required: true },
+    alert_date: { type: Number, required: true },
     ask: { type: Number, required: true },
     days_to_expiry: { type: Number, required: true },
     delta: { type: Number, required: true },
     diff: { type: Number, required: true },
-    expires: { type: String, required: true },
+    expires: { type: Number, required: true },
     gamma: { type: Number, required: true },
     highest_ask: { type: Number, required: true },
     implied_volatility: { type: Number, required: true },
@@ -54,7 +54,7 @@ export class DBStore {
     strike: { type: Number, required: true },
     theta: { type: Number, required: true },
     ticker: { type: String, required: true },
-    time_of_day: { type: String, required: true },
+    time_of_day: { type: Number, required: true },
     time_passed: { type: Number, required: true },
     underlying: { type: Number, required: true },
     vega: { type: Number, required: true },
@@ -76,7 +76,6 @@ export class DBStore {
     this.unratedKeys.push('expires');
     this.unratedKeys.push('option_type');
     this.unratedKeys.push('ticker');
-    this.unratedKeys.push('time_of_day');
   }
 
   /**
@@ -151,7 +150,6 @@ export class DBStore {
           ratedAlert.expires = alert.expires;
           ratedAlert.option_type = alert.option_type;
           ratedAlert.ticker = alert.ticker;
-          ratedAlert.time_of_day = alert.time_of_day;
 
           for (const key of Object.keys(alert)) {
             if (!this.unratedKeys.includes(key)) {

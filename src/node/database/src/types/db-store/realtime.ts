@@ -9,8 +9,8 @@ export interface RealtimeAlerts {
  * Interface which will encapsulate the incoming realtime alert.
  */
 export interface RealtimeAlert {
-  /** The date the alert was raised. Ex. 2000-01-01T00:00:00Z. */
-  alert_date: string;
+  /** The date the alert was raised in seconds. */
+  alert_date: number;
   /** The ask price of the option at the time of the alert. */
   ask: number;
   /** The number of days between the alert date and the expiry date. */
@@ -19,8 +19,8 @@ export interface RealtimeAlert {
   delta: number;
   /** The difference between the strike price and the underlying value. */
   diff: number;
-  /** The expiry date of the option. Ex. 2000-01-01. */
-  expires: string;
+  /** The expiry date of the option in seconds. */
+  expires: number;
   /** The option gamma value. */
   gamma: number;
   /** The option implied volatility value. */
@@ -37,8 +37,8 @@ export interface RealtimeAlert {
   theta: number;
   /** The ticker of the option. */
   ticker: string;
-  /** The time of day that the alert was raised. Ex. 00:00:00. */
-  time_of_day: string;
+  /** The time of day that the alert was raised in seconds. */
+  time_of_day: number;
   /** The underlying value at the time the alert was raised. */
   underlying: number;
   /** The option vega value. */
@@ -54,8 +54,8 @@ export interface RealtimeAlert {
  * saved onto the database.
  */
 export interface RatedRealtimeAlert {
-  /** The date the alert was raised. Ex. 2000-01-01T00:00:00Z. */
-  alert_date: string;
+  /** The date the alert was raised in seconds. */
+  alert_date: number;
   /** The ask price of the option at the time of the alert and the rating. */
   ask: {
     rate: string,
@@ -76,8 +76,8 @@ export interface RatedRealtimeAlert {
     rate: string,
     value: number
   };
-  /** The expiry date of the option. Ex. 2000-01-01. */
-  expires: string;
+  /** The expiry date of the option in seconds. */
+  expires: number;
   /** The option gamma value and the rating. */
   gamma: {
     rate: string,
@@ -112,8 +112,11 @@ export interface RatedRealtimeAlert {
   };
   /** The ticker of the option. */
   ticker: string;
-  /** The time of day that the alert was raised. Ex. 00:00:00. */
-  time_of_day: string;
+  /** The time of day that the alert was raised in seconds and the rating. */
+  time_of_day: {
+    rate: string,
+    value: number
+  };
   /** The underlying value at the time the alert was raised and the rating. */
   underlying: {
     rate: string,
@@ -143,7 +146,7 @@ export interface RatedRealtimeAlert {
  */
 export function createEmptyRatedAlert(): RatedRealtimeAlert {
   return {
-    alert_date: '',
+    alert_date: 0,
     ask: {
       rate: '',
       value: 0
@@ -160,7 +163,7 @@ export function createEmptyRatedAlert(): RatedRealtimeAlert {
       rate: '',
       value: 0
     },
-    expires: '',
+    expires: 0,
     gamma: {
       rate: '',
       value: 0
@@ -187,7 +190,10 @@ export function createEmptyRatedAlert(): RatedRealtimeAlert {
       value: 0
     },
     ticker: '',
-    time_of_day: '',
+    time_of_day: {
+      rate: '',
+      value: 0
+    },
     underlying: {
       rate: '',
       value: 0
