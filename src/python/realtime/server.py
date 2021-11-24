@@ -27,7 +27,6 @@ def get():
     Any GET requests made to the realtime server will be received here.
     """
     logger.info("Received GET request")
-
     try:
         logger.info("Sending GET request to DB-Store server")
         response = requests.get(
@@ -45,6 +44,75 @@ def get():
 #########################################################################################################
 
 
+@app.route("/<start>", methods=["GET"])
+def get_with_start(start):
+    """
+    get
+    ----------
+
+    Any GET requests with a start parameter made to the realtime server will be received here.
+    """
+    try:
+        logger.info(f"Received GET request with start: {start}")
+        startSeconds = int(start)
+        try:
+            logger.info("Sending GET request to DB-Store server")
+            response = requests.get(
+                f"http://{env.db_store_hostname}:{env.db_store_port}/realtime/{startSeconds}"
+            )
+            logger.info(f"DB-Store Response Status Code: {response.status_code}")
+            return response.text, response.status_code
+        except Exception as ex:
+            message = "An error occurred sending GET request to the DB-Store server"
+            logger.critical(message)
+            logger.critical(ex)
+            return message, 500
+    except Exception as ex:
+        message = f"Invalid start parameter provided: {start}"
+        logger.warning(message)
+        logger.warning(ex)
+        return message, 500
+
+
+#########################################################################################################
+
+
+@app.route("/<start>/<stop>", methods=["GET"])
+def get_with_start_stop(start, stop):
+    """
+    get
+    ----------
+
+    Any GET requests with a start and stop parameter made to the realtime server will be received here.
+    """
+    try:
+        logger.info(f"Received GET request with start: {start} and stop: {stop}")
+        startSeconds = int(start)
+        stopSeconds = int(stop)
+        try:
+            logger.info("Sending GET request to DB-Store server")
+            response = requests.get(
+                f"http://{env.db_store_hostname}:{env.db_store_port}/realtime/{startSeconds}/{stopSeconds}"
+            )
+            logger.info(f"DB-Store Response Status Code: {response.status_code}")
+            return response.text, response.status_code
+        except Exception as ex:
+            message = "An error occurred sending GET request to the DB-Store server"
+            logger.critical(message)
+            logger.critical(ex)
+            return message, 500
+    except Exception as ex:
+        message = (
+            f"Invalid start or stop parameter provided: start - {start}, stop - {stop}"
+        )
+        logger.warning(message)
+        logger.warning(ex)
+        return message, 500
+
+
+#########################################################################################################
+
+
 @app.route("/", methods=["POST"])
 def ingest():
     """
@@ -55,7 +123,6 @@ def ingest():
     """
     logger.info("Received POST request")
     data = request.json
-
     try:
         logger.info("Sending POST request to DB-Store server with realtime data")
         response = requests.post(
@@ -84,7 +151,6 @@ def delete():
     Any DELETE requests made to the realtime server will be received here.
     """
     logger.info("Received DELETE request")
-
     try:
         logger.info("Sending DELETE request to DB-Store server")
         response = requests.delete(

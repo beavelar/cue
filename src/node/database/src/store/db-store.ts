@@ -113,6 +113,24 @@ export class DBStore {
   }
 
   /**
+   * Method to retrieve the Mongo "find" promise based on the start and option stop parameters.
+   * Method is to be utilized when creating a more narrow request instead of request all realtime
+   * data. The data will be narrowed based on the alert date
+   * 
+   * @param start The start date of the realtime data request
+   * @param stop The stop date of the realtime data request
+   * @returns A promise which will resolve to a array of RatedRealtimeAlert
+   */
+  public async getRealtime(start: number, stop?: number): Promise<Array<RatedRealtimeAlert>> {
+    if (stop) {
+      return this.RealtimeModel.find({ "alert_date": { "$gte": start, "$lte": stop } });
+    }
+    else {
+      return this.RealtimeModel.find({ "alert_date": { "$gte": start } });
+    }
+  }
+
+  /**
    * Will write the incoming realtime alerts with a rating on select fields onto the Mongo
    * database.
    * 
@@ -214,7 +232,7 @@ export class DBStore {
    * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
    *               omitted in the Mongo response 
    * @param sort The "sort" that controls how the document is sorted
-   * @returns A promise which will resolve to a array of RatedRealtimeAlert
+   * @returns A promise which will resolve to a array of HistoricalAlert
    */
   public async getAllHistorical(filter?: any, sort?: any): Promise<Array<HistoricalAlert>> {
     if (filter && sort) {
@@ -225,6 +243,24 @@ export class DBStore {
     }
     else {
       return this.HistoricalModel.find();
+    }
+  }
+
+  /**
+   * Method to retrieve the Mongo "find" promise based on the start and option stop parameters.
+   * Method is to be utilized when creating a more narrow request instead of request all historical
+   * data. The data will be narrowed based on the alert date
+   * 
+   * @param start The start date of the historical data request
+   * @param stop The stop date of the historical data request
+   * @returns A promise which will resolve to a array of HistoricalAlert
+   */
+  public async getHistorical(start: number, stop?: number): Promise<Array<HistoricalAlert>> {
+    if (stop) {
+      return this.HistoricalModel.find({ "alert_date": { "$gte": start, "$lte": stop } });
+    }
+    else {
+      return this.HistoricalModel.find({ "alert_date": { "$gte": start } });
     }
   }
 
