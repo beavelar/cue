@@ -93,7 +93,7 @@ export class DBStore {
 
   /**
    * Method to retrieve the Mongo "find" promise based on the parameters provided for the
-   * realtime collection.
+   * realtime collection. Sorts data by alert_date if no sort is provided.
    * 
    * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
    *               omitted in the Mongo response 
@@ -105,17 +105,17 @@ export class DBStore {
       return this.RealtimeModel.find({}, filter).sort(sort);
     }
     else if (filter) {
-      return this.RealtimeModel.find({}, filter);
+      return this.RealtimeModel.find({}, filter).sort({ "alert_date": 1 });
     }
     else {
-      return this.RealtimeModel.find();
+      return this.RealtimeModel.find().sort({ "alert_date": 1 });
     }
   }
 
   /**
    * Method to retrieve the Mongo "find" promise based on the start and option stop parameters.
    * Method is to be utilized when creating a more narrow request instead of request all realtime
-   * data. The data will be narrowed based on the alert date
+   * data. The data will be narrowed based on the alert date. Sorts data by alert_date.
    * 
    * @param start The start date of the realtime data request
    * @param stop The stop date of the realtime data request
@@ -123,10 +123,10 @@ export class DBStore {
    */
   public async getRealtime(start: number, stop?: number): Promise<Array<RatedRealtimeAlert>> {
     if (stop) {
-      return this.RealtimeModel.find({ "alert_date": { "$gte": start, "$lte": stop } });
+      return this.RealtimeModel.find({ "alert_date": { "$gte": start, "$lte": stop } }).sort({ "alert_date": 1 });
     }
     else {
-      return this.RealtimeModel.find({ "alert_date": { "$gte": start } });
+      return this.RealtimeModel.find({ "alert_date": { "$gte": start } }).sort({ "alert_date": 1 });
     }
   }
 
@@ -171,30 +171,30 @@ export class DBStore {
 
           for (const key of Object.keys(alert)) {
             if (!this.unratedKeys.includes(key)) {
-              for (let index = 0; index < sortedHistoricalAlerts[key].length - 1; index++) {
-                if (sortedHistoricalAlerts[key][index].value <= alert[key]) {
-                  const leftDiff = alert[key] - sortedHistoricalAlerts[key][index].value;
-                  const rightDiff = sortedHistoricalAlerts[key][index + 1].value - alert[key];
+              for (let index = 1; index < sortedHistoricalAlerts[key].length; index++) {
+                if (alert[key] <= sortedHistoricalAlerts[key][index].value) {
+                  const leftDiff = alert[key] - sortedHistoricalAlerts[key][index - 1].value;
+                  const rightDiff = sortedHistoricalAlerts[key][index].value - alert[key];
 
                   if (leftDiff <= rightDiff) {
                     ratedAlert[key] = {
                       rate: sortedHistoricalAlerts[key][index].rate,
-                      value: sortedHistoricalAlerts[key][index].value
+                      value: alert[key]
                     };
                     break;
                   }
                   else {
                     ratedAlert[key] = {
                       rate: sortedHistoricalAlerts[key][index + 1].rate,
-                      value: sortedHistoricalAlerts[key][index + 1].value
+                      value: alert[key]
                     };
                     break;
                   }
                 }
               }
-              ratedAlerts.push(ratedAlert);
             }
           }
+          ratedAlerts.push(ratedAlert);
         }
 
         // Writes the rated realtime data onto the realtime collection. Result of the operation will be
@@ -227,7 +227,7 @@ export class DBStore {
 
   /**
    * Method to retrieve the Mongo "find" promise based on the parameters provided for the
-   * historical collection.
+   * historical collection. Sorts data by alert_date if no sort is provided.
    * 
    * @param filter The "filter" (Projection in Mongo terms) that controls what's emitted and
    *               omitted in the Mongo response 
@@ -239,17 +239,17 @@ export class DBStore {
       return this.HistoricalModel.find({}, filter).sort(sort);
     }
     else if (filter) {
-      return this.HistoricalModel.find({}, filter);
+      return this.HistoricalModel.find({}, filter).sort({ "alert_date": 1 });
     }
     else {
-      return this.HistoricalModel.find();
+      return this.HistoricalModel.find().sort({ "alert_date": 1 });
     }
   }
 
   /**
    * Method to retrieve the Mongo "find" promise based on the start and option stop parameters.
    * Method is to be utilized when creating a more narrow request instead of request all historical
-   * data. The data will be narrowed based on the alert date
+   * data. The data will be narrowed based on the alert date. Sorts data by alert_date.
    * 
    * @param start The start date of the historical data request
    * @param stop The stop date of the historical data request
@@ -257,10 +257,10 @@ export class DBStore {
    */
   public async getHistorical(start: number, stop?: number): Promise<Array<HistoricalAlert>> {
     if (stop) {
-      return this.HistoricalModel.find({ "alert_date": { "$gte": start, "$lte": stop } });
+      return this.HistoricalModel.find({ "alert_date": { "$gte": start, "$lte": stop } }).sort({ "alert_date": 1 });
     }
     else {
-      return this.HistoricalModel.find({ "alert_date": { "$gte": start } });
+      return this.HistoricalModel.find({ "alert_date": { "$gte": start } }).sort({ "alert_date": 1 });
     }
   }
 
