@@ -62,7 +62,7 @@ function InputToJSON {
 			$volume = [int]$inputData[$index + 28]
 			$openInterest = [int]$inputData[$index + 26]
 			$vol_oi = $volume / $openInterest
-			$impliedVolatility = [double]$inputData[$index + 30].Replace("%", "")
+			$impliedVolatility = ([double]$inputData[$index + 30].Replace("%", "")) / 100
 			$delta = [double]$inputData[$index + 32]
 			$gamma = [double]$inputData[$index + 40]
 			$vega = [double]$inputData[$index + 38]

@@ -169,14 +169,20 @@ export class DBStore {
           ratedAlert.option_type = alert.option_type;
           ratedAlert.ticker = alert.ticker;
 
+          // Loops through each key. Ex. alert_date, ask, days_to_expiry, etc.
           for (const key of Object.keys(alert)) {
+            // Only process comparable keys. View constructore for list of keys to be ignored
             if (!this.unratedKeys.includes(key)) {
-              for (let index = 1; index < sortedHistoricalAlerts[key].length; index++) {
-                if (alert[key] <= sortedHistoricalAlerts[key][index].value) {
-                  const leftDiff = alert[key] - sortedHistoricalAlerts[key][index - 1].value;
-                  const rightDiff = sortedHistoricalAlerts[key][index].value - alert[key];
+              // Loops through the sorted data to find 2 points that the incoming data resides in
+              // Checks which point the incoming point is closer to and utilizes the rate of that point
+              for (let index = 0; index < sortedHistoricalAlerts[key].length - 1; index++) {
+                // Only process if incoming point is inbetween the 2 points
+                if (alert[key] >= sortedHistoricalAlerts[key][index].value && alert[key] <= sortedHistoricalAlerts[key][index + 1].value) {
+                  const leftDiff = sortedHistoricalAlerts[key][index].value - alert[key];
+                  const rightDiff = alert[key] - sortedHistoricalAlerts[key][index + 1].value;
 
                   if (leftDiff <= rightDiff) {
+                    // The incoming point is closer to the left point
                     ratedAlert[key] = {
                       rate: sortedHistoricalAlerts[key][index].rate,
                       value: alert[key]
@@ -184,6 +190,7 @@ export class DBStore {
                     break;
                   }
                   else {
+                    // The incoming point is closer to the right point
                     ratedAlert[key] = {
                       rate: sortedHistoricalAlerts[key][index + 1].rate,
                       value: alert[key]
