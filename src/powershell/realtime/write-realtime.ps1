@@ -46,7 +46,7 @@ function InputToJSON {
 			#  - Underlying price
 			#  - Difference between the strike price and underlying price
 			$underlying = [double]$inputData[$index + 16].Replace("$", "").Replace(",", "")
-			$diff = if ($underlying -gt $strike) { (($strike / $underlying) - 1) * 100 } else { ($strike - $underlying) * 100 }
+			$diff = if ($underlying -gt $strike) { (($strike / $underlying) - 1) * 100 } else { (($strike - $underlying) / $underlying) * 100 }
 
 			# Option field values:
 			#  - Volume
