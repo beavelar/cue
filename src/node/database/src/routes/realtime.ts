@@ -30,7 +30,7 @@ export class Realtime {
       this.logger.info('main', `Receive GET request with start: ${req.params.start}`);
       const startSeconds = parseInt(req.params.start);
       if (!isNaN(startSeconds)) {
-        this.store.getRealtime(startSeconds).then((data) => {
+        this.store.getRealtimeAlertDate(startSeconds).then((data) => {
           this.logger.info('main', 'Successfully retrieved realtime data from the database');
           res.status(200).json(data);
         }).catch((err) => {
@@ -54,7 +54,7 @@ export class Realtime {
       const startSeconds = parseInt(req.params.start);
       const stopSeconds = parseInt(req.params.stop);
       if (!isNaN(startSeconds) && !isNaN(stopSeconds)) {
-        this.store.getRealtime(startSeconds, stopSeconds).then((data) => {
+        this.store.getRealtimeAlertDate(startSeconds, stopSeconds).then((data) => {
           this.logger.info('main', 'Successfully retrieved realtime data from the database');
           res.status(200).json(data);
         }).catch((err) => {
