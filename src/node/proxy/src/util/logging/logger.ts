@@ -23,7 +23,7 @@ export class Logger {
    */
   public info(funcName: string, message: string): void {
     const date = this.formatDate(new Date());
-    console.log(`LOG: ${date} - ${this.filename}.${funcName} - ${message}`);
+    console.log(`INFO: ${date} - ${this.filename}.${funcName} - ${message}`);
   }
 
   /**
