@@ -146,11 +146,12 @@ export class DBStore {
    * Will write the incoming realtime alerts with a rating on select fields onto the Mongo
    * database.
    * Steps to write incoming realtime alerts:
-   *  1. Retrieve historical call data from the historical collection
-   *  2. Retrieve historical put data from the historical collection
-   *  3. Rate incoming realtime call data using the retrieved historical call data
-   *  4. Rate incoming realtime put data using the retrieved historical put data
-   *  5. Concat the results of the call and put rating together and write the result to the realtime collection
+   *  1. Retrieve historical data from the historical collection
+   *  2. Filter realtime data by option type (Call/Put)
+   *  3. Filter historical data by option type (Call/Put)
+   *  4. Rate incoming realtime call data using the retrieved historical call data
+   *  5. Rate incoming realtime put data using the retrieved historical put data
+   *  6. Concat the results of the call and put rating together and write the result to the realtime collection
    * 
    * @param realtime The incoming realtime alerts
    * @returns A promise which will resolve to a string containing the result of the
@@ -159,35 +160,35 @@ export class DBStore {
   public async writeRealtime(realtime: RealtimeAlert): Promise<string> {
     this.logger.info('writeRealtime', 'Received realtime write request');
     const promise = new Promise<string>((resolve, reject) => {
-      this.logger.info('writeRealtime', 'Requesting historical "Call" data from the historical collection');
-      this.getHistoricalOptionType('Call').then((historicalCallData) => {
-        this.logger.info('writeRealtime', 'Requesting historical "Put" data from the historical collection');
-        this.getHistoricalOptionType('Put').then((historicalPutData) => {
-          // Seperates incoming realtime data into call and put arrays
-          const realtimeCallAlerts = Object.values(realtime).filter(alert => alert.option_type.includes('Call'));
-          const realtimePutAlerts = Object.values(realtime).filter(alert => alert.option_type.includes('Put'));
+      this.logger.info('writeRealtime', 'Requesting historical data from the historical collection');
+      this.getAllHistorical().then((data) => {
+        // Seperates incoming realtime data into call and put arrays
+        const realtimeCallAlerts = Object.values(realtime).filter(alert => alert.option_type.includes('Call'));
+        const realtimePutAlerts = Object.values(realtime).filter(alert => alert.option_type.includes('Put'));
 
-          // Rates the seperated data with it's corresponding historical data
-          const ratedCallAlerts = this.rateRealtimeAlerts(realtimeCallAlerts, historicalCallData);
-          const ratedPutAlerts = this.rateRealtimeAlerts(realtimePutAlerts, historicalPutData);
-          const ratedAlerts = ratedCallAlerts.concat(ratedPutAlerts);
+        // Seperates retrieved historical data into call and put arrays
+        const historicalCallData = data.filter(alert => alert.option_type.includes('Call'));
+        const historicalPutData = data.filter(alert => alert.option_type.includes('Put'));
 
-          // Write entire result to realtime collection
-          this.logger.info('writeRealtime', 'Writing rated realtime data onto realtime collection');
-          this.RealtimeModel.insertMany(ratedAlerts).then((onfulfilled) => {
-            this.logger.info('writeRealtime', 'Successfully saved rated realtime alerts onto realtime collection');
-            resolve('Realtime alerts written');
-          }).catch((onrejected) => {
-            this.logger.info('writeRealtime', `Failed to write realtime data to database: ${onrejected}`);
-            reject(`Failed to write realtime data to database: ${onrejected}`);
-          });
-        }).catch((err) => {
-          this.logger.critical('writeRealtime', 'An error occurred attempting to retrieve historical "Put" data from the database', err);
-          reject(`An error occurred attempting to retrieve historical "Put" data from the database: ${err}`);
+        // Rates the realtime call data of each ticker with the ticker historical call data
+        const ratedCallAlerts = this.rateRealtimeAlerts(realtimeCallAlerts, historicalCallData);
+
+        // Rates the realtime put data of each ticker with the ticker historical put data
+        const ratedPutAlerts = this.rateRealtimeAlerts(realtimePutAlerts, historicalPutData);
+
+        // Write entire result to realtime collection
+        const ratedAlerts = ratedCallAlerts.concat(ratedPutAlerts);
+        this.logger.info('writeRealtime', 'Writing rated realtime data onto realtime collection');
+        this.RealtimeModel.insertMany(ratedAlerts).then((onfulfilled) => {
+          this.logger.info('writeRealtime', 'Successfully saved rated realtime alerts onto realtime collection');
+          resolve('Realtime alerts written');
+        }).catch((onrejected) => {
+          this.logger.info('writeRealtime', `Failed to write realtime data to database: ${onrejected}`);
+          reject(`Failed to write realtime data to database: ${onrejected}`);
         });
       }).catch((err) => {
-        this.logger.critical('writeRealtime', 'An error occurred attempting to retrieve historical "Call" data from the database', err);
-        reject(`An error occurred attempting to retrieve historical "Call" data from the database: ${err}`);
+        this.logger.critical('writeRealtime', 'An error occurred attempting to retrieve historical data from the database', err);
+        reject(`An error occurred attempting to retrieve historical data from the database: ${err}`);
       });
     });
     return promise;
@@ -288,31 +289,18 @@ export class DBStore {
   /**
    * Rates realtime data based on the ratings from the historical data.
    * Steps to rate realtime data:
-   *  1. Sorts most fields of historical data from lowest to highests
-   *  2. Loops through each realtime alert
-   *  3. Loops through each field of the realtime alert
-   *  4. Searches for the historical value of the field closest to the realtime value of the field
-   *  5. Builds and returns a rated alert based on the results and appends that to an array of rated realtime alerts
+   *  1. Loops through each realtime alert
+   *  2. Filters historical alerts by the ticker
+   *  3. Sorts most fields of filtered historical data from lowest to highest
+   *  4. Loops through each field of the realtime alert
+   *  5. Searches for the historical value of the field closest to the realtime value of the field
+   *  6. Builds and returns a rated alert based on the results and appends that to an array of rated realtime alerts
    * @param realtime An array of realtime alerts (unrated)
    * @param historical An array of historical alerts
    * @returns An array of RatedRealtimeAlert
    */
   private rateRealtimeAlerts(realtime: Array<RealtimeAlert>, historical: Array<HistoricalAlert>): Array<RatedRealtimeAlert> {
-    const sortedHistoricalAlerts = {};
     const ratedAlerts = new Array<RatedRealtimeAlert>();
-
-    // Sorts the receiving historical data for easier comparisons
-    this.logger.info('writeRealtime', 'Sorting received historical data');
-    for (const key of Object.keys(realtime[0])) {
-      if (!this.unratedKeys.includes(key)) {
-        sortedHistoricalAlerts[key] = historical.map((item) => {
-          return {
-            rate: item.rate,
-            value: item[key]
-          };
-        }).sort((left, right) => { return left.value - right.value });
-      }
-    }
 
     // Rates the incoming realtime data by comparing values to sorted historical data
     this.logger.info('writeRealtime', 'Rating incoming realtime data');
@@ -323,33 +311,92 @@ export class DBStore {
       ratedAlert.option_type = alert.option_type;
       ratedAlert.ticker = alert.ticker;
 
-      // Loops through each key. Ex. alert_date, ask, days_to_expiry, etc.
-      for (const key of Object.keys(alert)) {
-        // Only process comparable keys. View constructore for list of keys to be ignored
-        if (!this.unratedKeys.includes(key)) {
-          // Loops through the sorted data to find 2 points that the incoming data resides in
-          // Checks which point the incoming point is closer to and utilizes the rate of that point
-          for (let index = 0; index < sortedHistoricalAlerts[key].length - 1; index++) {
-            // Only process if incoming point is inbetween the 2 points or beyond the current list of historical points
-            if (alert[key] >= sortedHistoricalAlerts[key][sortedHistoricalAlerts[key].length - 1].value || (alert[key] >= sortedHistoricalAlerts[key][index].value && alert[key] <= sortedHistoricalAlerts[key][index + 1].value)) {
-              const leftDiff = sortedHistoricalAlerts[key][index].value - alert[key];
-              const rightDiff = alert[key] - sortedHistoricalAlerts[key][index + 1].value;
+      const tickerHistoricalAlerts = historical.filter(hAlert => hAlert.ticker === alert.ticker);
+      if (tickerHistoricalAlerts.length === 0) {
+        // No ticker specific historical data, the alert will be marked with the NEW rate
+        this.logger.info('writeRealtime', `The ticker ${alert.ticker} has no historical data, setting rate to NEW`);
+        // Loops through each key. Ex. alert_date, ask, days_to_expiry, etc.
+        for (const key of Object.keys(alert)) {
+          if (!this.unratedKeys.includes(key)) {
+            ratedAlert[key] = {
+              rate: 'NEW',
+              value: alert[key]
+            };
+          }
+        }
+      }
+      else if (tickerHistoricalAlerts.length === 1) {
+        // Only one ticker specific historical data, the alert will be marked with the rate of the available alerts
+        this.logger.info('writeRealtime', `The ticker ${alert.ticker} has only one historical point, setting rate to ${tickerHistoricalAlerts[0].rate}`);
+        // Loops through each key. Ex. alert_date, ask, days_to_expiry, etc.
+        for (const key of Object.keys(alert)) {
+          if (!this.unratedKeys.includes(key)) {
+            ratedAlert[key] = {
+              rate: tickerHistoricalAlerts[0].rate,
+              value: alert[key]
+            };
+          }
+        }
+      }
+      else {
+        // Sorts the received historical data for easier comparisons and filters to only the desired ticker data
+        this.logger.info('writeRealtime', `Sorting historical data for ticker: ${alert.ticker}`);
+        const sortedHistoricalAlerts = {};
+        for (const key of Object.keys(realtime[0])) {
+          if (!this.unratedKeys.includes(key)) {
+            sortedHistoricalAlerts[key] = tickerHistoricalAlerts.map((item) => {
+              return {
+                rate: item.rate,
+                value: item[key]
+              };
+            }).sort((left, right) => { return left.value - right.value });
+          }
+        }
 
-              if (leftDiff <= rightDiff) {
-                // The incoming point is closer to the left point
+        // Loops through each key. Ex. alert_date, ask, days_to_expiry, etc.
+        for (const key of Object.keys(alert)) {
+          // Only process comparable keys. View constructore for list of keys to be ignored
+          if (!this.unratedKeys.includes(key)) {
+            // Loops through the sorted data to find 2 points that the incoming data resides in
+            // Checks which point the incoming point is closer to and utilizes the rate of that point
+            for (let index = 0; index < sortedHistoricalAlerts[key].length - 1; index++) {
+              if (alert[key] >= sortedHistoricalAlerts[key][sortedHistoricalAlerts[key].length - 1].value) {
+                // Process point that lies before the sorted historical range
                 ratedAlert[key] = {
-                  rate: sortedHistoricalAlerts[key][index].rate,
+                  rate: sortedHistoricalAlerts[key][sortedHistoricalAlerts[key].length - 1].rate,
                   value: alert[key]
                 };
                 break;
               }
-              else {
-                // The incoming point is closer to the right point
+              else if (alert[key] <= sortedHistoricalAlerts[key][0].value) {
+                // Process point that lies after the sorted historical range
                 ratedAlert[key] = {
-                  rate: sortedHistoricalAlerts[key][index + 1].rate,
+                  rate: sortedHistoricalAlerts[key][0].rate,
                   value: alert[key]
                 };
                 break;
+              }
+              else if (alert[key] >= sortedHistoricalAlerts[key][index].value && alert[key] <= sortedHistoricalAlerts[key][index + 1].value) {
+                // Process points that reside within the historical range
+                const leftDiff = sortedHistoricalAlerts[key][index].value - alert[key];
+                const rightDiff = alert[key] - sortedHistoricalAlerts[key][index + 1].value;
+
+                if (leftDiff <= rightDiff) {
+                  // The incoming point is closer to the left point
+                  ratedAlert[key] = {
+                    rate: sortedHistoricalAlerts[key][index].rate,
+                    value: alert[key]
+                  };
+                  break;
+                }
+                else {
+                  // The incoming point is closer to the right point
+                  ratedAlert[key] = {
+                    rate: sortedHistoricalAlerts[key][index + 1].rate,
+                    value: alert[key]
+                  };
+                  break;
+                }
               }
             }
           }
