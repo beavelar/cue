@@ -15,7 +15,9 @@ function JSONToCSV {
 	$sb = [System.Text.StringBuilder]::new()
 	[void]$sb.Append("Ticker,Option Type,Alerted At,Day of Week,Time of Day,Expiry,Days to Exp.,Strike,Underlying,Diff %,Volume,Open Interest,Vol/OI,Implied Volatility,Delta,Gamma,Vega,Theta,Rho,Alert Ask`n")
 	foreach ($line in $data) {
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($line.alert_date),N/A,$($line.time_of_day.rate)|$($line.time_of_day.value),$($line.expires),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|$($line.strike.value),$($line.underlying.rate)|$($line.underlying.value),$($line.diff.rate)|$($line.diff.value),$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($line."vol/oi".value),$($line.implied_volatility.rate)|$($line.implied_volatility.value),$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|$($line.ask.value)`n")
+		$alertDate = Get-Date -UnixTimeSeconds $line.alert_date -Format "yyyy-MM-dd HH:mm"
+		$expiry = Get-Date -UnixTimeSeconds $line.expires -Format "yyyy-MM-dd"
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),N/A,$($line.time_of_day.rate)|$($line.time_of_day.value),$($expiry),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|$($line.strike.value),$($line.underlying.rate)|$($line.underlying.value),$($line.diff.rate)|$($line.diff.value),$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($line."vol/oi".value),$($line.implied_volatility.rate)|$($line.implied_volatility.value),$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|$($line.ask.value)`n")
 	}
 	return $sb.ToString()
 }
