@@ -15,9 +15,26 @@ function JSONToCSV {
 	$sb = [System.Text.StringBuilder]::new()
 	[void]$sb.Append("Ticker,Option Type,Alerted At,Day of Week,Time of Day,Expiry,Days to Exp.,Strike,Underlying,Diff %,Volume,Open Interest,Vol/OI,Implied Volatility,Delta,Gamma,Vega,Theta,Rho,Alert Ask,Highest Ask,P/L,Time Passed,Rate`n")
 	foreach ($line in $data) {
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($line.alert_date),N/A,$($line.time_of_day),$($line.expires),$($line.days_to_expiry),$($line.strike),$($line.underlying),$($line.diff),$($line.volume),$($line.open_interest),$($line."vol/oi"),$($line.implied_volatility),$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),$($line.ask),$($line.highest_ask),$($line."p/l"),$($line.time_passed),$($line.rate)`n")
+		$alertDate = Get-Date -UnixTimeSeconds $line.alert_date -Format "yyyy-MM-dd HH:mm"
+		$expiry = Get-Date -UnixTimeSeconds $line.expires -Format "yyyy-MM-dd"
+		$dayOfWeek = NumberToDayOfWeek $line.day_of_week
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($dayOfWeek),$($line.time_of_day),$($expiry),$($line.days_to_expiry),$($line.strike),$($line.underlying),$($line.diff),$($line.volume),$($line.open_interest),$($line."vol/oi"),$($line.implied_volatility),$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),$($line.ask),$($line.highest_ask),$($line."p/l"),$($line.time_passed),$($line.rate)`n")
 	}
 	return $sb.ToString()
+}
+
+function NumberToDayOfWeek {
+	param ($value)
+	switch ($value) {
+		0 { return "Sunday"; Break }
+		1 { return "Monday"; Break }
+		2 { return "Tuesday"; Break }
+		3 { return "Wednesday"; Break }
+		4 { return "Thursday"; Break }
+		5 { return "Friday"; Break }
+		6 { return "Saturday"; Break }
+		default { return "Unknown" }
+	}
 }
 
 function Main {

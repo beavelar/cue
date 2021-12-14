@@ -1,3 +1,5 @@
+import { DayOfWeek } from "../date/day-of-week";
+
 /**
  * Interface which will encapsulate the incoming historical alerts that will be
  * saved onto the database.
@@ -13,6 +15,8 @@ export interface HistoricalAlerts {
 export interface HistoricalAlert {
   /** The date the alert was raised in seconds. */
   alert_date: number;
+  /** The day of week the alert was raised as a DayOfWeek. */
+  day_of_week: DayOfWeek;
   /** The ask price of the option at the time of the alert. */
   ask: number;
   /** The number of days between the alert date and the expiry date. */
