@@ -15,6 +15,7 @@ export class DBStore {
   /** Schema structure for realtime data points */
   private realtimeSchema = new Schema<RatedRealtimeAlert>({
     alert_date: { type: Number, required: true },
+    day_of_week: { type: { rate: String, value: Number }, required: true },
     ask: { type: { rate: String, value: Number }, required: true },
     days_to_expiry: { type: { rate: String, value: Number }, required: true },
     delta: { type: { rate: String, value: Number }, required: true },
@@ -38,6 +39,7 @@ export class DBStore {
   /** Schema structure for historical data points */
   private historicalSchema = new Schema<HistoricalAlert>({
     alert_date: { type: Number, required: true },
+    day_of_week: { type: Number, required: true },
     ask: { type: Number, required: true },
     days_to_expiry: { type: Number, required: true },
     delta: { type: Number, required: true },

@@ -1,3 +1,5 @@
+import { DayOfWeek } from "../date/day-of-week";
+
 /**
  * Interface which will encapsulate the incoming realtime alerts.
  */
@@ -11,6 +13,8 @@ export interface RealtimeAlerts {
 export interface RealtimeAlert {
   /** The date the alert was raised in seconds. */
   alert_date: number;
+  /** The day of week the alert was raised as a DayOfWeek. */
+  day_of_week: DayOfWeek;
   /** The ask price of the option at the time of the alert. */
   ask: number;
   /** The number of days between the alert date and the expiry date. */
@@ -56,6 +60,11 @@ export interface RealtimeAlert {
 export interface RatedRealtimeAlert {
   /** The date the alert was raised in seconds. */
   alert_date: number;
+  /** The day of week the alert was raised and the rating. */
+  day_of_week: {
+    rate: string,
+    value: DayOfWeek
+  };
   /** The ask price of the option at the time of the alert and the rating. */
   ask: {
     rate: string,
@@ -147,6 +156,10 @@ export interface RatedRealtimeAlert {
 export function createEmptyRatedAlert(): RatedRealtimeAlert {
   return {
     alert_date: 0,
+    day_of_week: {
+      rate: '',
+      value: 0
+    },
     ask: {
       rate: '',
       value: 0

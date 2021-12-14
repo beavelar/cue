@@ -17,9 +17,24 @@ function JSONToCSV {
 	foreach ($line in $data) {
 		$alertDate = Get-Date -UnixTimeSeconds $line.alert_date -Format "yyyy-MM-dd HH:mm"
 		$expiry = Get-Date -UnixTimeSeconds $line.expires -Format "yyyy-MM-dd"
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),N/A,$($line.time_of_day.rate)|$($line.time_of_day.value),$($expiry),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|$($line.strike.value),$($line.underlying.rate)|$($line.underlying.value),$($line.diff.rate)|$($line.diff.value),$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($line."vol/oi".value),$($line.implied_volatility.rate)|$($line.implied_volatility.value),$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|$($line.ask.value)`n")
+		$dayOfWeek = NumberToDayOfWeek $line.day_of_week.value
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($line.day_of_week.rate)|$($dayOfWeek),$($line.time_of_day.rate)|$($line.time_of_day.value),$($expiry),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|$($line.strike.value),$($line.underlying.rate)|$($line.underlying.value),$($line.diff.rate)|$($line.diff.value),$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($line."vol/oi".value),$($line.implied_volatility.rate)|$($line.implied_volatility.value),$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|$($line.ask.value)`n")
 	}
 	return $sb.ToString()
+}
+
+function NumberToDayOfWeek {
+	param ($value)
+	switch ($value) {
+		0 { return "Sunday"; Break }
+		1 { return "Monday"; Break }
+		2 { return "Tuesday"; Break }
+		3 { return "Wednesday"; Break }
+		4 { return "Thursday"; Break }
+		5 { return "Friday"; Break }
+		6 { return "Saturday"; Break }
+		default { return "Unknown" }
+	}
 }
 
 function Main {

@@ -27,6 +27,7 @@ function InputToJSON {
 			# Date info:
 			#  - Alert date
 			#  - Alert date seconds
+			#  - Day of week
 			#  - Day of alert
 			#  - Seconds of day
 			#  - Alert time seconds
@@ -37,6 +38,7 @@ function InputToJSON {
 			#  - Low date
 			$alertDate = Get-Date $line.alert_time.Replace(" ", "T")
 			$alertDateSeconds = ([DateTimeOffset]$alertDate).ToUnixTimeSeconds()
+			$dayOfWeek = $alertDate.DayOfWeek
 			$dayOfAlert = Get-Date $alertDate.ToString("yyyy-MM-dd")
 			$secondsOfDay = ([DateTimeOffset]$dayOfAlert).ToUnixTimeSeconds()
 			$alertTimeSeconds = $alertDateSeconds - $secondsOfDay
@@ -68,6 +70,7 @@ function InputToJSON {
 				"ticker"             = $line.ticker_symbol
 				"option_type"        = $TextInfo.ToTitleCase($line.option_type)
 				"alert_date"         = $alertDateSeconds
+				"day_of_week"        = $dayOfWeek
 				"time_of_day"        = $alertTimeSeconds
 				"expires"            = $expirySeconds
 				"days_to_expiry"     = $daysToExp
