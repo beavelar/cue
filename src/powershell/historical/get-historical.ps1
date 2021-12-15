@@ -21,7 +21,13 @@ function JSONToCSV {
 		$dayOfWeek = NumberToDayOfWeek $line.day_of_week
 		$timeOfDayUTC = Get-Date -UnixTimeSeconds $line.time_of_day
 		$timeOfDay = Get-Date ($timeOfDayUTC.AddHours( - ($mtTimezone.BaseUtcOffset.totalhours))) -Format "HH:mm"
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($dayOfWeek),$($timeOfDay),$($expiry),$($line.days_to_expiry),$($line.strike),$($line.underlying),$($line.diff),$($line.volume),$($line.open_interest),$($line."vol/oi"),$($line.implied_volatility),$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),$($line.ask),$($line.highest_ask),$($line."p/l"),$($line.time_passed),$($line.rate)`n")
+		$diff = [math]::Round($line.diff, 2)
+		$vol_oi = [math]::Round(($line."vol/oi" * 100), 2)
+		$impliedVol = [math]::Round(($line.implied_volatility * 100), 2)
+		$ask = $line.ask * 100
+		$highestAsk = $line.highest_ask * 100
+		$p_l = [math]::Round(($line."p/l" * 100), 2)
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($dayOfWeek),$($timeOfDay),$($expiry),$($line.days_to_expiry),`$$($line.strike),`$$($line.underlying),$($diff)%,$($line.volume),$($line.open_interest),$($vol_oi),$($impliedVol)%,$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),`$$($ask),`$$($highestAsk),$($p_l)%,$($line.time_passed),$($line.rate)`n")
 	}
 	return $sb.ToString()
 }

@@ -21,7 +21,11 @@ function JSONToCSV {
 		$dayOfWeek = NumberToDayOfWeek $line.day_of_week.value
 		$timeOfDayUTC = Get-Date -UnixTimeSeconds $line.time_of_day.value
 		$timeOfDay = Get-Date ($timeOfDayUTC.AddHours( - ($mtTimezone.BaseUtcOffset.totalhours))) -Format "HH:mm"
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($line.day_of_week.rate)|$($dayOfWeek),$($line.time_of_day.rate)|$($timeOfDay),$($expiry),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|$($line.strike.value),$($line.underlying.rate)|$($line.underlying.value),$($line.diff.rate)|$($line.diff.value),$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($line."vol/oi".value),$($line.implied_volatility.rate)|$($line.implied_volatility.value),$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|$($line.ask.value)`n")
+		$diff = [math]::Round($line.diff.value, 2)
+		$vol_oi = [math]::Round(($line."vol/oi".value * 100), 2)
+		$impliedVol = [math]::Round(($line.implied_volatility.value * 100), 2)
+		$ask = $line.ask.value * 100
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($line.day_of_week.rate)|$($dayOfWeek),$($line.time_of_day.rate)|$($timeOfDay),$($expiry),$($line.days_to_expiry.rate)|$($line.days_to_expiry.value),$($line.strike.rate)|`$$($line.strike.value),$($line.underlying.rate)|`$$($line.underlying.value),$($line.diff.rate)|$($diff)%,$($line.volume.rate)|$($line.volume.value),$($line.open_interest.rate)|$($line.open_interest.value),$($line."vol/oi".rate)|$($vol_oi),$($line.implied_volatility.rate)|$($impliedVol)%,$($line.delta.rate)|$($line.delta.value),$($line.gamma.rate)|$($line.gamma.value),$($line.vega.rate)|$($line.vega.value),$($line.theta.rate)|$($line.theta.value),$($line.rho.rate)|$($line.rho.value),$($line.ask.rate)|`$$($ask)`n")
 	}
 	return $sb.ToString()
 }
