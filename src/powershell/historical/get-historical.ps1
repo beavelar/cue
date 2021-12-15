@@ -14,11 +14,14 @@ function JSONToCSV {
 	$data = ConvertFrom-Json $json
 	$sb = [System.Text.StringBuilder]::new()
 	[void]$sb.Append("Ticker,Option Type,Alerted At,Day of Week,Time of Day,Expiry,Days to Exp.,Strike,Underlying,Diff %,Volume,Open Interest,Vol/OI,Implied Volatility,Delta,Gamma,Vega,Theta,Rho,Alert Ask,Highest Ask,P/L,Time Passed,Rate`n")
+	$mtTimezone = Get-TimeZone -Id "Mountain Standard Time" 
 	foreach ($line in $data) {
 		$alertDate = Get-Date -UnixTimeSeconds $line.alert_date -Format "yyyy-MM-dd HH:mm"
 		$expiry = Get-Date -UnixTimeSeconds $line.expires -Format "yyyy-MM-dd"
 		$dayOfWeek = NumberToDayOfWeek $line.day_of_week
-		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($dayOfWeek),$($line.time_of_day),$($expiry),$($line.days_to_expiry),$($line.strike),$($line.underlying),$($line.diff),$($line.volume),$($line.open_interest),$($line."vol/oi"),$($line.implied_volatility),$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),$($line.ask),$($line.highest_ask),$($line."p/l"),$($line.time_passed),$($line.rate)`n")
+		$timeOfDayUTC = Get-Date -UnixTimeSeconds $line.time_of_day
+		$timeOfDay = Get-Date ($timeOfDayUTC.AddHours( - ($mtTimezone.BaseUtcOffset.totalhours))) -Format "HH:mm"
+		[void]$sb.Append("$($line.ticker),$($line.option_type),$($alertDate),$($dayOfWeek),$($timeOfDay),$($expiry),$($line.days_to_expiry),$($line.strike),$($line.underlying),$($line.diff),$($line.volume),$($line.open_interest),$($line."vol/oi"),$($line.implied_volatility),$($line.delta),$($line.gamma),$($line.vega),$($line.theta),$($line.rho),$($line.ask),$($line.highest_ask),$($line."p/l"),$($line.time_passed),$($line.rate)`n")
 	}
 	return $sb.ToString()
 }
