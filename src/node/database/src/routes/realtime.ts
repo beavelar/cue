@@ -12,12 +12,12 @@ export class Realtime {
      * realtime collection in the database.
      */
     this.router.get('/', (req, res) => {
-      this.logger.info('main', `Receive GET request`);
+      this.logger.info('realtime', `Receive GET request`);
       this.store.getAllRealtime().then((data) => {
-        this.logger.info('main', 'Successfully retrieved realtime data from the database');
+        this.logger.info('realtime', 'Successfully retrieved realtime data from the database');
         res.status(200).json(data);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred retrieving realtime data from the database', err);
+        this.logger.critical('realtime', 'An error occurred retrieving realtime data from the database', err);
         res.status(500).json(err);
       });
     });
@@ -27,20 +27,20 @@ export class Realtime {
      * data in the realtime collection in the database.
      */
     this.router.get('/:start', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start}`);
+      this.logger.info('realtime', `Receive GET request with start: ${req.params.start}`);
       const startSeconds = parseInt(req.params.start);
       if (!isNaN(startSeconds)) {
         this.store.getRealtimeAlertDate(startSeconds).then((data) => {
-          this.logger.info('main', 'Successfully retrieved realtime data from the database');
+          this.logger.info('realtime', 'Successfully retrieved realtime data from the database');
           res.status(200).json(data);
         }).catch((err) => {
-          this.logger.critical('main', 'An error occurred retrieving realtime data from the database', err);
+          this.logger.critical('realtime', 'An error occurred retrieving realtime data from the database', err);
           res.status(500).json(err);
         });
       }
       else {
         const message = `Invalid start parameter provided: ${req.params.start}`;
-        this.logger.warning('main', message);
+        this.logger.warning('realtime', message);
         res.status(500).json(message);
       }
     });
@@ -50,21 +50,21 @@ export class Realtime {
      * get the data in the realtime collection in the database.
      */
     this.router.get('/:start/:stop', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
+      this.logger.info('realtime', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
       const startSeconds = parseInt(req.params.start);
       const stopSeconds = parseInt(req.params.stop);
       if (!isNaN(startSeconds) && !isNaN(stopSeconds)) {
         this.store.getRealtimeAlertDate(startSeconds, stopSeconds).then((data) => {
-          this.logger.info('main', 'Successfully retrieved realtime data from the database');
+          this.logger.info('realtime', 'Successfully retrieved realtime data from the database');
           res.status(200).json(data);
         }).catch((err) => {
-          this.logger.critical('main', 'An error occurred retrieving realtime data from the database', err);
+          this.logger.critical('realtime', 'An error occurred retrieving realtime data from the database', err);
           res.status(500).json(err);
         });
       }
       else {
         const message = `Invalid start or stop parameter provided: start - ${req.params.start}, stop - ${req.params.stop}`;
-        this.logger.warning('main', message);
+        this.logger.warning('realtime', message);
         res.status(500).json(message);
       }
     });
@@ -74,12 +74,12 @@ export class Realtime {
      * the realtime collection in the database.
      */
     this.router.post('/', (req, res) => {
-      this.logger.info('main', `Receive POST request - ${req.url}`);
+      this.logger.info('realtime', `Receive POST request - ${req.url}`);
       this.store.writeRealtime(req.body).then((result) => {
-        this.logger.info('main', 'Successfully rated and wrote realtime data to the database');
+        this.logger.info('realtime', 'Successfully rated and wrote realtime data to the database');
         res.status(200).json(result);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred rating and/or writing realtime data to the database', err);
+        this.logger.critical('realtime', 'An error occurred rating and/or writing realtime data to the database', err);
         res.status(500).json(err);
       });
     });
@@ -89,12 +89,12 @@ export class Realtime {
      * realtime collection in the database.
      */
     this.router.delete('/', (req, res) => {
-      this.logger.info('main', `Receive DELETE request - ${req.url}`);
+      this.logger.info('realtime', `Receive DELETE request - ${req.url}`);
       this.store.deleteAllRealtime().then((result) => {
-        this.logger.info('main', 'Successfully deleted realtime data from the database');
+        this.logger.info('realtime', 'Successfully deleted realtime data from the database');
         res.status(200).json(result);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred deleting realtime data from the database', err);
+        this.logger.critical('realtime', 'An error occurred deleting realtime data from the database', err);
         res.status(500).json(err);
       });
     });

@@ -13,24 +13,24 @@ export class Historical {
      * GET request.
      */
     this.router.get('/', (req, res) => {
-      this.logger.info('main', `Receive GET request`);
+      this.logger.info('historical', `Receive GET request`);
       const url = `http://${this.env.HISTORICAL_SERVER_HOSTNAME}:${this.env.HISTORICAL_SERVER_PORT}/`;
       try {
         needle.get(url, (err, _res) => {
           if (err) {
             const message = 'An error occurred proxying the GET request to the historical server';
-            this.logger.critical('main', message, err);
+            this.logger.critical('historical', message, err);
             res.status(500).json(message);
           }
           else {
-            this.logger.info('main', 'Successfully proxied GET request to the historical server');
+            this.logger.info('historical', 'Successfully proxied GET request to the historical server');
             res.status(200).json(_res.body);
           }
         });
       }
       catch (ex) {
         const message = 'An error occurred proxying the GET request to the historical server';
-        this.logger.critical('main', message, ex);
+        this.logger.critical('historical', message, ex);
         res.status(500).json(message);
       }
     });
@@ -40,7 +40,7 @@ export class Historical {
      * historical server as a GET request with the start parameter.
      */
     this.router.get('/:start', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start}`);
+      this.logger.info('historical', `Receive GET request with start: ${req.params.start}`);
       const startSeconds = parseInt(req.params.start);
       if (!isNaN(startSeconds)) {
         const url = `http://${this.env.HISTORICAL_SERVER_HOSTNAME}:${this.env.HISTORICAL_SERVER_PORT}/${startSeconds}`;
@@ -48,24 +48,24 @@ export class Historical {
           needle.get(url, (err, _res) => {
             if (err) {
               const message = 'An error occurred proxying the GET request to the historical server';
-              this.logger.critical('main', message, err);
+              this.logger.critical('historical', message, err);
               res.status(500).json(message);
             }
             else {
-              this.logger.info('main', 'Successfully proxied GET request to the historical server');
+              this.logger.info('historical', 'Successfully proxied GET request to the historical server');
               res.status(200).json(_res.body);
             }
           });
         }
         catch (ex) {
           const message = 'An error occurred proxying the GET request to the historical server';
-          this.logger.critical('main', message, ex);
+          this.logger.critical('historical', message, ex);
           res.status(500).json(message);
         }
       }
       else {
         const message = `Invalid start parameter provided: ${req.params.start}`;
-        this.logger.warning('main', message);
+        this.logger.warning('historical', message);
         res.status(500).json(message);
       }
     });
@@ -75,7 +75,7 @@ export class Historical {
      * to the historical server as a GET request with the start and stop parameter.
      */
     this.router.get('/:start/:stop', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
+      this.logger.info('historical', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
       const startSeconds = parseInt(req.params.start);
       const stopSeconds = parseInt(req.params.stop);
       if (!isNaN(startSeconds) && !isNaN(stopSeconds)) {
@@ -84,24 +84,24 @@ export class Historical {
           needle.get(url, (err, _res) => {
             if (err) {
               const message = 'An error occurred proxying the GET request to the historical server';
-              this.logger.critical('main', message, err);
+              this.logger.critical('historical', message, err);
               res.status(500).json(message);
             }
             else {
-              this.logger.info('main', 'Successfully proxied GET request to the historical server');
+              this.logger.info('historical', 'Successfully proxied GET request to the historical server');
               res.status(200).json(_res.body);
             }
           });
         }
         catch (ex) {
           const message = 'An error occurred proxying the GET request to the historical server';
-          this.logger.critical('main', message, ex);
+          this.logger.critical('historical', message, ex);
           res.status(500).json(message);
         }
       }
       else {
         const message = `Invalid start or stop parameter provided: start - ${req.params.start}, stop - ${req.params.stop}`;
-        this.logger.warning('main', message);
+        this.logger.warning('historical', message);
         res.status(500).json(message);
       }
     });
@@ -111,24 +111,24 @@ export class Historical {
      * POST request.
      */
     this.router.post('/', (req, res) => {
-      this.logger.info('main', `Receive POST request`);
+      this.logger.info('historical', `Receive POST request`);
       const url = `http://${this.env.HISTORICAL_SERVER_HOSTNAME}:${this.env.HISTORICAL_SERVER_PORT}/`;
       try {
         needle.post(url, req.body, { json: true }, (err, _res) => {
           if (err) {
             const message = 'An error occurred proxying the POST request to the historical server';
-            this.logger.critical('main', message, err);
+            this.logger.critical('historical', message, err);
             res.status(500).json(message);
           }
           else {
-            this.logger.info('main', 'Successfully proxied POST request to the historical server');
+            this.logger.info('historical', 'Successfully proxied POST request to the historical server');
             res.status(200).json(_res.body);
           }
         });
       }
       catch (ex) {
         const message = 'An error occurred proxying the POST request to the historical server';
-        this.logger.critical('main', message, ex);
+        this.logger.critical('historical', message, ex);
         res.status(500).json(message);
       }
     });
@@ -138,24 +138,24 @@ export class Historical {
      * POST request.
      */
     this.router.delete('/', (req, res) => {
-      this.logger.info('main', `Receive DELETE request`);
+      this.logger.info('historical', `Receive DELETE request`);
       const url = `http://${this.env.HISTORICAL_SERVER_HOSTNAME}:${this.env.HISTORICAL_SERVER_PORT}/`;
       try {
         needle.delete(url, {}, (err, _res) => {
           if (err) {
             const message = 'An error occurred proxying the DELETE request to the historical server';
-            this.logger.critical('main', message, err);
+            this.logger.critical('historical', message, err);
             res.status(500).json(message);
           }
           else {
-            this.logger.info('main', 'Successfully proxied DELETE request to the historical server');
+            this.logger.info('historical', 'Successfully proxied DELETE request to the historical server');
             res.status(200).json(_res.body);
           }
         });
       }
       catch (ex) {
         const message = 'An error occurred proxying the DELETE request to the historical server';
-        this.logger.critical('main', message, ex);
+        this.logger.critical('historical', message, ex);
         res.status(500).json(message);
       }
     });

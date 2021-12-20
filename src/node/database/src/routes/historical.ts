@@ -12,12 +12,12 @@ export class Historical {
      * collection in the database.
      */
     this.router.get('/', (req, res) => {
-      this.logger.info('main', `Receive GET request`);
+      this.logger.info('historical', `Receive GET request`);
       this.store.getAllHistorical().then((data) => {
-        this.logger.info('main', 'Successfully retrieved historical data from the database');
+        this.logger.info('historical', 'Successfully retrieved historical data from the database');
         res.status(200).json(data);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred retrieving historical data from the database', err);
+        this.logger.critical('historical', 'An error occurred retrieving historical data from the database', err);
         res.status(500).json(err);
       });
     });
@@ -27,20 +27,20 @@ export class Historical {
      * data in the historical collection in the database.
      */
     this.router.get('/:start', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start}`);
+      this.logger.info('historical', `Receive GET request with start: ${req.params.start}`);
       const startSeconds = parseInt(req.params.start);
       if (!isNaN(startSeconds)) {
         this.store.getHistoricalAlertDate(startSeconds).then((data) => {
-          this.logger.info('main', 'Successfully retrieved historical data from the database');
+          this.logger.info('historical', 'Successfully retrieved historical data from the database');
           res.status(200).json(data);
         }).catch((err) => {
-          this.logger.critical('main', 'An error occurred retrieving historical data from the database', err);
+          this.logger.critical('historical', 'An error occurred retrieving historical data from the database', err);
           res.status(500).json(err);
         });
       }
       else {
         const message = `Invalid start parameter provided: ${req.params.start}`;
-        this.logger.warning('main', message);
+        this.logger.warning('historical', message);
         res.status(500).json(message);
       }
     });
@@ -50,21 +50,21 @@ export class Historical {
      * get the data in the historical collection in the database.
      */
     this.router.get('/:start/:stop', (req, res) => {
-      this.logger.info('main', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
+      this.logger.info('historical', `Receive GET request with start: ${req.params.start} and stop: ${req.params.stop}`);
       const startSeconds = parseInt(req.params.start);
       const stopSeconds = parseInt(req.params.stop);
       if (!isNaN(startSeconds) && !isNaN(stopSeconds)) {
         this.store.getHistoricalAlertDate(startSeconds, stopSeconds).then((data) => {
-          this.logger.info('main', 'Successfully retrieved historical data from the database');
+          this.logger.info('historical', 'Successfully retrieved historical data from the database');
           res.status(200).json(data);
         }).catch((err) => {
-          this.logger.critical('main', 'An error occurred retrieving historical data from the database', err);
+          this.logger.critical('historical', 'An error occurred retrieving historical data from the database', err);
           res.status(500).json(err);
         });
       }
       else {
         const message = `Invalid start or stop parameter provided: start - ${req.params.start}, stop - ${req.params.stop}`;
-        this.logger.warning('main', message);
+        this.logger.warning('historical', message);
         res.status(500).json(message);
       }
     });
@@ -74,12 +74,12 @@ export class Historical {
      * the historical collection in the database.
      */
     this.router.post('/', (req, res) => {
-      this.logger.info('main', `Receive POST request`);
+      this.logger.info('historical', `Receive POST request`);
       this.store.writeHistorical(req.body).then((result) => {
-        this.logger.info('main', 'Successfully wrote historical data to the database');
+        this.logger.info('historical', 'Successfully wrote historical data to the database');
         res.status(200).json(result);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred writing historical data to the database', err);
+        this.logger.critical('historical', 'An error occurred writing historical data to the database', err);
         res.status(500).json(err);
       });
     });
@@ -89,12 +89,12 @@ export class Historical {
      * historical collection in the database.
      */
     this.router.delete('/', (req, res) => {
-      this.logger.info('main', `Receive DELETE request`);
+      this.logger.info('historical', `Receive DELETE request`);
       this.store.deleteAllHistorical().then((result) => {
-        this.logger.info('main', 'Successfully deleted historical data from the database');
+        this.logger.info('historical', 'Successfully deleted historical data from the database');
         res.status(200).json(result);
       }).catch((err) => {
-        this.logger.critical('main', 'An error occurred deleting historical data from the database', err);
+        this.logger.critical('historical', 'An error occurred deleting historical data from the database', err);
         res.status(500).json(err);
       });
     });

@@ -17,6 +17,6 @@ if (env.validKeys()) {
   server.use('/historical', historical.router);
 
   server.listen(env.PROXY_PORT, () => {
-    logger.info('main', `Server is up and listening on port: ${env.PROXY_PORT}`);
+    logger.info('init', `Server is up and listening on port: ${env.PROXY_PORT}`);
   });
 }
