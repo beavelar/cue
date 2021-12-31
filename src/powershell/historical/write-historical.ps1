@@ -1,13 +1,5 @@
-$HISTORICAL_ALERTS_URI = "http://localhost:3001/historical"
-
-# Variables to utilize if ingesting a single file
-# $FILE_NAME = "2021-08"
-# $INPUT_PATH = "$(Get-Location)\data\historical-alerts\input\$($FILE_NAME).csv"
-# $OUTPUT_PATH = "$(Get-Location)\data\historical-alerts\output\$($FILE_NAME).json"
-
-# Variables to utilize if ingesting a directory with files
-$INPUT_PATH = "$(Get-Location)\data\historical-alerts\input"
-$OUTPUT_PATH = "$(Get-Location)\data\historical-alerts\output"
+$ENV_HASH = @{}
+Import-Csv "$(Get-Location)\.env" -Delimiter "=" -Header Var, Value | ForEach-Object { $ENV_HASH[$_.Var] = $_.Value }
 
 function GetWinLoss {
 	param($ask, $low, $lowDate, $alertDate)
@@ -142,4 +134,26 @@ function Main {
 	}
 }
 
-Main $INPUT_PATH $OUTPUT_PATH $HISTORICAL_ALERTS_URI
+if ([string]::IsNullOrEmpty($ENV_HASH.HISTORICAL_PROXY_ENDPOINT)) {
+	Write-Host "HISTORICAL_PROXY_ENDPOINT environment variable not provided"
+}
+elseif ([string]::IsNullOrEmpty($ENV_HASH.WRITE_HISTORICAL_INPUT)) {
+	Write-Host "WRITE_HISTORICAL_INPUT environment variable not provided"
+}
+elseif ([string]::IsNullOrEmpty($ENV_HASH.WRITE_HISTORICAL_OUTPUT)) {
+	Write-Host "WRITE_HISTORICAL_OUTPUT environment variable not provided"
+}
+else {
+	$inputPath = $ENV_HASH.WRITE_HISTORICAL_INPUT
+	$outputPath = $ENV_HASH.WRITE_HISTORICAL_OUTPUT
+
+	if (-not [string]::IsNullOrEmpty($ENV_HASH.WRITE_HISTORICAL_FILE)) {
+		$inputPath = "$($inputPath)\$($ENV_HASH.WRITE_HISTORICAL_FILE).csv"
+		$outputPath = "$($outputPath)\$($ENV_HASH.WRITE_HISTORICAL_FILE).json"
+	}
+	else {
+		Write-Host "WRITE_HISTORICAL_FILE not provided, writing all historical data"
+	}
+
+	Main $inputPath $outputPath $ENV_HASH.HISTORICAL_PROXY_ENDPOINT
+}

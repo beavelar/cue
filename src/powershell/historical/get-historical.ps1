@@ -1,13 +1,5 @@
-$HISTORICAL_ALERTS_URI = "http://localhost:3001/historical"
-$OUTPUT_PATH = "$(Get-Location)\data\options-recap\historical\csv"
-
-# Utilize when specifying start and/or stop time
-$START_DATE = 1627862400
-$STOP_DATE = 1627948800
-
-# Utilize when not specifying start and/or stop time
-# $START_DATE = $null
-# $STOP_DATE = $null
+$ENV_HASH = @{}
+Import-Csv "$(Get-Location)\.env" -Delimiter "=" -Header Var, Value | ForEach-Object { $ENV_HASH[$_.Var] = $_.Value }
 
 function JSONToCSV {
 	param ($json)
@@ -56,13 +48,6 @@ function Main {
 		$stopDate = ((Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($stop))).ToString("yyyy.MM.dd-hh.mm.ss")
 		$csv | Out-File "$($outputPath)\$($startDate)_$($stopDate).csv"
 	}
-	elseif ($null -ne $start) {
-		$json = Invoke-RestMethod -Uri "$($uri)/$($start)" -Method GET
-		$csv = JSONToCSV $json
-
-		$startDate = ((Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds($start))).ToString("yyyy.MM.dd-hh.mm.ss")
-		$csv | Out-File "$($outputPath)\$($startDate).csv"
-	}
 	else {
 		$json = Invoke-RestMethod -Uri $uri -Method GET
 		$csv = JSONToCSV $json
@@ -71,4 +56,23 @@ function Main {
 	}
 }
 
-Main $HISTORICAL_ALERTS_URI $START_DATE $STOP_DATE $OUTPUT_PATH
+if ([string]::IsNullOrEmpty($ENV_HASH.HISTORICAL_PROXY_ENDPOINT)) {
+	Write-Host "HISTORICAL_PROXY_ENDPOINT environment variable not provided"
+}
+elseif ($null -eq $ENV_HASH.GET_HISTORICAL_OUTPUT) {
+	Write-Host "GET_HISTORICAL_OUTPUT environment variable not provided"
+}
+else {
+	$start = $null
+	$stop = $null
+
+	if ((-not [string]::IsNullOrEmpty($ENV_HASH.GET_HISTORICAL_START)) -and (-not [string]::IsNullOrEmpty($ENV_HASH.GET_HISTORICAL_STOP))) {
+		$start = [double]$ENV_HASH.GET_HISTORICAL_START
+		$stop = [double]$ENV_HASH.GET_HISTORICAL_STOP
+	}
+	else {
+		Write-Host "GET_HISTORICAL_START and/or GET_HISTORICAL_STOP not provided, retrieving all historical data"
+	}
+
+	Main $ENV_HASH.HISTORICAL_PROXY_ENDPOINT $start $stop $ENV_HASH.GET_HISTORICAL_OUTPUT
+}

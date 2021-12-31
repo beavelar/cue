@@ -1,13 +1,5 @@
-$REALTIME_ALERTS_URI = "http://localhost:3001/realtime"
-
-# Variables to utilize if ingesting a single file
-# $FILE_NAME = "2021-10-01"
-# $INPUT_PATH = "$(Get-Location)\data\realtime-alerts\input\$($FILE_NAME).txt"
-# $OUTPUT_PATH = "$(Get-Location)\data\realtime-alerts\output\$($FILE_NAME).json"
-
-# Variables to utilize if ingesting a directory with files
-$INPUT_PATH = "$(Get-Location)\data\realtime-alerts\input"
-$OUTPUT_PATH = "$(Get-Location)\data\realtime-alerts\output"
+$ENV_HASH = @{}
+Import-Csv "$(Get-Location)\.env" -Delimiter "=" -Header Var, Value | ForEach-Object { $ENV_HASH[$_.Var] = $_.Value }
 
 function InputToJSON {
 	param($inputData)
@@ -145,4 +137,26 @@ function Main {
 	}
 }
 
-Main $INPUT_PATH $OUTPUT_PATH $REALTIME_ALERTS_URI
+if ([string]::IsNullOrEmpty($ENV_HASH.REALTIME_PROXY_ENDPOINT)) {
+	Write-Host "REALTIME_PROXY_ENDPOINT environment variable not provided"
+}
+elseif ([string]::IsNullOrEmpty($ENV_HASH.WRITE_REALTIME_INPUT)) {
+	Write-Host "WRITE_REALTIME_INPUT environment variable not provided"
+}
+elseif ([string]::IsNullOrEmpty($ENV_HASH.WRITE_REALTIME_OUTPUT)) {
+	Write-Host "WRITE_REALTIME_OUTPUT environment variable not provided"
+}
+else {
+	$inputPath = $ENV_HASH.WRITE_REALTIME_INPUT
+	$outputPath = $ENV_HASH.WRITE_REALTIME_OUTPUT
+
+	if (-not [string]::IsNullOrEmpty($ENV_HASH.WRITE_REALTIME_FILE)) {
+		$inputPath = "$($inputPath)\$($ENV_HASH.WRITE_REALTIME_FILE).txt"
+		$outputPath = "$($outputPath)\$($ENV_HASH.WRITE_REALTIME_FILE).json"
+	}
+	else {
+		Write-Host "WRITE_REALTIME_FILE not provided, writing all historical data"
+	}
+
+	Main $inputPath $outputPath $ENV_HASH.REALTIME_PROXY_ENDPOINT
+}
