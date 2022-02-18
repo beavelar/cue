@@ -5,7 +5,7 @@ The goal is to attempt to find commonalities with successful unusual options act
 
 Historical unusual options activity data can be retrieved from the [Unusual Whales Analytics](https://unusualwhales.com/analytics) page.  Realtime unusual options activity data can be retrieved from the [Unusual Whales Alerts](https://unusualwhales.com/alerts) page (*Unusual Whales account required*).
 
-When visiting the [Unusual Whales Analytics](https://unusualwhales.com/analytics) page, historical unusual options activity data is only provided for the ***June 2020 - August 2021*** date range.  Future months only provide a recap.  *Due to the lack of support of historical unusual options activity data, this project has been abondened*.
+When visiting the [Unusual Whales Analytics](https://unusualwhales.com/analytics) page, historical unusual options activity data is only provided for the ***June 2020 - August 2021*** date range.  Future months only provide a recap.  *Due to the lack of support of historical unusual options activity data, this project has been abandoned*.
 
 ## Quick Links
 - [Requirements](#requirements)
